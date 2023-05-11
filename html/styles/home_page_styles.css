@@ -1,0 +1,23 @@
+#new-game-btn {
+    background-color: rgba(61, 180, 115, 0.4);
+    border-color: rgba(61, 180, 115, 0.8);
+}
+
+#load-game-btn {
+    background-color: rgba(18, 129, 219, 0.4);
+    border-color: rgba(18, 129, 219, 0.8);
+}
+
+#game-history-btn {
+    background-color: rgba(207, 204, 28, 0.4);
+    border-color: rgba(207, 204, 28, 0.8);
+}
+
+#exit-game-btn {
+    background-color: rgba(233, 28, 73, 0.4);
+    border-color: rgba(233, 28, 73, 0.8);
+}
+
+#home-main {
+    background-color: rgba(50, 73, 97, 0.616);
+}
