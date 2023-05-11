@@ -1,0 +1,79 @@
+
+* {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-weight:700 bold;
+}
+
+.rounded-container {
+    border-radius: 5mm;
+    width: fit-content;
+    height: fit-content;
+    flex-direction:column;
+    border-width: 1mm;
+    padding: 5mm;
+}
+
+.menu-button {
+    border-radius: 5mm;
+    border-width: 1mm;
+    padding: 5mm;
+    margin-left: auto;
+    margin-right: auto;
+    width:auto;
+}
+
+.large-menu-button {
+    width: 75%;
+}
+
+.column {
+    display: flex;
+    column-count: 1;
+    flex-direction: column;
+    padding: 1cm;
+}
+
+.column > * {
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.horizontal-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-center {
+    display: flex;
+    width: 30%;
+    height: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+
+}
+
+html, body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: 100%;
+}
+
+.fit-width {
+    width: fit-content;
+}
+
+.fit-height {
+    height: fit-content;
+}
+
+/* Spaces children out*/
+.card > * {
+    margin: 30px 0;
+}
