@@ -1,0 +1,46 @@
+
+#game-space {
+    border-color: brown;   
+}
+
+canvas {
+    border-color: brown;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;   
+    flex-direction: column;
+    background-color: rgba(221, 163, 91, 0.938);
+}
+
+.fill-height {
+    height: auto;
+}
+
+.game-space {
+    flex-grow: 1;
+}
+
+#game-page-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.placeholder {
+    background-color: rgba(18, 129, 219, 0.4);
+    border-color: rgba(18, 129, 219, 0.8);
+    width: 80%;
+    height: 5cm;
+    margin: auto;
+    margin-top: 5mm;
+}
+
