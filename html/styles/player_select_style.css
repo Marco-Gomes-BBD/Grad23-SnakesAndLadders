@@ -7,13 +7,6 @@ canvas {
     border-color: brown;
 }
 
-body {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 0;
-}
-
 main {
     display: flex;
     flex-grow: 1;

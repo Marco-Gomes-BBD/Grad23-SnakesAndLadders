@@ -1,31 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/index.css">
-    <link rel="stylesheet" type="text/css" href="/html/styles/game_page_styles.css" />
-    <title>Snakes And Ladders</title>
-</head>
-<body id="game-page-body row" onclick="clear()">
-    
-    <main class="column fill-height">
+<section class="main-section">
+    <section class="column fill-height" id="game-section">
         <h2>Snakes And Ladders</h2>
         <canvas class="game-space" id="canv"></canvas>
         <section class="control-section">
             <button class="menu-button horizontal-center">Roll Die</button>
         </section>
-    </main>
+    </section>
     <aside id="player-list rounded-container">
         <section class="rounded-container placeholder"></section>
     </aside>
-</body>
-
+</section>
 <script>
     var canvas = document.getElementById("canv");
     var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 </script>
-</html>

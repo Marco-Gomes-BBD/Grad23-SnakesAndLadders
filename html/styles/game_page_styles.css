@@ -5,21 +5,15 @@
 
 canvas {
     border-color: brown;
+    border-width: 5mm;
 }
 
-body {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 0;
-}
-
-main {
+.main-section {
     display: flex;
     flex-grow: 1;
     height: 100%;   
-    flex-direction: column;
     background-color: rgba(221, 163, 91, 0.938);
+    flex-direction: row;
 }
 
 .fill-height {
@@ -30,9 +24,8 @@ main {
     flex-grow: 1;
 }
 
-#game-page-body {
-    display: flex;
-    flex-direction: row;
+#game-section {
+    flex-grow: 1;
 }
 
 .placeholder {
