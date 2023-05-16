@@ -110,9 +110,6 @@ function initBoard(){
     context.restore();
     // context.fillRect(x, y, 6, height);
     // context.fillRect(x + width, y, 6, height);
-  
-    
-  
   }
     
   // function drawLadder(x, y, width, height){
