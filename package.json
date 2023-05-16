@@ -1,0 +1,23 @@
+{
+  "name": "grad23-snakesandladders",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marco-Gomes-BBD/Grad23-SnakesAndLadders.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marco-Gomes-BBD/Grad23-SnakesAndLadders/issues"
+  },
+  "homepage": "https://github.com/Marco-Gomes-BBD/Grad23-SnakesAndLadders#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

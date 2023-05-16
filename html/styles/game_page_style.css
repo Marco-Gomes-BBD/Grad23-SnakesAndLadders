@@ -1,0 +1,39 @@
+
+#game-space {
+    border-color: brown;   
+}
+
+canvas {
+    border-color: brown;
+    border-width: 5mm;
+}
+
+.main-section {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;   
+    background-color: rgba(221, 163, 91, 0.938);
+    flex-direction: row;
+}
+
+.fill-height {
+    height: auto;
+}
+
+.game-space {
+    flex-grow: 1;
+}
+
+#game-section {
+    flex-grow: 1;
+}
+
+.placeholder {
+    background-color: rgba(18, 129, 219, 0.4);
+    border-color: rgba(18, 129, 219, 0.8);
+    width: 80%;
+    height: 5cm;
+    margin: auto;
+    margin-top: 5mm;
+}
+

@@ -1,0 +1,48 @@
+#game-space {
+    border-color: brown;   
+}
+
+canvas {
+    border-color: brown;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;   
+    flex-direction: column;
+    background-color: rgba(255, 138, 138, 0.938);
+}
+
+.fill-height {
+    height: auto;
+}
+
+.game-space {
+    flex-grow: 1;
+}
+
+.control-section {
+    width: 80%;
+    margin: auto;
+}
+
+#game-page-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.placeholder {
+    background-color: rgba(18, 129, 219, 0.4);
+    border-color: rgba(18, 129, 219, 0.8);
+    width: 80%;
+    height: 5cm;
+    margin: auto;
+    margin-top: 5mm;
+}
+
+.affirmative {
+    font-size: larger;
+    background-color: rgba(56, 199, 104, 0.4);
+    border-color: rgba(56, 199, 104, 0.8);
+}
