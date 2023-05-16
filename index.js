@@ -7,15 +7,15 @@ const port = process.env.PORT || 8080;
 
 app.use(express.static("."))
 
-app.get('/home', function(req, res) {
+app.get('/home', function(_req, res) {
     res.sendFile(path.join(__dirname, 'html/pages/home_page.html'));
 });
 
-app.get('/game', function(req, res) {
+app.get('/game', function(_req, res) {
     res.sendFile(path.join(__dirname, 'html/pages/game_page.html'));
 });
 
-app.get('/player-select', function(req, res) {
+app.get('/player-select', function(_req, res) {
     res.sendFile(path.join(__dirname, "html/pages/player_select.html"))
 });
 
