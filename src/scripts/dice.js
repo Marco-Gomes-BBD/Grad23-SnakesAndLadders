@@ -1,59 +1,35 @@
-
 const dice = document.querySelector('.dice');
 const rollBtn = document.querySelector('#roll-btn');
 
-const randomDice = () => {
+const prng = new Math.seedrandom('Hello');
+const rollDistribution = [0, 0, 0, 0, 0, 0];
 
-    const random = Math.floor(Math.random() * 10);
+const randomRoll = () => {
+    const random = getRandomInt(prng, 1, 7);
+    rollDistribution[random - 1] += 1;
+    return random;
+};
 
-    if (random >= 1 && random <= 6) {
-        rollDice(random);
-    }
-    else {
-        randomDice();
-    }
-}
-
-const rollDice = random => {
-
+const animateDie = (random) => {
     dice.style.animation = 'rolling 4s';
+    const dieRotations = {
+        1: 'rotateX(0deg) rotateY(0deg)',
+        2: 'rotateX(-90deg) rotateY(0deg)',
+        3: 'rotateX(0deg) rotateY(90deg)',
+        4: 'rotateX(0deg) rotateY(-90deg)',
+        5: 'rotateX(90deg) rotateY(0deg)',
+        6: 'rotateX(180deg) rotateY(0deg)',
+    };
 
     setTimeout(() => {
-
-        switch (random) {
-            case 1:
-                dice.style.transform = 'rotateX(0deg) rotateY(0deg)';
-                break;
-
-            case 6:
-                dice.style.transform = 'rotateX(180deg) rotateY(0deg)';
-                break;
-
-            case 2:
-                dice.style.transform = 'rotateX(-90deg) rotateY(0deg)';
-                break;
-
-            case 5:
-                dice.style.transform = 'rotateX(90deg) rotateY(0deg)';
-                break;
-
-            case 3:
-                dice.style.transform = 'rotateX(0deg) rotateY(90deg)';
-                break;
-
-            case 4:
-                dice.style.transform = 'rotateX(0deg) rotateY(-90deg)';
-                break;
-
-            default:
-                break;
-        }
-
+        dice.style.transform = dieRotations[random];
         dice.style.animation = 'none';
-
     }, 4050);
+};
 
-}
+const rollDie = () => {
+    const random = randomRoll();
+    animateDie(random);
+};
 
-
-rollBtn.addEventListener('click', randomDice);
+rollBtn.addEventListener('click', rollDie);
