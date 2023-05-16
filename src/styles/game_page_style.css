@@ -1,10 +1,9 @@
-
 #game-space {
     border-color: brown;
     justify-content: center;
     align-items: center;
     display: block;
-    flex-direction: row;   
+    flex-direction: row;
 }
 
 #board {
@@ -17,7 +16,7 @@
 .main-section {
     display: flex;
     flex-grow: 1;
-    height: 100%;   
+    height: 100%;
     background-color: rgba(221, 163, 91, 0.938);
     flex-direction: row;
 }
@@ -42,4 +41,3 @@
     margin: auto;
     margin-top: 5mm;
 }
-
