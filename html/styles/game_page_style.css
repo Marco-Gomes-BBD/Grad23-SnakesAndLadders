@@ -1,11 +1,17 @@
 
 #game-space {
-    border-color: brown;   
+    border-color: brown;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    flex-direction: row;   
 }
 
-canvas {
+#board {
     border-color: brown;
     border-width: 5mm;
+    display: block;
+    margin: auto;
 }
 
 .main-section {

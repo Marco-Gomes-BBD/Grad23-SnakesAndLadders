@@ -1,3 +1,4 @@
+
 * {
     font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-weight:700 bold;
@@ -5,6 +6,7 @@
 
 .rounded-container {
     border-radius: 5mm;
+    width: -moz-fit-content; /* to support firefox styles */
     width: fit-content;
     height: fit-content;
     flex-direction:column;
@@ -73,6 +75,7 @@ html, body {
 }
 
 .fit-width {
+    width: -moz-fit-content; /* to support firefox styles */
     width: fit-content;
 }
 
