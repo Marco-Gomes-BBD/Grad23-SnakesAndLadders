@@ -46,3 +46,8 @@ main {
     background-color: rgba(56, 199, 104, 0.4);
     border-color: rgba(56, 199, 104, 0.8);
 }
+
+.player-list {
+    width: 20%;
+    height: 100%;
+}

@@ -135,3 +135,13 @@ nav {
     margin-bottom: auto;
     margin-right: 1rem;
 }
+
+.fill-container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.auto-grow {
+    flex-grow: 1;
+}
