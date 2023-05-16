@@ -19,5 +19,6 @@ app.get('/player-select', function(req, res) {
     res.sendFile(path.join(__dirname, "html/pages/player_select.html"))
 });
 
-app.listen(port);
-console.log('Server started at http://localhost:' + port);
+app.listen(port, () => {
+    console.log('Server started at http://localhost:' + port);
+});
