@@ -1,15 +1,17 @@
 <section class="column fill-height auto-grow">
     <h2 id="playercount">Player 1, You're up</h2>
-    <form class="column page-center">
+    <form class="column page-center" id="player-form">
         <label for="player-name">And you are?</label>
         <input class="rounded-input" type="text" id="player-name">
 
         <label for="color_pick">Provide your hue!</label>
         <input class="" type="color" id="color_pick">
-
-        <input type="button" class="rounded-input affirmative" value="Done">
+        <input type="button" class="rounded-input affirmative" id="add-player-button" value="Add Player" onclick="add_player()">
     </form>
 </section>
-<aside id="player-list rounded-container">
-    <player-card>umm</player-card>
+<aside id="player-asside">
+    <section class="auto-grow" id="player-list">
+    </section>
+    <button class="inactive rounded-input" id="proceed-button" onclick="proceed()">Proceed</button>
+    
 </aside>

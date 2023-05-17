@@ -47,7 +47,28 @@ main {
     border-color: rgba(56, 199, 104, 0.8);
 }
 
-.player-list {
+.continuation{
+    font-size: larger;
+    background-color: rgba(199, 185, 56, 0.4);
+    border-color: rgba(199, 185, 56, 0.8);
+}
+
+.inactive {
+    font-size: larger;
+    background-color: rgba(94, 94, 94, 0.4);
+    border-color: rgba(94, 94, 94, 0.4, 0.8);
+}
+
+#player-asside {
+    display: flex;
+    flex-direction: column;
     width: 20%;
     height: 100%;
+}
+
+#proceed-button {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-bottom: 1rem;
 }

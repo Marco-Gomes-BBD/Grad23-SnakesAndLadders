@@ -44,6 +44,7 @@
 }
 
 .row {
+    display: flex;
     flex-direction: row;
     margin-left: 5mm;
     margin-right: 5mm;
@@ -144,4 +145,8 @@ nav {
 
 .auto-grow {
     flex-grow: 1;
+}
+
+.auto-grow-4 {
+    flex-grow: 4;
 }
