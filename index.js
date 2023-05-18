@@ -1,8 +1,16 @@
+require('dotenv-flow').config();
 const express = require('express');
 const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
+
+const github_api_authorize = 'https://github.com/login/oauth/authorize';
+const github_api_access_token = 'https://github.com/login/oauth/access_token';
+const github_api_user = 'https://api.github.com/user';
 
 app.use(express.static('.'));
 
@@ -18,6 +26,39 @@ app.get('/player-select', function (_req, res) {
     res.sendFile(path.join(__dirname, 'src/pages/player_select.html'));
 });
 
+app.get('/auth', (_req, res) => {
+    res.redirect(`${github_api_authorize}?client_id=${client_id}`);
+});
+
+app.get('/auth-callback', async (req, res) => {
+    const code = req.query.code;
+    const link = `${github_api_access_token}?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+        },
+    };
+
+    const response = await fetch(link, requestOptions);
+    const data = await response.json();
+    res.cookie('token', data.access_token);
+    res.redirect('/');
+    await getDetails(data.access_token);
+});
+
+async function getDetails(token) {
+    const link = github_api_user;
+    const requestOptions = {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const response = await fetch(link, requestOptions);
+    const data = await response.json();
+    console.log(data);
+}
+
 app.listen(port, () => {
-    console.log('Server started at http://localhost:' + port);
+    console.log(`Server started at http://localhost:${port}`);
 });
