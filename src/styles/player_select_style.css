@@ -1,5 +1,5 @@
 #game-space {
-    border-color: brown;   
+    border-color: brown;
 }
 
 canvas {
@@ -9,8 +9,7 @@ canvas {
 main {
     display: flex;
     flex-grow: 1;
-    height: 100%;   
-    flex-direction: column;
+    height: 100%;
     background-color: rgba(255, 138, 138, 0.938);
 }
 
@@ -23,6 +22,7 @@ main {
 }
 
 .control-section {
+    height: fit-content;
     width: 80%;
     margin: auto;
 }

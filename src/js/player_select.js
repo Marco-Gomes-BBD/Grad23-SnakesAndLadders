@@ -57,10 +57,12 @@ const init_game = async () => {
         let player = window.players[player_index]
         let player_card_list = document.getElementById("player-list-container")
         while (player_card_list == null){
-            console.log("nope")
             await new Promise(resolve => setTimeout(resolve, 100));
             player_card_list = document.getElementById("player-list-container")
         }
+        
+        initBoard();
+
         console.log("yeah")
         let player_card = new PlayerCard()
         console.log(player)

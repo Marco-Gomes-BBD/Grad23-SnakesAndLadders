@@ -1,4 +1,6 @@
 {
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "prettier.tabWidth": 4,
+    "prettier.singleQuote": true
 }
