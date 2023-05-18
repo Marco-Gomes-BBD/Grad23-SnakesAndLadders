@@ -143,6 +143,11 @@ nav {
     margin: 0;
 }
 
+.fill-width {
+    width: 100%;
+    margin: 0;
+}
+
 .auto-grow {
     flex-grow: 1;
 }

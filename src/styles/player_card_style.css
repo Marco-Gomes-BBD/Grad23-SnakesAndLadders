@@ -16,7 +16,8 @@
     margin-left: auto;
     display: flex;
     flex-direction: row;
-    background-color: rgba(86, 104, 98, 0.363);
+    /*background-color: rgba(86, 104, 98, 0.363);*/
+    background-color: var(--bgcol);
     border-radius: 4mm;
     border-width: 5mm;
     width: 30%;

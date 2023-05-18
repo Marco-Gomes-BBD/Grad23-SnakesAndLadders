@@ -72,3 +72,51 @@ main {
     width: 50%;
     margin-bottom: 1rem;
 }
+
+color-block {    
+    background-color: red;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 0.5rem;
+}
+
+color-block[selected="true"]  {
+    background-color: var(--bgcol);
+    border-radius: 10mm;
+    border-width: 1mm;
+}
+
+color-block[selected="false"] {
+    background-color: var(--bgcol);
+}
+
+color-block[assigned="true"] {
+    background-color: grey;
+}
+
+.square-container {
+    display: flex;
+    flex-direction: row;
+    border-radius: 4mm;
+    border-width: 5mm;
+    width: 20%;
+    font-size:xx-large;
+}
+
+.square-container [selected|="true"] {
+    width: 25%;
+}
+
+.square-container:after {
+    content: "";
+    padding-bottom: 100%;
+}
+
+#color-palette {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: fit-content;
+}

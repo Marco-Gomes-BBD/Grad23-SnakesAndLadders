@@ -4,14 +4,22 @@
         <label for="player-name">And you are?</label>
         <input class="rounded-input" type="text" id="player-name">
 
-        <label for="color_pick">Provide your hue!</label>
-        <input class="" type="color" id="color_pick">
+        <label for="color_palette">Provide your hue!</label>
+        <section class="color_choice row fill-width" id="color-palette">
+            <color-block class="square-container" selected="false" style="--bgcol: red"     onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: orange"  onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: yellow"  onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: green"   onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: blue"    onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: indigo"  onclick="toggle_color(this)"></color-block>
+            <color-block class="square-container" selected="false" style="--bgcol: violet"  onclick="toggle_color(this)"></color-block>
+        </section>
         <input type="button" class="rounded-input affirmative" id="add-player-button" value="Add Player" onclick="add_player()">
     </form>
 </section>
+
 <aside id="player-asside">
     <section class="auto-grow" id="player-list">
     </section>
-    <button class="inactive rounded-input" id="proceed-button" onclick="proceed()">Proceed</button>
-    
+    <button disabled="true" class="inactive rounded-input" id="proceed-button" onclick="proceed(this)">Proceed</button>
 </aside>

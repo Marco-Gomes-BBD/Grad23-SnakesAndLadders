@@ -20,6 +20,17 @@ class PlayerCard extends HTMLElement{
         const name_container = this.shadowRoot.getElementById("player-name")
         name_container.innerHTML = this.getAttribute('player_name')
     }
+
+    get player_color() {
+        return this.getAttribute("player-color")
+    }
+
+    set player_color(val) {
+        this.setAttribute('player-color', val)
+        console.log(val)
+        const color_block = this.shadowRoot.getElementById ("color-block")
+        color_block.setAttribute("style", "--bgcol:" + val)
+    }
 }
 
 window.customElements.define("player-card", PlayerCard)
