@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Snakes And Ladders</title>
+        <link rel="stylesheet" type="text/css" href="/index.css" />
+        <link rel="stylesheet" type="text/css" href="/src/styles/game_page_style.css" />
+        <link rel="stylesheet" type="text/css" href="/src/styles/dice.css" />
+    </head>
+    <body onload="initBoard()">
+        <section class="main-section">
+            <section class="column fill-height" id="game-section">
+                <h2>Snakes And Ladders</h2>
+                <section class="game-space">
+                    <canvas id="board" width="600px" height="600px"></canvas>
+                    <section class="dice">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                        <div class="face bottom"></div>
+                        <div class="face top"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                    </section>
+                </section>
+                <section class="control-section">
+                    <button class="menu-button horizontal-center" id="roll-btn">
+                        Roll Die
+                    </button>
+                </section>
+            </section>
+            <aside id="player-list rounded-container">
+                <section class="rounded-container placeholder"></section>
+            </aside>
+        </section>
+    </body>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript" src="/src/scripts/game.js"></script>
+    <script type="text/javascript" src="/src/scripts/state.js"></script>
+    <script type="text/javascript" src="/src/scripts/dice.js"></script>
+</html>
