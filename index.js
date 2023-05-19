@@ -2,6 +2,8 @@ require('dotenv-flow').config();
 const express = require('express');
 const path = require('path');
 
+const database = require('./database');
+
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -59,6 +61,15 @@ async function getDetails(token) {
     console.log(data);
 }
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`);
+});
+
+// Cleanup
+server.on('close', () => {
+    database.close();
+});
+
+process.on('SIGINT', () => {
+    server.close();
 });
