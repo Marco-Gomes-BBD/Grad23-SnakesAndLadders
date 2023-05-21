@@ -17,19 +17,15 @@ function initBoard() {
     drawLadder(12, 63);
     drawLadder(51, 85);
 
-
     // bacause of image restrications distance between head and tail needs to be greater that 3 blocks, both vertically and horrizontally
+    // ^have to write checks for above restrictions
     // head can't be a border cell 
-    // drawSnake(59, 19); 
-    // drawSnake(86, 55);
-    // drawSnake(77, 24);
-    // drawSnake(63 ,10);
-    // drawSnake(23 ,10);
-    // drawSnake(62 ,30);
-    drawSnake(79, 35);
-    // drawSnake(88, 16);  ``
-    // drawSnake(66,34)
-    // drawSnake(52, 34);
+    // TODO: fix right to light snakes
+    drawSnake(59, 19); 
+    drawSnake(76 ,12);
+    drawSnake(90 ,38);
+    drawSnake(52, 2);
+    drawSnake(86, 65);
 
 }
 
@@ -97,51 +93,51 @@ function drawSnake(head, tail){
     newImage.src = img;
 
 
-    let width = 75;
+    let width = 65;
     const halfWidth = Math.floor(width / 2);
     const [[x1, y1], [x2, y2]] = getJump(head-1, tail);
     const dx = x2 - x1;
     const dy = y2 - y1;
-    const angleRadian = Math.atan2(dy, dx);
+    let angleRadian = Math.atan2(dy, dx);
     const length = Math.sqrt(dx * dx + dy * dy);
     const [startx, starty] = getCellPosition(head - 1);
     const [endx, endy] = getCellPosition(tail);
     
     const xOffset = (startx/60)- (endx/60);
-    const yOffset = (endy - starty)/60;
-    
     newImage.onload = function(){
         context.save();
         context.translate(startx , starty);
-        if(Math.abs(xOffset) !== 1 ){
+        {
+            if(Math.abs(xOffset) !== 1 ){
         
-            if((startx/60)< (endx/60)){
-                // left to right
-                context.save();
-                context.translate(-halfWidth/2, halfWidth );
-                context.rotate(-Math.PI/2 + (angleRadian ));
-                context.transform(1,0.5,-0.1,1.1, yOffset, 0);
-                context.drawImage(newImage, 0 , 0 , width, length);
-                console.log(yOffset/60);
-                context.restore();
+                if((startx/60)< (endx/60)){
+                    // left to right
+                    context.save();
+                    context.translate(0, halfWidth);
+                    context.rotate(-Math.PI/2 + angleRadian);
+                    context.transform(1, 0, -0.05,1.1, 0, 0);
+                    context.drawImage(newImage, 0 , 0 , width, length);
+                    context.restore();
 
+                }
+                else{
+                    // right to left
+                    context.save();
+                    context.translate(0 , -halfWidth/2);
+                    context.rotate(-Math.PI/2 + angleRadian);
+                    context.transform(1, 0, 0,1.1, 0, 0);
+                    // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
+                    context.drawImage(newImage, 0, 0, width, length);
+                    context.restore();
+                }
             }
             else{
-                // right to left
-                context.save();
-                context.translate(0 , -halfWidth/2);
-                context.rotate(-Math.PI/2 + angleRadian);
-                context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
-                context.drawImage(newImage, 0, 0, width, length);
-                context.restore();
+                // vertical snakes
+                context.transform(1, 0, 0.05 ,1, 0, 0);
+                context.drawImage(newImage, 0, halfWidth/2, width, length);
             }
+            context.restore();
         }
-        else{
-            // vertical snakes
-            context.drawImage(newImage, 0, halfWidth/2, width, length);
-        }
-        console.log(head, startx, tail, endx, angleRadian, yOffset);
-        context.restore();
     }
 }
 
