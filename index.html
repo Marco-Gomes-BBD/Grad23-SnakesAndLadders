@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/index.css">
-    <link rel="stylesheet" type="text/css" href="/src/styles/home_page_style.css"/>
-    <link rel="stylesheet" type="text/css" href="/src/styles/game_page_style.css"/>
-    <link rel="stylesheet" type="text/css" href="/src/styles/player_select_style.css"/>
 </head>
 <body id="content">
     <header id="nav-header">Hello</header>
@@ -18,29 +15,8 @@
         </section>
     </footer>
 </body>
+<script type="module" src="src/scripts/navigation.js"></script>
 <script>
-    window.load_section = async (id, location) => {
-        /* Loop through a collection of all HTML elements: */
-        let element = document.getElementById(id);
-        /* Make an HTTP request using the attribute value as the file name: */
-        let xhttp = new XMLHttpRequest();
-        xhttp.onload = function() {
-            if (this.readyState == 4) {
-                if (this.status == 200) {element.innerHTML = this.responseText;}
-                if (this.status == 404) {element.innerHTML = "Page not found.";}
-            }
-        }
-        xhttp.open("GET", location, true);
-        xhttp.send();
-        return;
-    }
-
-    window.load_section("main-section", "/home")
-    window.load_section("nav-header", "/src/pages/nav.html")
-    window.load_section("player-card-template-section", "src/templates/player_card_template.html")
+    window.location.assign("/home")
 </script>
-<script src="src/js/player_card.js"></script>
-<script src="src/js/player_select.js"></script>
-<script src="src/js/util.js"></script>
-
 </html>

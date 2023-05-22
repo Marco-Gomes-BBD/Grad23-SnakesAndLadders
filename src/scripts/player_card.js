@@ -1,5 +1,3 @@
-let content = ''
-
 class PlayerCard extends HTMLElement{
     constructor(){
         super()
@@ -35,4 +33,5 @@ class PlayerCard extends HTMLElement{
 
 window.customElements.define("player-card", PlayerCard)
 
+export {PlayerCard}
 console.log("imported element")

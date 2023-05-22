@@ -1,11 +1,35 @@
-<section class="main-section">
-    <section class="column fill-height" id="game-section">
-        <h2>Snakes And Ladders</h2>
-        <canvas class="game-space" id="canv"></canvas>
-        <section class="control-section">
-            <button class="menu-button horizontal-center">Roll Die</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <link rel="stylesheet" type="text/css" href="/src/styles/game_page_style.css"/>
+    <title>Snakes And Ladders</title>
+</head>
+<body>
+    <header id="nav-header">Hello</header>
+    <main id="main-section" class="row fill-container">
+        <section class="main-section">
+            <section class="column fill-height" id="game-section">
+                <h2>Snakes And Ladders</h2>
+                <canvas class="game-space" id="canv"></canvas>
+                <section class="control-section">
+                    <button class="menu-button horizontal-center">Roll Die</button>
+                </section>
+            </section>
+            <aside id="player-list-container"></aside>
         </section>
-    </section>
-    <aside id="player-list-container">
-    </aside>
-</section>
+    </main>
+    <footer>
+        <section id="player-card-template-section">
+        </section>
+    </footer>
+</body>
+<script type="module">
+    import {load_section} from "/src/scripts/navigation.js"
+    load_section("nav-header", "/src/pages/nav.html")
+    load_section("player-card-template-section", "src/templates/player_card_template.html")
+</script>
+</html>

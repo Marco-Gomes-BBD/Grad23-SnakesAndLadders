@@ -1,25 +1,54 @@
-<section class="column fill-height auto-grow">
-    <h2 id="playercount">Player 1, You're up</h2>
-    <form class="column page-center" id="player-form">
-        <label for="player-name">And you are?</label>
-        <input class="rounded-input" type="text" id="player-name">
-
-        <label for="color_palette">Provide your hue!</label>
-        <section class="color_choice row fill-width" id="color-palette">
-            <color-block class="square-container" selected="false" style="--bgcol: red"     onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: orange"  onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: yellow"  onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: green"   onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: blue"    onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: indigo"  onclick="toggle_color(this)"></color-block>
-            <color-block class="square-container" selected="false" style="--bgcol: violet"  onclick="toggle_color(this)"></color-block>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <link rel="stylesheet" type="text/css" href="/src/styles/player_select_style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header id="nav-header"></header>
+    <main class="row fill-container">
+        <section class="column fill-height auto-grow">
+            <h2 id="playercount">Player Select</h2>
+            <form class="column page-center" id="player-form">
+                <label for="player-name">And you are?</label>
+                <input class="rounded-input" type="text" id="player-name">
+        
+                <label for="color_palette">Provide your hue!</label>
+                <section class="color_choice row fill-width" id="color-palette">
+                    <color-block class="square-container" selected="false" style="--bgcol: red"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: orange"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: yellow"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: green"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: blue"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: indigo"></color-block>
+                    <color-block class="square-container" selected="false" style="--bgcol: violet"></color-block>
+                </section>
+                <input type="button" class="rounded-input affirmative" id="add-player-button" value="Add Player">
+            </form>
         </section>
-        <input type="button" class="rounded-input affirmative" id="add-player-button" value="Add Player" onclick="add_player()">
-    </form>
-</section>
-
-<aside id="player-asside">
-    <section class="auto-grow" id="player-list">
-    </section>
-    <button disabled="true" class="inactive rounded-input" id="proceed-button" onclick="proceed(this)">Proceed</button>
-</aside>
+        
+        <aside id="player-asside">
+            <section class="auto-grow" id="player-list">
+            </section>
+            <button disabled="true" class="inactive rounded-input" id="proceed-button" onclick="proceed(this)">Proceed</button>
+        </aside>
+    </main>
+    <footer>
+        <footer>
+            <section id="player-card-template-section">
+            </section>
+        </footer>
+    </footer>
+</body>
+<script type="module" src="/src/scripts/player_card.js"></script>
+<script type="module" src="/src/scripts/player_select.js"></script>
+<script type="module">
+    import {load_section} from "/src/scripts/navigation.js"
+    load_section("nav-header", "/src/pages/nav.html")
+    load_section("player-card-template-section", "/src/templates/player_card_template.html")
+</script>
+</html>

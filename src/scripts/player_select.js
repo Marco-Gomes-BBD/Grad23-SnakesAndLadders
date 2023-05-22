@@ -1,3 +1,5 @@
+import { PlayerCard } from "./player_card.js"
+
 window.players = []
 
 let add_player = () => {
@@ -34,7 +36,6 @@ let add_player = () => {
 const init_game = async () => {
     let seed = 5
     let players = window.players
-
     let xhr = new XMLHttpRequest();
 
     xhr.open("POST", "localhost:8080/start-game");
@@ -74,7 +75,8 @@ const init_game = async () => {
 }
 
 const proceed = async () => {
-    await navigate("/game")
+    let seed = Math.floor(Math.random() * Number.MAX_VALUE)
+    window.location.assign("/game");
     init_game()
 }
 
@@ -109,3 +111,26 @@ const assign_color = () => {
 
     return hold
 }
+
+
+const init_player_select = () =>{
+    const color_palette = document.getElementById("color-palette")
+    const count = color_palette.childElementCount
+    for (let i = 0; i < count; i++) {
+        color_palette.children[i].addEventListener('click', () => {
+            toggle_color(color_palette.children[i])
+        })
+    }
+
+    const add_player_button = document.getElementById('add-player-button')
+    add_player_button.addEventListener('click', () => {
+        add_player()
+    })
+
+    const proceed_button = document.getElementById("proceed-button");
+    proceed_button.addEventListener('click', () => {
+        proceed()
+    })
+}
+
+init_player_select()
