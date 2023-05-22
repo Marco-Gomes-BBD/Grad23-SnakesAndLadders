@@ -9,14 +9,13 @@
     <link rel="stylesheet" type="text/css" href="/src/styles/dice.css" />
     <title>Snakes And Ladders</title>
 </head>
-<body>
+<body onload="initBoard()">
     <header id="nav-header">Hello</header>
     <main id="main-section" class="row fill-container">
         <section class="main-section">
             <section class="column fill-height" id="game-section">
                 <h2>Snakes And Ladders</h2>
                 <canvas id="board" width="600px" height="600px"></canvas>
-
                 <section class="control-section">
                     <section class="dice">
                         <div class="face front"></div>
@@ -26,7 +25,7 @@
                         <div class="face right"></div>
                         <div class="face left"></div>
                     </section>
-                    <button class="menu-button horizontal-center">Roll Die</button>
+                    <button class="menu-button horizontal-center" id="roll-btn">Roll Die</button>
                 </section>
             </section>
             <aside id="player-list-container"></aside>

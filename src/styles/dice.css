@@ -1,10 +1,10 @@
 .dice {
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
     width: 100px;
     height: 100px;
     transform-style: preserve-3d;
-    margin-top: 100px;
-    margin-left: 100px;
     transition: 1s ease;
     border: 2px;
     border-color: #fff;
