@@ -32,6 +32,38 @@ function close() {
     });
 }
 
+function getUser(token) {
+    return 0;
+}
+
+function registerUser(token) {
+    return 0;
+}
+
+function newGame(user) {
+    return 0;
+}
+
+function advanceGame(steps, winner) {
+    return 0;
+}
+
+function getLoadGames(user) {
+    return 0;
+}
+
+function getHistory(user) {
+    return 0;
+}
+
 runFile(initSql);
 
-module.exports = { close };
+const api = {
+    getUser,
+    registerUser,
+    newGame,
+    advanceGame,
+    getLoadGames,
+    getHistory,
+};
+module.exports = { close, api };
