@@ -1,17 +1,22 @@
-
 #game-space {
-    border-color: brown;   
+    border-color: brown;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    flex-direction: row;
 }
 
-canvas {
+#board {
     border-color: brown;
     border-width: 5mm;
+    display: block;
+    margin: auto;
 }
 
 .main-section {
     display: flex;
     flex-grow: 1;
-    height: 100%;   
+    height: 100%;
     background-color: rgba(221, 163, 91, 0.938);
     flex-direction: row;
 }
@@ -36,4 +41,3 @@ canvas {
     margin: auto;
     margin-top: 5mm;
 }
-

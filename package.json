@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Marco-Gomes-BBD/Grad23-SnakesAndLadders#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv-flow": "^3.2.0",
+    "express": "^4.18.2",
+    "seedrandom": "^3.0.5"
   }
 }

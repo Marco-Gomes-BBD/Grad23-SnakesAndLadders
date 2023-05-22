@@ -3,3 +3,7 @@ node_modules/
 
 # Obsidian
 .obsidian/
+
+# Dotenv
+.env.local
+.env.*.local
