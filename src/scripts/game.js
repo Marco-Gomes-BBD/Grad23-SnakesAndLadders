@@ -1,3 +1,5 @@
+import { PlayerCard } from "./player_card.js";
+
 let context = undefined;
 
 const gridWidth = 10;
@@ -105,4 +107,32 @@ function drawLadder(start, end) {
     context.closePath();
 
     context.restore();
+}
+
+function initPlayers() {
+    let players = JSON.parse(localStorage.getItem('players'))
+    console.log(players[0])
+    if(players != null) {
+        for (let player_index = 0; player_index < players.length; player_index++){
+            console.log(player_index)
+            let player = players[player_index]
+            let player_card_list = document.getElementById("player-list-container")
+            let player_card = new PlayerCard()
+            console.log(player)
+            player_card.player_name = player.player_name
+            player_card.player_color = player.player_color
+            player_card_list.appendChild(player_card)
+            player_card_list.append(player_card)
+        }
+    }
+}
+
+function initGame(){
+    initBoard()
+    initPlayers()
+}
+
+
+document.body.onload = () => {
+    initGame()
 }

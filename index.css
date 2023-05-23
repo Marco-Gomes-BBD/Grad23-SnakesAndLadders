@@ -20,11 +20,14 @@
 }
 
 .menu-button {
+    height: fit-content;
     border-radius: 5mm;
     border-width: 1mm;
     padding: 5mm;
     margin-left: auto;
     margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
     width: auto;
 }
 
@@ -45,6 +48,7 @@
 }
 
 .row {
+    display: flex;
     flex-direction: row;
     margin-left: 5mm;
     margin-right: 5mm;
@@ -137,4 +141,23 @@ nav {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 1rem;
+}
+
+.fill-container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.fill-width {
+    width: 100%;
+    margin: 0;
+}
+
+.auto-grow {
+    flex-grow: 1;
+}
+
+.auto-grow-4 {
+    flex-grow: 4;
 }

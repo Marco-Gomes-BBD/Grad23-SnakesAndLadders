@@ -1,0 +1,44 @@
+.player_card {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(50, 160, 204, 0.678);
+    width: 90%;
+    height: fit-content;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 0.5rem;
+}
+
+.square-container {
+    margin-right: 5%;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    /*background-color: rgba(86, 104, 98, 0.363);*/
+    background-color: var(--bgcol);
+    border-radius: 4mm;
+    border-width: 5mm;
+    width: 30%;
+    font-size:xx-large;
+}
+
+.square-container:after {
+    content: "";
+    padding-bottom: 100%;
+}
+
+.square-content {
+    position: relative;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+}
+
+.player-name {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: xx-large;
+}
