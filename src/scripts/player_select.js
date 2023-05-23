@@ -10,6 +10,20 @@ let add_player = () => {
 
     let form = document.getElementById("player-form")
     let player_name = document.getElementById("player-name").value
+
+    let taken = false;
+    for (let i = 0; i < window.players.length; i++){
+        if(window.players[i].player_name.toUpperCase() === player_name.toUpperCase()){
+            taken = true;
+            break;
+        }
+    }
+
+    if (taken) {
+        console.log('that name is taken')
+        return
+    }
+    
     let player_card_list = document.getElementById("player-list")
     let player_card = new PlayerCard()
     player_card.player_name = player_name
@@ -33,68 +47,27 @@ let add_player = () => {
     form.reset()
 }
 
-const init_game = async () => {
-    let seed = 5
-    let players = window.players
-    let xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "localhost:8080/start-game");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-    }};
-    try {
-        console.log({'host':"", 'seed': seed, 'players':players})
-        //xhr.send({'host':"", 'seed': seed, 'players':players});
-    } catch {
-        
-    }
-
-    for (player_index in window.players){
-        let player = window.players[player_index]
-        let player_card_list = document.getElementById("player-list-container")
-        while (player_card_list == null){
-            console.log("nope")
-            await new Promise(resolve => setTimeout(resolve, 100));
-            player_card_list = document.getElementById("player-list-container")
-        }
-        console.log("yeah")
-        let player_card = new PlayerCard()
-        console.log(player)
-        player_card.player_name = player.player_name
-        player_card.player_color = player.player_color
-        player_card_list.appendChild(player_card)
-        player_card_list.append(player_card)
-        console.log(player_card_list)
-    }
-
-}
-
 const proceed = async () => {
-    let seed = Math.floor(Math.random() * Number.MAX_VALUE)
+    localStorage.setItem('players', JSON.stringify(window.players))
     window.location.assign("/game");
-    init_game()
 }
 
 let selected_color = null
 
 const toggle_color = (sender) => {
-    sender.setAttribute('selected', true)
-    if (sender.getAttribute("assigned") == true) {
+    
+    if (sender.getAttribute("assigned")) {
         sender.setAttribute('selected', false)
         return
     }
 
-    if (selected_color != null) {
-        console.log(selected_color)
+    if (selected_color != null ) {
         selected_color.setAttribute('selected', false)
         selected_color = sender
+        selected_color.setAttribute('selected', true)
     } else {
         selected_color = sender
+        selected_color.setAttribute('selected', true)
     }
 }
 
@@ -108,6 +81,9 @@ const assign_color = () => {
         // todo: show toast message
         console.log("you need to select a color")
     }
+    hold.addEventListener('click', () => {
+        console.log("already selected")
+    })
 
     return hold
 }
