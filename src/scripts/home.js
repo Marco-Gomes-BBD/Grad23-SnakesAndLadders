@@ -1,4 +1,4 @@
-import { load_section } from "./navigation.js"
+import { load_section } from "./loader.js"
 
 
 const newgame = () => {
