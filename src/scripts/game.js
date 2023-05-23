@@ -127,7 +127,6 @@ function initPlayers() {
     }
 }
 
-
 function initGame(){
     initBoard()
     initPlayers()
