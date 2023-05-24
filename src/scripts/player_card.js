@@ -4,9 +4,6 @@ class PlayerCard extends HTMLElement{
         const template = document.getElementById("player-card-template").content
         const shadowRoot = this.attachShadow({ mode: 'open' })
         shadowRoot.appendChild(template.cloneNode(true));
-        this.addEventListener("click", () => {
-            console.log("ouch")
-        })
     }
 
     get player_name() {
