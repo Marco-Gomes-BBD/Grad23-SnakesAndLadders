@@ -1,0 +1,60 @@
+#toast-message {
+    visibility: hidden;
+    position: absolute;
+    right: 25%;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: 1rem;
+    height: fit-content;
+    width: fit-content;
+    padding: 1rem;
+    font-size: auto;
+    border-radius: 0.3rem;
+    border-width: 1mm;
+}
+
+[type = info] {
+    background-color: rgba(104, 104, 224, 0.60);
+    border-color: rgba(104, 104, 224, 1);
+}
+
+[type = warning] {
+    background-color: rgba(250, 207, 68, 0.6);
+    border-color: rgba(250, 207, 68, 1);
+}
+
+[type = error] {
+    background-color: rgba(250, 68, 83, 0.6);
+    border-color: rgba(250, 68, 83, 1);
+}
+
+/*the following code is borrowed and adapted from https://www.w3schools.com/howto/howto_js_snackbar.asp*/
+
+#toast-message.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {margin-top : 0; opacity: 0;}
+    to {margin-top: 1rem; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {margin-top: 0; opacity: 0;}
+    to {margin-top: 1rem; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {margin-top: 1rem; opacity: 1;}
+    to {margin-top: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {margin-top: 1rem; opacity: 1;}
+    to {margin-top: 0; opacity: 0;}
+  }
+
+  /*end borrowed code*/
