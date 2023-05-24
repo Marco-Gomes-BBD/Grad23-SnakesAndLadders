@@ -88,6 +88,21 @@ function initBoard() {
 
     innitPlayers();
 
+    drawLadder(1, 99);
+    drawLadder(23, 66);
+    drawLadder(12, 63);
+    drawLadder(51, 85);
+
+    // bacause of image restrications distance between head and tail needs to be greater that 3 blocks, both vertically and horrizontally
+    // ^have to write checks for above restrictions
+    // head can't be a border cell 
+    // TODO: fix right to light snakes
+    drawSnake(59, 19); 
+    drawSnake(76 ,12);
+    drawSnake(90 ,38);
+    drawSnake(52, 2);
+    drawSnake(86, 65);
+
 }
 
 function getCellPosition(index) {
@@ -138,6 +153,70 @@ function drawBoard() {
 Math.toDegree = function (radians) {
     return (radians * 180) / Math.PI;
 };
+
+
+function drawSnake(head, tail){
+    let newImage = new Image();
+    let ImageArray = new Array();
+    ImageArray[0] = '/res/snakes/snake1.png';
+    ImageArray[1] = '/res/snakes/snake2.png';
+    ImageArray[2] = '/res/snakes/snake3.png';
+
+    // get random snake
+    let num = Math.floor( Math.random() * 3);
+    let img = ImageArray[num];
+
+    newImage.src = img;
+
+
+    let width = 65;
+    const halfWidth = Math.floor(width / 2);
+    const [[x1, y1], [x2, y2]] = getJump(head-1, tail);
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    let angleRadian = Math.atan2(dy, dx);
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const [startx, starty] = getCellPosition(head - 1);
+    const [endx, endy] = getCellPosition(tail);
+    
+    const xOffset = (startx/60)- (endx/60);
+    newImage.onload = function(){
+        context.save();
+        context.translate(startx , starty);
+        {
+            if(Math.abs(xOffset) !== 1 ){
+        
+                if((startx/60)< (endx/60)){
+                    // left to right
+                    context.save();
+                    context.translate(0, halfWidth);
+                    context.rotate(-Math.PI/2 + angleRadian);
+                    context.transform(1, 0, -0.05,1.1, 0, 0);
+                    context.drawImage(newImage, 0 , 0 , width, length);
+                    context.restore();
+
+                }
+                else{
+                    // right to left
+                    context.save();
+                    context.translate(0 , -halfWidth/2);
+                    context.rotate(-Math.PI/2 + angleRadian);
+                    context.transform(1, 0, 0,1.1, 0, 0);
+                    // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
+                    context.drawImage(newImage, 0, 0, width, length);
+                    context.restore();
+                }
+            }
+            else{
+                // vertical snakes
+                context.transform(1, 0, 0.05 ,1, 0, 0);
+                context.drawImage(newImage, 0, halfWidth/2, width, length);
+            }
+            context.restore();
+        }
+    }
+}
+
 
 function drawLadder(start, end) {
     const [[x1, y1], [x2, y2]] = getJump(start-1, end-1);
