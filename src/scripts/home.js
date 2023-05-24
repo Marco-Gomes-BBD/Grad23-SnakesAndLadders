@@ -1,5 +1,3 @@
-import { load_section } from './loader.js';
-
 const newgame = () => {
     window.location.assign('/player-select');
 };
