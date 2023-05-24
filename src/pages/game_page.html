@@ -17,14 +17,14 @@
                 <h2>Snakes And Ladders</h2>
                 <canvas id="board" width="600px" height="600px"></canvas>
                 <section class="control-section">
-                    <section class="dice">
-                        <div class="face front"></div>
-                        <div class="face back"></div>
-                        <div class="face bottom"></div>
-                        <div class="face top"></div>
-                        <div class="face right"></div>
-                        <div class="face left"></div>
-                    </section>
+                    <article class="dice">
+                        <section class="face front"></section>
+                        <section class="face back"></section>
+                        <section class="face bottom"></section>
+                        <section class="face top"></section>
+                        <section class="face right"></section>
+                        <section class="face left"></section>
+                    </article>
                     <button class="menu-button horizontal-center" id="roll-btn">Roll Die</button>
                 </section>
             </section>
@@ -43,6 +43,7 @@
 </script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
 <script type="module" src="/src/scripts/game.js"></script>
-<script type="text/javascript" src="/src/scripts/state.js"></script>
 <script type="text/javascript" src="/src/scripts/dice.js"></script>
+<script type="text/javascript" src="/src/scripts/state.js"></script>
+<script type="text/javascript" src="/src/scripts/gameHandle.js"></script>
 </html>

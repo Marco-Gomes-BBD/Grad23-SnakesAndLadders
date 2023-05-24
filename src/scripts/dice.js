@@ -3,6 +3,7 @@ const rollBtn = document.querySelector('#roll-btn');
 
 const prng = new Math.seedrandom('Hello');
 const rollDistribution = [0, 0, 0, 0, 0, 0];
+let diceValue =  0;
 
 const randomRoll = () => {
     const random = getRandomInt(prng, 1, 7);
@@ -11,7 +12,7 @@ const randomRoll = () => {
 };
 
 const animateDie = (random) => {
-    dice.style.animation = 'rolling 4s';
+    dice.style.animation = 'rolling 3s';
     const dieRotations = {
         1: 'rotateX(0deg) rotateY(0deg)',
         2: 'rotateX(-90deg) rotateY(0deg)',
@@ -24,12 +25,11 @@ const animateDie = (random) => {
     setTimeout(() => {
         dice.style.transform = dieRotations[random];
         dice.style.animation = 'none';
-    }, 4050);
+    }, 3050);
 };
 
 const rollDie = () => {
     const random = randomRoll();
     animateDie(random);
+    diceValue = random;
 };
-
-rollBtn.addEventListener('click', rollDie);

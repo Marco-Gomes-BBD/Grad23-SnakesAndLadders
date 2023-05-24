@@ -26,6 +26,8 @@ function generateBoard(summary) {
     const numSnakes = Math.floor(size / 10);
     const numLadders = Math.floor(size / 10);
     const prng = new Math.seedrandom(summary.seed);
+    let snakes = [];
+    let ladders = [];
 
     for (let i = 0; i < numSnakes; i++) {
         const start = getRandomInt(prng, width, size - 1);
@@ -35,6 +37,7 @@ function generateBoard(summary) {
         const delta = -getRandomInt(prng, minDelta, maxDelta);
 
         board[start] = delta;
+        snakes.push(start);
     }
 
     for (let i = 0; i < numLadders; i++) {
@@ -45,9 +48,10 @@ function generateBoard(summary) {
         const delta = getRandomInt(prng, minDelta, maxDelta);
 
         board[start] = delta;
+        ladders.push(start);
     }
 
-    return { board, width, height };
+    return { board, width, height, snakes, ladders };
 }
 
 function getRollState(summary, players, board) {
@@ -84,7 +88,6 @@ function getRollState(summary, players, board) {
 
 function getState(summary) {
     const board = generateBoard(summary.board);
-
     const playerCount = summary.players;
     const players = Array(playerCount).fill(0);
     const roll = getRollState(summary.roll, players, board);

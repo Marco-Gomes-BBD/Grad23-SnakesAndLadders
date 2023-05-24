@@ -1,6 +1,7 @@
-import { PlayerCard } from "./player_card.js";
+import {PlayerCard} from "./player_card.js";
 
-let context = undefined;
+const canvas = document.getElementById('board');
+let context = canvas.getContext('2d');
 
 const gridWidth = 10;
 const gridHeight = 10;
@@ -9,15 +10,78 @@ const gridSize = gridWidth * gridHeight;
 const squareSize = 60;
 const colors = ['white', 'black'];
 
-function initBoard() {
-    const canvas = document.getElementById('board');
-    context = canvas.getContext('2d');
-    drawBoard();
+// get ladders
+const ladders = ladderPositions(state.board.ladders);
+function setupGame() {
+    
+    // get snakes
+    const snakes = snakePositions(state.board.snakes);
+    
+    players[0].isPlayersTurn = 1;
+    
+}
 
-    drawLadder(1, 99);
-    drawLadder(23, 66);
-    drawLadder(12, 63);
-    drawLadder(51, 85);
+function innitPlayers(){
+    // draw players
+    players.map((player)=>{
+        drawPlayer(player.currentPosition, player.icon)
+    });
+}
+
+// Function to handle player movement
+function movePlayer(moves) {
+    
+    players.map((player)=> {
+        if(player.isPlayersTurn) {
+            player.currentPosition = player.currentPosition + moves;           
+        }
+        player.isPlayersTurn = !player.isPlayersTurn; 
+    });
+
+    
+    initBoard();
+    
+    players.map((player) => {
+        // climb up ladder
+        if(player.isPlayersTurn) {
+        for (let i = 0; i < ladders.length; i++) {
+            const ladder = ladders[i];
+            if (ladder[1] === player.currentPosition) {
+                player.currentPosition = ladder[0];
+            }
+          }
+        } 
+    });
+    setTimeout(() => {
+        initBoard();
+    }, 2000);
+    
+
+  }
+
+
+
+const numColumns = 10; // Number of columns in the board
+function getCellCoordinates(cellValue) {
+    const row = Math.floor((cellValue - 1) / numColumns);
+    const isEvenRow = row % 2 === 0;
+    const column = isEvenRow
+        ? (cellValue - 1) % numColumns
+        : numColumns - 1 - ((cellValue - 1) % numColumns);
+    return { row, column };
+}
+
+
+function initBoard() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawBoard();
+    // drawLaddders
+    ladders.map((e) => {
+        drawLadder(e[0], e[1]);
+    })
+
+    innitPlayers();
+
 }
 
 function getCellPosition(index) {
@@ -70,7 +134,7 @@ Math.toDegree = function (radians) {
 };
 
 function drawLadder(start, end) {
-    const [[x1, y1], [x2, y2]] = getJump(start, end);
+    const [[x1, y1], [x2, y2]] = getJump(start-1, end-1);
     const dx = x2 - x1;
     const dy = y2 - y1;
     const angleRadian = Math.atan2(dy, dx);
@@ -109,16 +173,25 @@ function drawLadder(start, end) {
     context.restore();
 }
 
+function drawPlayer(position, icon){
+    const x = position % gridWidth;
+    const y = Math.floor(position / gridWidth);
+    const playerPosX = (y % 2 == 0 ? x-1 : gridWidth - x) * squareSize;
+    const playerPosY = (gridHeight - y - 1) * squareSize;
+    context.font = '30px serif';
+    context.fillText(icon, playerPosX, playerPosY + (squareSize/2));
+}
+
 function initPlayers() {
     let players = JSON.parse(localStorage.getItem('players'))
-    console.log(players[0])
+    // console.log(players)
     if(players != null) {
         for (let player_index = 0; player_index < players.length; player_index++){
-            console.log(player_index)
+            // console.log(player_index)
             let player = players[player_index]
             let player_card_list = document.getElementById("player-list-container")
             let player_card = new PlayerCard()
-            console.log(player)
+            // console.log(player)
             player_card.player_name = player.player_name
             player_card.player_color = player.player_color
             player_card_list.appendChild(player_card)
@@ -128,11 +201,21 @@ function initPlayers() {
 }
 
 function initGame(){
-    initBoard()
-    initPlayers()
+    setupPlayers();
+    setupGame();
+    initBoard();
 }
+
 
 
 document.body.onload = () => {
     initGame()
 }
+
+rollBtn.addEventListener('click', () => { 
+    rollDie();
+    setTimeout(() => {
+        movePlayer(diceValue)
+    }, 4050);
+    
+ });

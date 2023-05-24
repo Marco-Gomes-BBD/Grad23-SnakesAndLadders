@@ -5,7 +5,7 @@ class PlayerCard extends HTMLElement{
         const shadowRoot = this.attachShadow({ mode: 'open' })
         shadowRoot.appendChild(template.cloneNode(true));
         this.addEventListener("click", () => {
-            console.log("ouch")
+            // console.log("ouch")
         })
     }
 
@@ -25,7 +25,7 @@ class PlayerCard extends HTMLElement{
 
     set player_color(val) {
         this.setAttribute('player-color', val)
-        console.log(val)
+        // console.log(val)
         const color_block = this.shadowRoot.getElementById ("color-block")
         color_block.setAttribute("style", "--bgcol:" + val)
     }
@@ -34,4 +34,4 @@ class PlayerCard extends HTMLElement{
 window.customElements.define("player-card", PlayerCard)
 
 export {PlayerCard}
-console.log("imported element")
+// console.log("imported element")
