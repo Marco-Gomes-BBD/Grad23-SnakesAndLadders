@@ -12,13 +12,11 @@ const colors = ['white', 'black'];
 
 // get ladders
 const ladders = ladderPositions(state.board.ladders);
-function setupGame() {
-    
-    // get snakes
-    const snakes = snakePositions(state.board.snakes);
-    
-    players[0].isPlayersTurn = 1;
-    
+// get snakes
+const snakes = snakePositions(state.board.snakes);
+
+function setupGame() {  
+    players[0].isPlayersTurn = 1; 
 }
 
 function innitPlayers(){
@@ -33,7 +31,10 @@ function movePlayer(moves) {
     
     players.map((player)=> {
         if(player.isPlayersTurn) {
-            player.currentPosition = player.currentPosition + moves;           
+            const newPosition = player.currentPosition + moves;
+            if (newPosition <= gridSize - 1) {
+                player.currentPosition = newPosition;  
+            }
         }
         player.isPlayersTurn = !player.isPlayersTurn; 
     });
@@ -42,24 +43,30 @@ function movePlayer(moves) {
     initBoard();
     
     players.map((player) => {
-        // climb up ladder
         if(player.isPlayersTurn) {
-        for (let i = 0; i < ladders.length; i++) {
-            const ladder = ladders[i];
-            if (ladder[1] === player.currentPosition) {
-                player.currentPosition = ladder[0];
+            // climb up ladder
+            for (let i = 0; i < ladders.length; i++) {
+                const ladder = ladders[i];
+                if (ladder[1] === player.currentPosition) {
+                    player.currentPosition = ladder[0];
+                }
             }
-          }
+            // get bitten by snake
+            for (let i = 0; i < snakes.length; i++) {
+                const snake = snakes[i];
+                if (snake[0] === player.currentPosition) {
+                    player.currentPosition = snake[1];
+                }
+            }
         } 
     });
+
     setTimeout(() => {
         initBoard();
     }, 2000);
     
 
   }
-
-
 
 const numColumns = 10; // Number of columns in the board
 function getCellCoordinates(cellValue) {
@@ -201,6 +208,7 @@ function initPlayers() {
 }
 
 function initGame(){
+    initPlayers();
     setupPlayers();
     setupGame();
     initBoard();

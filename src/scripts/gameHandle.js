@@ -5,8 +5,7 @@
 const numRows = 10; // Number of rows in the board
 const numColumns = 10; // Number of columns in the board
 
-let players = JSON.parse(localStorage.getItem('players'))
-
+let players = JSON.parse(localStorage.getItem('players'));
 
 function getRandomIcon(Icons, usedIcons) {
     const availableIcons = Icons.filter(icon => !usedIcons.includes(icon));
@@ -34,56 +33,9 @@ function setupPlayers() {
         }
     });
 
-    // console.log(players)
-
-    // playerIconDOM = document.createElement('section');
-    // playerIconDOM.className = 'playerIcon';
-    // playerStatsWrapper.append(playerIconDOM);
 
 }
-
-
-// Function to move the current player on the grid
-// function movePlayer(blocks) {
-//     // const playerElements = document.querySelectorAll('.player');
-//     // const playerElement = playerElements[currentPlayer];
   
-//     // Remove previous animation class
-//     // playerElement.classList.remove('animate-hop');
-  
-//     // Calculate the new position
-//     const newPosition = player.currentPosition + blocks;
-  
-//     // Ensure the new position is within the grid
-//     if (newPosition <= gridSize - 1) {
-//       // Update the current player position
-//       player.position = newPosition;
-  
-//       // Animate the player emoji
-//       for (let i = player.currentPosition - blocks + 1; i <= player.currentPosition; i++) {
-//         setTimeout(() => {
-//           playerElement.textContent = `${players[currentPlayer]} ${emojis[currentPlayer]}`;
-//           playerElements.forEach((element, index) => {
-//             if (index !== currentPlayer) {
-//               element.textContent = `${players[index]} ${emojis[index]}`;
-//             }
-//           });
-//         }, 500 * (i - player.position + blocks));
-//       }
-  
-//       // Add animation class after a delay to trigger the animation
-//       setTimeout(() => {
-//         movePlayer();
-//         // playerElement.classList.add('animate-hop');
-//       }, 500 * blocks);
-//     }
-  
-//     // Move to the next player's turn
-//     currentPlayer = (currentPlayer + 1) % players.length;
-//   }
-  
-
-
 // Function to get coordinates of a cell by its value on the 10X10 grid
 function getCellCoordinates(cellValue) {
     const row = Math.floor((cellValue - 1) / numColumns);
@@ -113,17 +65,18 @@ function snakePositions( snakesArray ){
         for (let j = i + 1; j < coordinates.length; j++) {
             const diffRow = Math.abs(coordinates[i].row - coordinates[j].row);
             const diffColumn = Math.abs(coordinates[i].column - coordinates[j].column);
-            if (diffRow >= 2 || diffColumn >= 2) {
+            if (diffRow >= 3 && diffColumn >= 3) {
                 // order positions (start , end)
                 if (coordinates[i].row < coordinates[j].row){
-                    matchedValues = [coordinates[i].value, coordinates[j].value];
-                } else{
                     matchedValues = [coordinates[j].value, coordinates[i].value];
+                } else{
+                    matchedValues = [coordinates[i].value, coordinates[j].value];
                 }
                 snakes.push(matchedValues);
                 coordinates.splice(i, 1);
                 coordinates.splice(j - 1, 1);
-            } else if(diffColumn === 0 && diffRow === 3) {
+            } 
+            else if(diffColumn === 0 && diffRow === 3) {
                 // order positions (end , start)
                 if (coordinates[i].row > coordinates[j].row){
                     matchedValues = [coordinates[i].value, coordinates[j].value];
@@ -136,7 +89,6 @@ function snakePositions( snakesArray ){
             }
         }
     }
-
     return snakes;
 }
 
