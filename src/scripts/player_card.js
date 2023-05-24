@@ -1,16 +1,10 @@
 class PlayerCard extends HTMLElement {
     constructor() {
         super();
-        let template;
-        while (template == null) {
-            template = document.getElementById('player-card-template');
-        }
-        template = template.content;
+        const template = document.getElementById('player-card-template');
+        const content = template.content;
         const shadowRoot = this.attachShadow({ mode: 'open' });
-        shadowRoot.appendChild(template.cloneNode(true));
-        this.addEventListener('click', () => {
-            // console.log("ouch")
-        });
+        shadowRoot.appendChild(content.cloneNode(true));
     }
 
     get player_name() {
@@ -29,13 +23,10 @@ class PlayerCard extends HTMLElement {
 
     set player_color(val) {
         this.setAttribute('player-color', val);
-        // console.log(val)
         const color_block = this.shadowRoot.getElementById('color-block');
         color_block.setAttribute('style', '--bgcol:' + val);
     }
 }
 
 window.customElements.define('player-card', PlayerCard);
-
 export { PlayerCard };
-// console.log("imported element")

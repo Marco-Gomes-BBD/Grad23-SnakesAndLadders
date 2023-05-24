@@ -39,14 +39,19 @@
             </section>
             <section id="player-card-template-section"></section>
         </main>
+        <template id="player-card-template">
+            <link rel="stylesheet" href="src/styles/player_card_style.css"/>
+            <section class="player_card">
+                <strong class="player-name" id="player-name">Rick</strong>
+                <color-block class="rounded-container square-container" id="color-block">
+                    <strong class="player-number square-content">0</strong>
+                </color-block>
+            </section>
+        </template>
     </body>
     <script type="module">
         import { load_section } from '/src/scripts/loader.js';
         load_section('nav-header', '/src/pages/nav.html');
-        load_section(
-            'player-card-template-section',
-            'src/templates/player_card_template.html'
-        );
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
     <script type="module" src="/src/scripts/game.js"></script>
