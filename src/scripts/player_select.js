@@ -1,0 +1,112 @@
+import { PlayerCard } from "./player_card.js"
+
+window.players = []
+
+let add_player = () => {
+    if (window.players.length >= 4) {
+        console.log("thats enough!!")
+        return
+    }
+
+    let form = document.getElementById("player-form")
+    let player_name = document.getElementById("player-name").value
+
+    let taken = false;
+    for (let i = 0; i < window.players.length; i++){
+        if(window.players[i].player_name.toUpperCase() === player_name.toUpperCase()){
+            taken = true;
+            break;
+        }
+    }
+
+    if (taken) {
+        console.log('that name is taken')
+        return
+    }
+    
+    let player_card_list = document.getElementById("player-list")
+    let player_card = new PlayerCard()
+    player_card.player_name = player_name
+    player_card.player_color = assign_color().getAttribute("style").split(':')[1]
+    player_card_list.appendChild(player_card)
+    player_card_list.append(player_card)
+
+    window.players.push ({
+        "player_name": player_card.player_name, 
+        "player_color": player_card.player_color
+    })
+
+    if (window.players.length >= 2) {
+        const proceed_button = document.getElementById("proceed-button")
+        proceed_button.classList.remove('inactive')
+        proceed_button.classList.add('affirmative')
+        proceed_button.removeAttribute("disabled")
+        console.log(proceed_button)
+    } 
+
+    form.reset()
+}
+
+const proceed = async () => {
+    localStorage.setItem('players', JSON.stringify(window.players))
+    window.location.assign("/game");
+}
+
+let selected_color = null
+
+const toggle_color = (sender) => {
+    
+    if (sender.getAttribute("assigned")) {
+        sender.setAttribute('selected', false)
+        return
+    }
+
+    if (selected_color != null ) {
+        selected_color.setAttribute('selected', false)
+        selected_color = sender
+        selected_color.setAttribute('selected', true)
+    } else {
+        selected_color = sender
+        selected_color.setAttribute('selected', true)
+    }
+}
+
+const assign_color = () => {
+    const hold = selected_color
+    if (selected_color != null) {
+        selected_color.setAttribute('assigned', true)
+        selected_color.setAttribute('selected', false)
+        selected_color = null
+    } else {
+        // todo: show toast message
+        console.log("you need to select a color")
+    }
+    hold.addEventListener('click', () => {
+        console.log("already selected")
+    })
+
+    return hold
+}
+
+
+const init_player_select = () =>{
+    const color_palette = document.getElementById("color-palette")
+    const count = color_palette.childElementCount
+    for (let i = 0; i < count; i++) {
+        color_palette.children[i].addEventListener('click', () => {
+            toggle_color(color_palette.children[i])
+        })
+    }
+
+    const add_player_button = document.getElementById('add-player-button')
+    add_player_button.addEventListener('click', () => {
+        add_player()
+    })
+
+    const proceed_button = document.getElementById("proceed-button");
+    proceed_button.addEventListener('click', () => {
+        proceed()
+    })
+}
+
+init_player_select()
