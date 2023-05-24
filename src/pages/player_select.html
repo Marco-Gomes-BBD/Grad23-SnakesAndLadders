@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/index.css">
     <link rel="stylesheet" type="text/css" href="/src/styles/player_select_style.css">
+    <link rel="stylesheet" type="text/css" href="/src/styles/toast.css">
     <title>Document</title>
 </head>
 <body>
     <header id="nav-header"></header>
     <main class="row fill-container">
+        <toast id="toast-message" type="info"></toast>
         <section class="column fill-height auto-grow">
             <h2 id="playercount">Player Select</h2>
             <form class="column page-center" id="player-form">
                 <label for="player-name">And you are?</label>
                 <input class="rounded-input" type="text" id="player-name">
-        
                 <label for="color_palette">Provide your hue!</label>
                 <section class="color_choice row fill-width" id="color-palette">
                     <color-block class="square-container" selected="false" style="--bgcol: red"></color-block>
@@ -51,4 +52,5 @@
     load_section("nav-header", "/src/pages/nav.html")
     load_section("player-card-template-section", "/src/templates/player_card_template.html")
 </script>
+<script type="module" src="/src/scripts/toast.js"></script>
 </html>

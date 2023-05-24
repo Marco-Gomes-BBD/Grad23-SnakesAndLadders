@@ -1,10 +1,11 @@
 import { PlayerCard } from "./player_card.js"
+import { show_toast } from "./toast.js";
 
 window.players = []
 
 let add_player = () => {
     if (window.players.length >= 4) {
-        console.log("thats enough!!")
+        show_toast('thats enough!!!', 'error')
         return
     }
 
@@ -20,7 +21,7 @@ let add_player = () => {
     }
 
     if (taken) {
-        console.log('that name is taken')
+        show_toast('that name is taken')
         return
     }
     
@@ -41,7 +42,6 @@ let add_player = () => {
         proceed_button.classList.remove('inactive')
         proceed_button.classList.add('affirmative')
         proceed_button.removeAttribute("disabled")
-        console.log(proceed_button)
     } 
 
     form.reset()
@@ -78,11 +78,10 @@ const assign_color = () => {
         selected_color.setAttribute('selected', false)
         selected_color = null
     } else {
-        // todo: show toast message
-        console.log("you need to select a color")
+        show_toast("you need to select a color")
     }
     hold.addEventListener('click', () => {
-        console.log("already selected")
+        show_toast("pick a different color")
     })
 
     return hold
