@@ -12,8 +12,21 @@ const colors = ['white', 'black'];
 
 const ladders = ladderPositions(state.board.board);
 const snakes = snakePositions(state.board.board);
+const snakeImages = [];
 
-// Function to handle player movement
+function loadResources() {
+    const paths = [];
+    paths[0] = '/res/snakes/snake1.png';
+    paths[1] = '/res/snakes/snake2.png';
+    paths[2] = '/res/snakes/snake3.png';
+
+    paths.forEach((src) => {
+        const image = new Image();
+        image.src = src;
+        snakeImages.push(image);
+    });
+}
+
 function movePlayer(moves) {
     gameStep(moves, state.players, state.board, state.roll);
 
@@ -32,8 +45,9 @@ function initBoard() {
         drawLadder(ladder[0], ladder[1]);
     });
 
+    const prng = new Math.seedrandom('snakes');
     snakes.forEach((snake) => {
-        drawSnake(snake[0], snake[1]);
+        drawSnake(snake[0], snake[1], prng);
     });
 
     players.forEach((player, index) => {
@@ -64,9 +78,9 @@ function drawBoard() {
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
             const index = y + x;
-            context.fillStyle = colors[index % colors.length];
             let xOffset = x * squareSize;
             let yOffset = y * squareSize;
+            context.fillStyle = colors[index % colors.length];
             context.fillRect(xOffset, yOffset, squareSize, squareSize);
         }
     }
@@ -90,32 +104,21 @@ Math.toDegree = function (radians) {
     return (radians * 180) / Math.PI;
 };
 
-function drawSnake(head, tail) {
-    const paths = [];
-    paths[0] = '/res/snakes/snake1.png';
-    paths[1] = '/res/snakes/snake2.png';
-    paths[2] = '/res/snakes/snake3.png';
-    const image = new Image();
-    const prng = new Math.seedrandom('snakes');
-
+function drawSnake(head, tail, prng) {
     // get random snake
     const num = getRandomInt(prng, 1, 4);
-    const img = paths[num];
-
-    image.src = img;
+    const image = snakeImages[num];
 
     const width = 65;
     const halfWidth = Math.floor(width / 2);
-    const [[x1, y1], [x2, y2]] = getJump(head, tail);
-    const dx = x2 - x1;
-    const dy = y2 - y1;
+    const [[startx, starty], [endx, endy]] = getJump(head, tail);
+    const dx = endx - startx;
+    const dy = endy - starty;
     const angleRadian = Math.atan2(dy, dx);
     const length = Math.sqrt(dx * dx + dy * dy);
-    const [startx, starty] = getCellPosition(head);
-    const [endx, endy] = getCellPosition(tail);
 
     const xOffset = startx / 60 - endx / 60;
-    image.onload = function () {
+    if (image.complete) {
         context.save();
         context.translate(startx, starty);
 
@@ -145,7 +148,9 @@ function drawSnake(head, tail) {
         }
 
         context.restore();
-    };
+    } else {
+        console.log('Snake could not be drawn.');
+    }
 }
 
 function drawLadder(start, end) {
@@ -260,7 +265,8 @@ function initGame() {
 }
 
 document.body.onload = () => {
-    initGame();
+    loadResources();
+    setTimeout(initGame, 200);
 };
 
 rollBtn.addEventListener('click', () => {
