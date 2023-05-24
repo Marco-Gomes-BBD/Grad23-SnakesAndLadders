@@ -3,11 +3,12 @@ const rollBtn = document.querySelector('#roll-btn');
 
 const prng = new Math.seedrandom('Hello');
 const rollDistribution = [0, 0, 0, 0, 0, 0];
-let diceValue =  0;
+let diceValue = 0;
 
 const randomRoll = () => {
     const random = getRandomInt(prng, 1, 7);
     rollDistribution[random - 1] += 1;
+    
     return random;
 };
 

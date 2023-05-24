@@ -1,4 +1,4 @@
-import {PlayerCard} from "./player_card.js";
+import { PlayerCard } from './player_card.js';
 
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
@@ -15,35 +15,33 @@ const ladders = ladderPositions(state.board.ladders);
 // get snakes
 const snakes = snakePositions(state.board.snakes);
 
-function setupGame() {  
-    players[0].isPlayersTurn = 1; 
+function setupGame() {
+    players[0].isPlayersTurn = 1;
 }
 
-function innitPlayers(){
+function innitPlayers() {
     // draw players
-    players.map((player)=>{
-        drawPlayer(player.currentPosition, player.icon)
+    players.map((player) => {
+        drawPlayer(player.currentPosition, player.icon);
     });
 }
 
 // Function to handle player movement
 function movePlayer(moves) {
-    
-    players.map((player)=> {
-        if(player.isPlayersTurn) {
+    players.map((player) => {
+        if (player.isPlayersTurn) {
             const newPosition = player.currentPosition + moves;
             if (newPosition <= gridSize - 1) {
-                player.currentPosition = newPosition;  
+                player.currentPosition = newPosition;
             }
         }
-        player.isPlayersTurn = !player.isPlayersTurn; 
+        player.isPlayersTurn = !player.isPlayersTurn;
     });
 
-    
     initBoard();
-    
+
     players.map((player) => {
-        if(player.isPlayersTurn) {
+        if (player.isPlayersTurn) {
             // climb up ladder
             for (let i = 0; i < ladders.length; i++) {
                 const ladder = ladders[i];
@@ -58,15 +56,13 @@ function movePlayer(moves) {
                     player.currentPosition = snake[1];
                 }
             }
-        } 
+        }
     });
 
     setTimeout(() => {
         initBoard();
     }, 2000);
-    
-
-  }
+}
 
 const numColumns = 10; // Number of columns in the board
 function getCellCoordinates(cellValue) {
@@ -78,13 +74,12 @@ function getCellCoordinates(cellValue) {
     return { row, column };
 }
 
-
 function initBoard() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawBoard();
     ladders.map((ladder) => {
         drawLadder(ladder[0], ladder[1]);
-    })
+    });
 
     innitPlayers();
 
@@ -95,14 +90,13 @@ function initBoard() {
 
     // bacause of image restrications distance between head and tail needs to be greater that 3 blocks, both vertically and horrizontally
     // ^have to write checks for above restrictions
-    // head can't be a border cell 
+    // head can't be a border cell
     // TODO: fix right to light snakes
-    drawSnake(59, 19); 
-    drawSnake(76 ,12);
-    drawSnake(90 ,38);
+    drawSnake(59, 19);
+    drawSnake(76, 12);
+    drawSnake(90, 38);
     drawSnake(52, 2);
     drawSnake(86, 65);
-
 }
 
 function getCellPosition(index) {
@@ -154,8 +148,7 @@ Math.toDegree = function (radians) {
     return (radians * 180) / Math.PI;
 };
 
-
-function drawSnake(head, tail){
+function drawSnake(head, tail) {
     let newImage = new Image();
     let ImageArray = new Array();
     ImageArray[0] = '/res/snakes/snake1.png';
@@ -163,63 +156,57 @@ function drawSnake(head, tail){
     ImageArray[2] = '/res/snakes/snake3.png';
 
     // get random snake
-    let num = Math.floor( Math.random() * 3);
+    let num = Math.floor(Math.random() * 3);
     let img = ImageArray[num];
 
     newImage.src = img;
 
-
     let width = 65;
     const halfWidth = Math.floor(width / 2);
-    const [[x1, y1], [x2, y2]] = getJump(head-1, tail);
+    const [[x1, y1], [x2, y2]] = getJump(head - 1, tail);
     const dx = x2 - x1;
     const dy = y2 - y1;
     let angleRadian = Math.atan2(dy, dx);
     const length = Math.sqrt(dx * dx + dy * dy);
     const [startx, starty] = getCellPosition(head - 1);
     const [endx, endy] = getCellPosition(tail);
-    
-    const xOffset = (startx/60)- (endx/60);
-    newImage.onload = function(){
+
+    const xOffset = startx / 60 - endx / 60;
+    newImage.onload = function () {
         context.save();
-        context.translate(startx , starty);
+        context.translate(startx, starty);
         {
-            if(Math.abs(xOffset) !== 1 ){
-        
-                if((startx/60)< (endx/60)){
+            if (Math.abs(xOffset) !== 1) {
+                if (startx / 60 < endx / 60) {
                     // left to right
                     context.save();
                     context.translate(0, halfWidth);
-                    context.rotate(-Math.PI/2 + angleRadian);
-                    context.transform(1, 0, -0.05,1.1, 0, 0);
-                    context.drawImage(newImage, 0 , 0 , width, length);
+                    context.rotate(-Math.PI / 2 + angleRadian);
+                    context.transform(1, 0, -0.05, 1.1, 0, 0);
+                    context.drawImage(newImage, 0, 0, width, length);
                     context.restore();
-
-                }
-                else{
+                } else {
                     // right to left
                     context.save();
-                    context.translate(0 , -halfWidth/2);
-                    context.rotate(-Math.PI/2 + angleRadian);
-                    context.transform(1, 0, 0,1.1, 0, 0);
+                    context.translate(0, -halfWidth / 2);
+                    context.rotate(-Math.PI / 2 + angleRadian);
+                    context.transform(1, 0, 0, 1.1, 0, 0);
                     // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
                     context.drawImage(newImage, 0, 0, width, length);
                     context.restore();
                 }
-            }
-            else{
+            } else {
                 // vertical snakes
-                context.transform(1, 0, 0.05 ,1, 0, 0);
-                context.drawImage(newImage, 0, halfWidth/2, width, length);
+                context.transform(1, 0, 0.05, 1, 0, 0);
+                context.drawImage(newImage, 0, halfWidth / 2, width, length);
             }
             context.restore();
         }
-    }
+    };
 }
 
-
 function drawLadder(start, end) {
-    const [[x1, y1], [x2, y2]] = getJump(start-1, end-1);
+    const [[x1, y1], [x2, y2]] = getJump(start - 1, end - 1);
     const dx = x2 - x1;
     const dy = y2 - y1;
     const angleRadian = Math.atan2(dy, dx);
@@ -258,35 +245,41 @@ function drawLadder(start, end) {
     context.restore();
 }
 
-function drawPlayer(position, icon){
+function drawPlayer(position, icon) {
     // WILL FIX!
     const x = position % gridWidth;
     const y = Math.floor(position / gridWidth);
-    const playerPosX = (y % 2 == 0 ? x-1 : gridWidth - x) * squareSize;
+    const playerPosX = (y % 2 == 0 ? x - 1 : gridWidth - x) * squareSize;
     const playerPosY = (gridHeight - y - 1) * squareSize;
     context.font = '30px serif';
-    context.fillText(icon, playerPosX, playerPosY + (squareSize/2));
+    context.fillText(icon, playerPosX, playerPosY + squareSize / 2);
 }
 
 function initPlayers() {
-    let players = JSON.parse(localStorage.getItem('players'))
+    let players = JSON.parse(localStorage.getItem('players'));
     // console.log(players)
-    if(players != null) {
-        for (let player_index = 0; player_index < players.length; player_index++){
+    if (players != null) {
+        for (
+            let player_index = 0;
+            player_index < players.length;
+            player_index++
+        ) {
             // console.log(player_index)
-            let player = players[player_index]
-            let player_card_list = document.getElementById("player-list-container")
-            let player_card = new PlayerCard()
+            let player = players[player_index];
+            let player_card_list = document.getElementById(
+                'player-list-container'
+            );
+            let player_card = new PlayerCard();
             // console.log(player)
-            player_card.player_name = player.player_name
-            player_card.player_color = player.player_color
-            player_card_list.appendChild(player_card)
-            player_card_list.append(player_card)
+            player_card.player_name = player.player_name;
+            player_card.player_color = player.player_color;
+            player_card_list.appendChild(player_card);
+            player_card_list.append(player_card);
         }
     }
 }
 
-function initGame(){
+function initGame() {
     initPlayers();
     setupPlayers();
     setupGame();
@@ -294,13 +287,12 @@ function initGame(){
 }
 
 document.body.onload = () => {
-    initGame()
-}
+    initGame();
+};
 
-rollBtn.addEventListener('click', () => { 
+rollBtn.addEventListener('click', () => {
     rollDie();
     setTimeout(() => {
-        movePlayer(diceValue)
+        movePlayer(diceValue);
     }, 4050);
-    
- });
+});

@@ -42,12 +42,11 @@
     margin-top: 5mm;
 }
 
-
 #roll-btn {
     bottom: 10%;
     right: 25%;
     position: absolute;
-    flex:1;
+    flex: 1;
 }
 
 #controls-section {

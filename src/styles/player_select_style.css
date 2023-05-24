@@ -47,7 +47,7 @@ main {
     border-color: rgba(56, 199, 104, 0.8);
 }
 
-.continuation{
+.continuation {
     font-size: larger;
     background-color: rgba(199, 185, 56, 0.4);
     border-color: rgba(199, 185, 56, 0.8);
@@ -73,24 +73,24 @@ main {
     margin-bottom: 1rem;
 }
 
-color-block {    
+color-block {
     background-color: red;
     margin-left: 2%;
     margin-right: 2%;
     margin-bottom: 0.5rem;
 }
 
-color-block[selected="true"]  {
+color-block[selected='true'] {
     background-color: var(--bgcol);
     border-radius: 10mm;
     border-width: 1mm;
 }
 
-color-block[selected="false"] {
+color-block[selected='false'] {
     background-color: var(--bgcol);
 }
 
-color-block[assigned="true"] {
+color-block[assigned='true'] {
     background-color: grey;
 }
 
@@ -100,15 +100,15 @@ color-block[assigned="true"] {
     border-radius: 4mm;
     border-width: 5mm;
     width: 20%;
-    font-size:xx-large;
+    font-size: xx-large;
 }
 
-.square-container [selected|="true"] {
+.square-container [selected|='true'] {
     width: 25%;
 }
 
 .square-container:after {
-    content: "";
+    content: '';
     padding-bottom: 100%;
 }
 
