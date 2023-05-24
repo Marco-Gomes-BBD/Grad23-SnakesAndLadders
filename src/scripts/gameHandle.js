@@ -1,7 +1,3 @@
-// we have dice value
-// now get position of snakes and ladders
-// now place player on board
-
 const numRows = 10; // Number of rows in the board
 const numColumns = 10; // Number of columns in the board
 
@@ -13,7 +9,6 @@ function getRandomIcon(Icons, usedIcons) {
     return availableIcons[randomIndex];
   }
   
-
 function setupPlayers() {
     // let players = JSON.parse(localStorage.getItem('players'));
     // place players on the board

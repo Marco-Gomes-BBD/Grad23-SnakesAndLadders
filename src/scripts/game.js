@@ -82,9 +82,8 @@ function getCellCoordinates(cellValue) {
 function initBoard() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawBoard();
-    // drawLaddders
-    ladders.map((e) => {
-        drawLadder(e[0], e[1]);
+    ladders.map((ladder) => {
+        drawLadder(ladder[0], ladder[1]);
     })
 
     innitPlayers();
@@ -181,6 +180,7 @@ function drawLadder(start, end) {
 }
 
 function drawPlayer(position, icon){
+    // WILL FIX!
     const x = position % gridWidth;
     const y = Math.floor(position / gridWidth);
     const playerPosX = (y % 2 == 0 ? x-1 : gridWidth - x) * squareSize;
@@ -213,8 +213,6 @@ function initGame(){
     setupGame();
     initBoard();
 }
-
-
 
 document.body.onload = () => {
     initGame()

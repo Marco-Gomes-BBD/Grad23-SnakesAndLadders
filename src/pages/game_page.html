@@ -14,9 +14,11 @@
     <main id="main-section" class="row fill-container">
         <section class="main-section">
             <section class="column fill-height" id="game-section">
-                <h2>Snakes And Ladders</h2>
+                <!-- <h2>Snakes And Ladders</h2> -->
                 <canvas id="board" width="600px" height="600px"></canvas>
-                <section class="control-section">
+            </section>
+            <aside id="player-list-container">
+                <section id="controls-section">
                     <article class="dice">
                         <section class="face front"></section>
                         <section class="face back"></section>
@@ -25,16 +27,15 @@
                         <section class="face right"></section>
                         <section class="face left"></section>
                     </article>
-                    <button class="menu-button horizontal-center" id="roll-btn">Roll Die</button>
+                    <button class="menu-button" id="roll-btn">Roll Die</button>
                 </section>
-            </section>
-            <aside id="player-list-container"></aside>
+                
+            </aside>
+            
         </section>
+        <section id="player-card-template-section"></section>
     </main>
-    <footer>
-        <section id="player-card-template-section">
-        </section>
-    </footer>
+        
 </body>
 <script type="module">
     import {load_section} from "/src/scripts/loader.js"
@@ -47,3 +48,6 @@
 <script type="text/javascript" src="/src/scripts/state.js"></script>
 <script type="text/javascript" src="/src/scripts/gameHandle.js"></script>
 </html>
+
+
+<!-- Illustration Designed By smashingstocks From <a href="https://lovepik.com/image-450069396/flat-game-background-of-volcanoes-eruption.html">LovePik.com</a> -->

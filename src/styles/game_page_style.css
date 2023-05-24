@@ -17,8 +17,8 @@
     display: flex;
     flex-grow: 1;
     height: 100%;
-    background-color: rgba(221, 163, 91, 0.938);
-    flex-direction: row;
+    background-image: url('../../res/black-ground/background.png');
+    /* background-color: rgba(221, 163, 91, 0.938); */
 }
 
 .fill-height {
@@ -40,4 +40,18 @@
     height: 5cm;
     margin: auto;
     margin-top: 5mm;
+}
+
+
+#roll-btn {
+    bottom: 10%;
+    right: 25%;
+    position: absolute;
+    flex:1;
+}
+
+#controls-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

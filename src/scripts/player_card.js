@@ -1,7 +1,11 @@
 class PlayerCard extends HTMLElement{
     constructor(){
         super()
-        const template = document.getElementById("player-card-template").content
+        let template;
+        while (template == null){
+            template = document.getElementById("player-card-template")
+        } 
+        template = template.content
         const shadowRoot = this.attachShadow({ mode: 'open' })
         shadowRoot.appendChild(template.cloneNode(true));
         this.addEventListener("click", () => {
