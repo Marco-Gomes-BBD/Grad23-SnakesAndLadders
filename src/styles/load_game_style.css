@@ -1,7 +1,12 @@
-section .page-center {
-    padding: 2rem;
-}
 
 #game-select {
     background-color: aqua;
+    width: 70%;
+    height: 100%;
+    background-color: rgba(110, 110, 245, 0.425);
+    
+
+}
+main {
+    background-image: url('../../res/black-ground/background.png');
 }

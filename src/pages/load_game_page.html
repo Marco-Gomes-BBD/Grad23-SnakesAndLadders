@@ -12,18 +12,32 @@
     <header id="nav-header"></header>
     <main id="main-section" class="row fill-container">
         <toast id="toast-message" type="info"></toast>
-        <ol class="page-center" id="game-select" style="background-color: blueviolet;">
+        <ol class="page-center" id="game-select">
             
         </ol>
     </main>
-    <footer>
-        <section id="player-card-template-section"></section>
-    </footer>
+    <template id="history-element">
+        <link rel="stylesheet" href="src/styles/game_summary_style.css"/>
+        <link rel="stylesheet" href="/index.css"/>
+        <summary class="main" style="display:flex; flex-direction: column; border-width: 1rem;">
+            <p id="player-turn">Turns Played: {turns-played}</p>
+            <strong id="board-detail">10 x 10 Board</strong>
+
+            <strong>players</strong>
+            <ol id="player-list">
+                <p id="p0">--</p>
+                <p id="p1">--</p>
+                <p id="p2">--</p>
+                <p id="p3">--</p>
+            </ol>
+            <button id="select-btn" class="affirmative">Continue</button>
+        </summary>
+    </template>
 </body>
 <script type="module">
-    import {load_section} from "/src/scripts/loader.js"
+    import { load_section } from "/src/scripts/loader.js"
     load_section("nav-header", "/src/pages/nav.html")
-    load_section("player-card-template-section", "src/templates/player_card_template.html")
 </script>
 <script type="module" src="/src/scripts/toast.js"></script>
+<script type="module" src="/src/scripts/game-summary.js"></script>
 </html>
