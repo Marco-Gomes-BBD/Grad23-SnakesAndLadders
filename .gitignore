@@ -7,3 +7,6 @@ node_modules/
 # Dotenv
 .env.local
 .env.*.local
+
+# Persistence
+*.db
