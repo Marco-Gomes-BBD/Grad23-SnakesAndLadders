@@ -44,9 +44,10 @@ app.get('/auth-callback', async (req, res) => {
 
     const response = await fetch(link, requestOptions);
     const data = await response.json();
+    const details = await getDetails(data.access_token);
+    console.log(details);
     res.cookie('token', data.access_token);
     res.redirect('/');
-    await getDetails(data.access_token);
 });
 
 async function getDetails(token) {
@@ -57,8 +58,8 @@ async function getDetails(token) {
     };
 
     const response = await fetch(link, requestOptions);
-    const data = await response.json();
-    console.log(data);
+    const details = await response.json();
+    return details;
 }
 
 const server = app.listen(port, () => {
