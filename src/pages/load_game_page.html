@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <link rel="stylesheet" type="text/css" href="/src/styles/load_game_style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header id="nav-header"></header>
+    <main id="main-section" class="row fill-container">
+        <toast id="toast-message" type="info"></toast>
+        <ol class="page-center" id="game-select" style="background-color: blueviolet;">
+            hello
+        </ol>
+    </main>
+    <footer>
+        <section id="player-card-template-section"></section>
+    </footer>
+</body>
+<script type="module">
+    import {load_section} from "/src/scripts/loader.js"
+    load_section("nav-header", "/src/pages/nav.html")
+    load_section("player-card-template-section", "src/templates/player_card_template.html")
+</script>
+<script type="module" src="/src/scripts/toast.js"></script>
+</html>

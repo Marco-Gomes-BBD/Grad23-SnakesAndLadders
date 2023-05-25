@@ -1,0 +1,7 @@
+section .page-center {
+    padding: 2rem;
+}
+
+#game-select {
+    background-color: aqua;
+}

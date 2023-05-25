@@ -30,6 +30,10 @@ app.get('/auth', (_req, res) => {
     res.redirect(`${github_api_authorize}?client_id=${client_id}`);
 });
 
+app.get('/load-game', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'src/pages/load_game_page.html'))
+})
+
 app.get('/auth-callback', async (req, res) => {
     const code = req.query.code;
     const link = `${github_api_access_token}?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
