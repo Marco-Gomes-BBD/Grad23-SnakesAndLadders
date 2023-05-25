@@ -49,8 +49,15 @@ app.get('/auth-callback', async (req, res) => {
     const details = await getDetails(data.access_token);
     console.log(details);
     res.cookie('token', data.access_token);
-    res.redirect('/');
+    res.redirect('/home');
 });
+
+app.get('/user-details', async (req, res) => {
+
+    const details = await getDetails(req.query.token);
+
+    res.json({login: details.login, avatar_url: details.avatar_url})
+})
 
 async function getDetails(token) {
     const link = github_api_user;
@@ -61,6 +68,7 @@ async function getDetails(token) {
 
     const response = await fetch(link, requestOptions);
     const details = await response.json();
+    console.log(details)
     return details;
 }
 
