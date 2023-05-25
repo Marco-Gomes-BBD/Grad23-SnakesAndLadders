@@ -1,51 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/index.css">
-    <link rel="stylesheet" type="text/css" href="/src/styles/game_page_style.css"/>
-    <link rel="stylesheet" type="text/css" href="/src/styles/dice.css" />
-    <link rel="stylesheet" type="text/css" href="/src/styles/toast.css" />
-    <title>Snakes And Ladders</title>
-</head>
-<body>
-    <header id="nav-header">Hello</header>
-    <main id="main-section" class="row fill-container">
-        <toast id="toast-message" type="info"></toast>
-        <section class="main-section">
-            <section class="column fill-height" id="game-section">
-                <h2>Snakes And Ladders</h2>
-                <canvas id="board" width="600px" height="600px"></canvas>
-                <section class="control-section">
-                    <section class="dice">
-                        <div class="face front"></div>
-                        <div class="face back"></div>
-                        <div class="face bottom"></div>
-                        <div class="face top"></div>
-                        <div class="face right"></div>
-                        <div class="face left"></div>
-                    </section>
-                    <button class="menu-button horizontal-center" id="roll-btn">Roll Die</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/index.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/src/styles/game_page_style.css"
+        />
+        <link rel="stylesheet" type="text/css" href="/src/styles/dice.css" />
+        <title>Snakes And Ladders</title>
+    </head>
+    <body>
+        <header id="nav-header">Hello</header>
+        <main id="main-section" class="row fill-container">
+            <section class="main-section">
+                <section class="column fill-height" id="game-section">
+                    <!-- <h2>Snakes And Ladders</h2> -->
+                    <canvas id="board" width="600px" height="600px"></canvas>
                 </section>
+                <aside id="player-list-container">
+                    <section id="controls-section">
+                        <article class="dice">
+                            <section class="face front"></section>
+                            <section class="face back"></section>
+                            <section class="face bottom"></section>
+                            <section class="face top"></section>
+                            <section class="face right"></section>
+                            <section class="face left"></section>
+                        </article>
+                        <button class="menu-button" id="roll-btn">
+                            Roll Die
+                        </button>
+                    </section>
+                </aside>
             </section>
-            <aside id="player-list-container"></aside>
-        </section>
-    </main>
-    <footer>
-        <section id="player-card-template-section">
-        </section>
-    </footer>
-</body>
-<script type="module">
-    import {load_section} from "/src/scripts/loader.js"
-    load_section("nav-header", "/src/pages/nav.html")
-    load_section("player-card-template-section", "src/templates/player_card_template.html")
-</script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
-<script type="module" src="/src/scripts/game.js"></script>
-<script type="text/javascript" src="/src/scripts/state.js"></script>
-<script type="text/javascript" src="/src/scripts/dice.js"></script>
-<script type="module" src="/src/scripts/toast.js"></script>
+            <section id="player-card-template-section"></section>
+        </main>
+        <template id="player-card-template">
+            <link rel="stylesheet" href="src/styles/player_card_style.css"/>
+            <section class="player_card">
+                <strong class="player-name" id="player-name">Rick</strong>
+                <color-block class="rounded-container square-container" id="color-block">
+                    <strong class="player-number square-content">0</strong>
+                </color-block>
+            </section>
+        </template>
+    </body>
+    <script type="module">
+        import { load_section } from '/src/scripts/loader.js';
+        load_section('nav-header', '/src/pages/nav.html');
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="module" src="/src/scripts/game.js"></script>
+    <script type="text/javascript" src="/src/scripts/dice.js"></script>
+    <script type="text/javascript" src="/src/scripts/state.js"></script>
 </html>
+
+<!-- Snake Images Credits
+    <a href="https://www.clipartmax.com/middle/m2i8b1N4G6m2i8A0_long-clipart-snake-ladder-snakes-and-ladders-cartoon/" target="_blank">Long Clipart Snake Ladder - Snakes And Ladders Cartoon @clipartmax.com</a>
+-->
+
+<!-- Illustration Designed By smashingstocks Fro
+    <a href="https://lovepik.com/image-450069396/flat-game-background-of-volcanoes-eruption.html">LovePik.com</a>
+-->

@@ -4,27 +4,14 @@ function getRandomInt(prng, min, max) {
     return Math.floor(prng() * (max - min) + min);
 }
 
-const summary = {
-    board: {
-        seed: 'Hello',
-        width: 10,
-        height: 10,
-    },
-    roll: {
-        seed: 'World',
-        count: 26,
-    },
-    players: 2,
-};
-
 function generateBoard(summary) {
     const { width, height } = summary;
     const size = width * height;
     const board = Array(size).fill(0);
 
     // TODO: Decide how we want to define snake and ladder count.
-    const numSnakes = Math.floor(size / 10);
-    const numLadders = Math.floor(size / 10);
+    const numSnakes = Math.floor(6);
+    const numLadders = Math.floor(7);
     const prng = new Math.seedrandom(summary.seed);
 
     for (let i = 0; i < numSnakes; i++) {
@@ -50,41 +37,40 @@ function generateBoard(summary) {
     return { board, width, height };
 }
 
+function gameStep(die, players, board, roll) {
+    const player = roll.count % players.length;
+    let position = players[player];
+    position += die;
+
+    const jump = board.board[position];
+    position += jump ?? -die;
+    players[player] = position;
+
+    if (position >= board.board.length - 1 && !roll.win) {
+        roll.win = roll.count + 1;
+    }
+    roll.count += 1;
+}
+
 function getRollState(summary, players, board) {
     const roll = {
         seed: summary.seed,
-        count: summary.count,
+        count: 0,
     };
 
     const rollMin = 1;
     const rollMax = 6 + 1;
     const prngRoll = new Math.seedrandom(roll.seed);
-    const rolls = Array.from({ length: roll.count }, () =>
+    const rolls = Array.from({ length: summary.count }, () =>
         getRandomInt(prngRoll, rollMin, rollMax)
     );
 
-    rolls.forEach((die, index) => {
-        const player = index % players.length;
-
-        // TODO: Extract this to be a game step.
-        let position = players[player];
-        position += die;
-
-        const jump = board.board[position];
-        position += jump ?? -die;
-        players[player] = position;
-
-        if (position >= board.board.length - 1 && !roll.win) {
-            roll.win = index + 1;
-        }
-    });
-
+    rolls.forEach((die) => gameStep(die, players, board, roll));
     return roll;
 }
 
 function getState(summary) {
     const board = generateBoard(summary.board);
-
     const playerCount = summary.players;
     const players = Array(playerCount).fill(0);
     const roll = getRollState(summary.roll, players, board);
@@ -104,6 +90,19 @@ function printBoard(state) {
         console.log(print);
     }
 }
+
+const summary = {
+    board: {
+        seed: 'eqwe',
+        width: 10,
+        height: 10,
+    },
+    roll: {
+        seed: 'World',
+        count: 0,
+    },
+    players: 2,
+};
 
 const state = getState(summary);
 const pretty = { roll: state.roll, players: state.players };

@@ -6,8 +6,8 @@
     height: fit-content;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
     padding: 0.5rem;
 }
 
@@ -21,11 +21,11 @@
     border-radius: 4mm;
     border-width: 5mm;
     width: 30%;
-    font-size:xx-large;
+    font-size: xx-large;
 }
 
 .square-container:after {
-    content: "";
+    content: '';
     padding-bottom: 100%;
 }
 

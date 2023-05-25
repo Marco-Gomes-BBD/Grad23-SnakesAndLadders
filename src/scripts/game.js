@@ -1,7 +1,7 @@
-import { PlayerCard } from "./player_card.js";
-import { show_toast } from "./toast.js";
+import { PlayerCard } from './player_card.js';
 
-let context = undefined;
+const canvas = document.getElementById('board');
+let context = canvas.getContext('2d');
 
 const gridWidth = 10;
 const gridHeight = 10;
@@ -10,15 +10,49 @@ const gridSize = gridWidth * gridHeight;
 const squareSize = 60;
 const colors = ['white', 'black'];
 
+const ladders = ladderPositions(state.board.board);
+const snakes = snakePositions(state.board.board);
+const snakeImages = [];
+
+function loadResources() {
+    const paths = [];
+    paths[0] = '/res/snakes/snake1.png';
+    paths[1] = '/res/snakes/snake2.png';
+    paths[2] = '/res/snakes/snake3.png';
+
+    paths.forEach((src) => {
+        const image = new Image();
+        image.src = src;
+        snakeImages.push(image);
+    });
+}
+
+function movePlayer(moves) {
+    gameStep(moves, state.players, state.board, state.roll);
+
+    players.forEach((player, index) => {
+        player.currentPosition = state.players[index];
+    });
+
+    initBoard();
+}
+
 function initBoard() {
-    const canvas = document.getElementById('board');
-    context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
     drawBoard();
 
-    drawLadder(1, 99);
-    drawLadder(23, 66);
-    drawLadder(12, 63);
-    drawLadder(51, 85);
+    ladders.forEach((ladder) => {
+        drawLadder(ladder[0], ladder[1]);
+    });
+
+    const prng = new Math.seedrandom('snakes');
+    snakes.forEach((snake) => {
+        drawSnake(snake[0], snake[1], prng);
+    });
+
+    players.forEach((player, index) => {
+        drawPlayer(player.currentPosition, index, player.icon);
+    });
 }
 
 function getCellPosition(index) {
@@ -44,9 +78,9 @@ function drawBoard() {
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
             const index = y + x;
-            context.fillStyle = colors[index % colors.length];
             let xOffset = x * squareSize;
             let yOffset = y * squareSize;
+            context.fillStyle = colors[index % colors.length];
             context.fillRect(xOffset, yOffset, squareSize, squareSize);
         }
     }
@@ -69,6 +103,55 @@ function drawBoard() {
 Math.toDegree = function (radians) {
     return (radians * 180) / Math.PI;
 };
+
+function drawSnake(head, tail, prng) {
+    // get random snake
+    const num = getRandomInt(prng, 1, 4);
+    const image = snakeImages[num];
+
+    const width = 65;
+    const halfWidth = Math.floor(width / 2);
+    const [[startx, starty], [endx, endy]] = getJump(head, tail);
+    const dx = endx - startx;
+    const dy = endy - starty;
+    const angleRadian = Math.atan2(dy, dx);
+    const length = Math.sqrt(dx * dx + dy * dy);
+
+    const xOffset = startx / 60 - endx / 60;
+    if (image.complete) {
+        context.save();
+        context.translate(startx, starty);
+
+        if (Math.abs(xOffset) !== 1) {
+            if (startx / 60 < endx / 60) {
+                // left to right
+                context.save();
+                context.translate(0, halfWidth);
+                context.rotate(-Math.PI / 2 + angleRadian);
+                context.transform(1, 0, -0.05, 1.1, 0, 0);
+                context.drawImage(image, 0, 0, width, length);
+                context.restore();
+            } else {
+                // right to left
+                context.save();
+                context.translate(0, -halfWidth / 2);
+                context.rotate(-Math.PI / 2 + angleRadian);
+                context.transform(1, 0, 0, 1.1, 0, 0);
+                // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
+                context.drawImage(image, 0, 0, width, length);
+                context.restore();
+            }
+        } else {
+            // vertical snakes
+            context.transform(1, 0, 0.05, 1, 0, 0);
+            context.drawImage(image, 0, halfWidth / 2, width, length);
+        }
+
+        context.restore();
+    } else {
+        console.log('Snake could not be drawn.');
+    }
+}
 
 function drawLadder(start, end) {
     const [[x1, y1], [x2, y2]] = getJump(start, end);
@@ -110,30 +193,85 @@ function drawLadder(start, end) {
     context.restore();
 }
 
+function drawPlayer(position, index, icon) {
+    const [x, y] = getCellPosition(position);
+    context.font = '30px serif';
+    context.fillText(icon, x, y + squareSize / 2);
+}
+
 function initPlayers() {
-    let players = JSON.parse(localStorage.getItem('players'))
-    console.log(players[0])
-    if(players != null) {
-        for (let player_index = 0; player_index < players.length; player_index++){
-            console.log(player_index)
-            let player = players[player_index]
-            let player_card_list = document.getElementById("player-list-container")
-            let player_card = new PlayerCard()
-            console.log(player)
-            player_card.player_name = player.player_name
-            player_card.player_color = player.player_color
-            player_card_list.appendChild(player_card)
-            player_card_list.append(player_card)
+    let players = JSON.parse(localStorage.getItem('players'));
+
+    if (players != null) {
+        for (
+            let player_index = 0;
+            player_index < players.length;
+            player_index++
+        ) {
+            let player = players[player_index];
+            let player_card_list = document.getElementById(
+                'player-list-container'
+            );
+            let player_card = new PlayerCard();
+            player_card.player_name = player.player_name;
+            player_card.player_color = player.player_color;
+            player_card_list.appendChild(player_card);
+            player_card_list.append(player_card);
         }
     }
 }
 
-function initGame(){
-    initBoard()
-    initPlayers()
+let players = JSON.parse(localStorage.getItem('players'));
+
+function setupPlayers() {
+    const icons = ['🐤', '🥚', '🦚', '🐾'];
+
+    players = players.map((player, index) => {
+        const icon = icons[index];
+
+        return {
+            player_color: player.player_color,
+            player_name: player.player_name,
+            icon: icon,
+            currentPosition: 0,
+        };
+    });
 }
 
+// Snake positions (start -> end)
+function snakePositions(board) {
+    const snakes = [];
+    board.forEach((offset, index) => {
+        if (offset < 0) snakes.push([index, index + offset]);
+    });
+
+    return snakes;
+}
+
+// Ladder positions (end -> start)
+function ladderPositions(board) {
+    const ladders = [];
+    board.forEach((offset, index) => {
+        if (offset > 0) ladders.push([index, index + offset]);
+    });
+
+    return ladders;
+}
+
+function initGame() {
+    initPlayers();
+    setupPlayers();
+    initBoard();
+}
 
 document.body.onload = () => {
-    initGame()
-}
+    loadResources();
+    setTimeout(initGame, 200);
+};
+
+rollBtn.addEventListener('click', () => {
+    const roll = rollDie();
+    setTimeout(() => {
+        movePlayer(roll);
+    }, 4050);
+});
