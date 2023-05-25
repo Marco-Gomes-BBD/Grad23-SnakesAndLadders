@@ -71,7 +71,7 @@ function getRollState(summary, players, board) {
 
 function getState(summary) {
     const board = generateBoard(summary.board);
-    const playerCount = summary.players;
+    const playerCount = summary.players.length;
     const players = Array(playerCount).fill(0);
     const roll = getRollState(summary.roll, players, board);
 
@@ -91,20 +91,16 @@ function printBoard(state) {
     }
 }
 
-const summary = {
-    board: {
-        seed: 'eqwe',
-        width: 10,
-        height: 10,
-    },
-    roll: {
-        seed: 'World',
-        count: 0,
-    },
-    players: 2,
-};
+let summary = {};
+let state = {};
+let pretty = {};
 
-const state = getState(summary);
-const pretty = { roll: state.roll, players: state.players };
+function initState(new_summary) {
+    summary = new_summary
+    state = getState(summary);
+    pretty = { roll: state.roll, players: state.players };
+}
+
+
 // console.log(JSON.stringify(pretty, undefined, 1));
 // printBoard(state.board);

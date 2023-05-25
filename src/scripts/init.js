@@ -1,6 +1,4 @@
-const token = document.cookie.split('=')[1];
-
-if (token != null) {
+if (document.cookie != null) {
     fetch("/user-details?"+document.cookie)
     .then( response => response.json())
     .then( details => {

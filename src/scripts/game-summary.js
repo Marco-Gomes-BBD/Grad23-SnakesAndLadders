@@ -11,6 +11,7 @@ class GameSummary extends HTMLElement {
             const b = this.shadowRoot.getElementById("select-btn");
             b.addEventListener('click', () => {
                 console.log(summary.game_id)
+                localStorage.setItem('game_summary', JSON.stringify(summary))
                 window.location.assign("/game?game_id="+summary.game_id)
             })
         }

@@ -1,10 +1,10 @@
 import { PlayerCard } from "./player_card.js"
 import { show_toast } from "./toast.js";
 
-window.players = []
+let players = []
 
 let add_player = () => {
-    if (window.players.length >= 4) {
+    if (players.length >= 4) {
         show_toast('thats enough!!!', 'error')
         return
     }
@@ -13,8 +13,8 @@ let add_player = () => {
     let player_name = document.getElementById("player-name").value
 
     let taken = false;
-    for (let i = 0; i < window.players.length; i++){
-        if(window.players[i].player_name.toUpperCase() === player_name.toUpperCase()){
+    for (let i = 0; i < players.length; i++){
+        if(players[i].player_name.toUpperCase() === player_name.toUpperCase()){
             taken = true;
             break;
         }
@@ -32,12 +32,13 @@ let add_player = () => {
     player_card_list.appendChild(player_card)
     player_card_list.append(player_card)
 
-    window.players.push ({
+    players.push ({
         "player_name": player_card.player_name, 
-        "player_color": player_card.player_color
+        "player_color": player_card.player_color,
+        "player_type": "human"
     })
 
-    if (window.players.length >= 2) {
+    if (players.length >= 2) {
         const proceed_button = document.getElementById("proceed-button")
         proceed_button.classList.remove('inactive')
         proceed_button.classList.add('affirmative')
@@ -48,7 +49,21 @@ let add_player = () => {
 }
 
 const proceed = async () => {
-    localStorage.setItem('players', JSON.stringify(window.players))
+    let game_summary = {
+        game_id: null,
+        board: {
+            seed: Math.random(),
+            width: 10,
+            height: 10,
+        },
+        roll: {
+            seed: Math.random(),
+            count: 0,
+        },
+        players: players,
+    }
+
+    localStorage.setItem('game_summary', JSON.stringify(game_summary))
     window.location.assign("/game");
 }
 

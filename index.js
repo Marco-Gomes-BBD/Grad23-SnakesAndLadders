@@ -74,6 +74,49 @@ app.get('/game/new', async (req, res) => {
     res.json({game_id: game_id})
 })
 
+app.get('/game/playing', async (req, res) => {
+    const token = req.query.token
+
+    //todo: return unfinished games
+
+    res.json([
+        {
+            game_id: 123,
+            board: {
+                seed: "please",
+                width: 10,
+                height: 10,
+            },
+            roll: {
+                seed: "work",
+                count: 0,
+            },
+            players: [
+                {player_name : "Player 1", player_color : "red", player_type : "human"},
+                {player_name : "Player 2", player_color : "pink", player_type : "human"},
+                {player_name : "Player 3", player_color : "purple", player_type : "human"}
+            ]
+        },
+
+        {
+            game_id: 321,
+            board: {
+                seed: "HEHE",
+                width: 10,
+                height: 10,
+            },
+            roll: {
+                seed: "HOHO",
+                count: 0,
+            },
+            players: [
+                {player_name : "Player 1", player_color : "blue", player_type : "human"},
+                {player_name : "Player 2", player_color : "green", player_type : "human"}
+            ]
+        }
+    ])
+})
+
 app.get('/game/play', async (req, res) => {
     const game_id = req.query.game_id
     const rolls = req.query.rolls

@@ -3,16 +3,18 @@ import { PlayerCard } from './player_card.js';
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
 
-const gridWidth = 10;
-const gridHeight = 10;
-const gridSize = gridWidth * gridHeight;
+let gridWidth = 10;
+let gridHeight = 10;
+let gridSize = gridWidth * gridHeight;
 
-const squareSize = 60;
+let squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth);
 const colors = ['white', 'black'];
 
-const ladders = ladderPositions(state.board.board);
-const snakes = snakePositions(state.board.board);
+let ladders = [];
+let snakes = [];
 const snakeImages = [];
+
+let players = [];
 
 function loadResources() {
     const paths = [];
@@ -200,8 +202,6 @@ function drawPlayer(position, index, icon) {
 }
 
 function initPlayers() {
-    let players = JSON.parse(localStorage.getItem('players'));
-
     if (players != null) {
         for (
             let player_index = 0;
@@ -221,12 +221,12 @@ function initPlayers() {
     }
 }
 
-let players = JSON.parse(localStorage.getItem('players'));
+let players_ = JSON.parse(localStorage.getItem('players'));
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
 
-    players = players.map((player, index) => {
+    players_ = players.map((player, index) => {
         const icon = icons[index];
 
         return {
@@ -259,6 +259,19 @@ function ladderPositions(board) {
 }
 
 function initGame() {
+    let game_summary = JSON.parse(localStorage.getItem("game_summary"))
+    console.log(game_summary)
+    initState(game_summary);
+    gridWidth = game_summary.board.width
+    gridHeight = game_summary.board.height
+
+    squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth)
+
+    ladders = ladderPositions(state.board.board);
+    snakes = snakePositions(state.board.board);
+
+    players = game_summary.players;
+
     initPlayers();
     setupPlayers();
     initBoard();
