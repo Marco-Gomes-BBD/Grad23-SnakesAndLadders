@@ -17,11 +17,6 @@ class GameSummary extends HTMLElement {
         }
     }
 
-    continue_game = (summary) => {
-        console.log(summary.game_id)
-        //window.location.assign("/game?game_id="+this.summary.game_id)
-    }
-
     get summary() {
         return this.getAttribute('summary')
     }

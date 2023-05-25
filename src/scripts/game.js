@@ -221,12 +221,10 @@ function initPlayers() {
     }
 }
 
-let players_ = JSON.parse(localStorage.getItem('players'));
-
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
 
-    players_ = players.map((player, index) => {
+    players = players.map((player, index) => {
         const icon = icons[index];
 
         return {
