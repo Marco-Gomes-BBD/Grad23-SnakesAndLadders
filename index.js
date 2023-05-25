@@ -61,6 +61,28 @@ app.get('/user-details', async (req, res) => {
     res.json({login: details.login, avatar_url: details.avatar_url})
 })
 
+app.get('/game/new', async (req, res) => {
+    const token = req.query.token
+    const game = req.query.game
+    console.log(req)
+
+    // todo: add game to database
+    // todo: append game_id to game
+
+    let game_id = 12345
+
+    res.json({game_id: game_id})
+})
+
+app.get('/game/play', async (req, res) => {
+    const game_id = req.query.game_id
+    const rolls = req.query.rolls
+
+    //todo: insert progression logic
+
+    res.status(200);
+})
+
 async function getDetails(token) {
     const link = github_api_user;
     const requestOptions = {
