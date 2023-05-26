@@ -1,7 +1,6 @@
 # Snakes And Ladders
+A game of chance
 
-## TODO:
-- Add back nav header to game page
-- Draw snakes
-- fix ladder rotations
-- fix game page layout
+## Credits
+Snakes images [ClipartMax](https://www.clipartmax.com/middle/m2i8b1N4G6m2i8A0_long-clipart-snake-ladder-snakes-and-ladders-cartoon/)
+Background [LovePik](https://lovepik.com/image-450069396/flat-game-background-of-volcanoes-eruption.html)
