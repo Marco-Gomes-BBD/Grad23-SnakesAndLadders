@@ -1,0 +1,28 @@
+{
+  "endOfLine": "lf",
+  "trailingComma": "es5",
+
+  "tabWidth": 4,
+  "useTabs": false,
+
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "singleQuote": true
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ".vscode/*.json",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}
