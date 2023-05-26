@@ -7,7 +7,8 @@ let gridWidth = 10;
 let gridHeight = 10;
 let gridSize = gridWidth * gridHeight;
 
-let squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth);
+let squareSize =
+    Math.min(canvas.width, canvas.height) / Math.max(gridHeight, gridWidth);
 const colors = ['white', 'black'];
 
 let ladders = [];
@@ -205,7 +206,6 @@ function drawPlayer(position, index, icon) {
 
 function initPlayers() {
     if (players != null) {
-        
         for (
             let player_index = 0;
             player_index < players.length;
@@ -228,7 +228,7 @@ function initPlayers() {
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
-    
+
     players = players.map((player, index) => {
         const icon = icons[index];
         return {
@@ -262,12 +262,13 @@ function ladderPositions(board) {
 }
 
 function initGame() {
-    let game_summary = JSON.parse(localStorage.getItem("game_summary"))
+    let game_summary = JSON.parse(localStorage.getItem('game_summary'));
     initState(game_summary);
-    gridWidth = game_summary.board.width
-    gridHeight = game_summary.board.height
+    gridWidth = game_summary.board.width;
+    gridHeight = game_summary.board.height;
 
-    squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth)
+    squareSize =
+        Math.min(canvas.width, canvas.height) / Math.max(gridHeight, gridWidth);
 
     ladders = ladderPositions(state.board.board);
     snakes = snakePositions(state.board.board);
@@ -293,5 +294,4 @@ rollBtn.addEventListener('click', () => {
     setTimeout(() => {
         movePlayer(roll);
     }, 4050);
-    
 });

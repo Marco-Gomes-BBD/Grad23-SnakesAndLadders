@@ -7,7 +7,7 @@ const rollDistribution = [0, 0, 0, 0, 0, 0];
 const randomRoll = () => {
     const random = getRandomInt(prng, 1, 7);
     rollDistribution[random - 1] += 1;
-    
+
     return random;
 };
 

@@ -5,8 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="/index.css" />
-        <link rel="stylesheet" type="text/css" href="/src/styles/player_select.css"/>
-        <link rel="stylesheet" type="text/css" href="/src/styles/toast.css">
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/src/styles/player_select.css"
+        />
+        <link rel="stylesheet" type="text/css" href="/src/styles/toast.css" />
         <title>Document</title>
     </head>
     <body>
@@ -19,22 +23,65 @@
                     <label for="player-name">And you are?</label>
                     <input class="rounded-input" type="text" id="player-name" />
                     <label for="color_palette">Provide your hue!</label>
-                    <section class="color_choice row fill-width" id="color-palette">
-                        <color-block class="square-container" selected="false" style="--bgcol: red"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: orange"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: yellow"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: green"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: blue"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: indigo"></color-block>
-                        <color-block class="square-container" selected="false" style="--bgcol: violet"></color-block>
+                    <section
+                        class="color_choice row fill-width"
+                        id="color-palette"
+                    >
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: red"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: orange"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: yellow"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: green"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: blue"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: indigo"
+                        ></color-block>
+                        <color-block
+                            class="square-container"
+                            selected="false"
+                            style="--bgcol: violet"
+                        ></color-block>
                     </section>
-                    <input type="button" class="rounded-input affirmative" id="add-player-button" value="Add Player"/>
+                    <input
+                        type="button"
+                        class="rounded-input affirmative"
+                        id="add-player-button"
+                        value="Add Player"
+                    />
                 </form>
             </section>
 
             <aside id="player-asside">
                 <section class="auto-grow" id="player-list"></section>
-                <button disabled="true" class="inactive rounded-input" id="proceed-button" onclick="proceed(this)">Proceed</button>
+                <button
+                    disabled="true"
+                    class="inactive rounded-input"
+                    id="proceed-button"
+                    onclick="proceed(this)"
+                >
+                    Proceed
+                </button>
             </aside>
         </main>
         <footer>
@@ -43,10 +90,13 @@
             </footer>
         </footer>
         <template id="player-card-template">
-            <link rel="stylesheet" href="src/styles/player_card.css"/>
+            <link rel="stylesheet" href="src/styles/player_card.css" />
             <section class="player_card">
                 <strong class="player-name" id="player-name">Rick</strong>
-                <color-block class="rounded-container square-container" id="color-block">
+                <color-block
+                    class="rounded-container square-container"
+                    id="color-block"
+                >
                     <strong class="player-number square-content">0</strong>
                 </color-block>
             </section>
@@ -56,8 +106,8 @@
     <script type="module" src="/src/scripts/player_card.js"></script>
     <script type="module" src="/src/scripts/player_select.js"></script>
     <script type="module">
-        import { load_section } from '/src/scripts/loader.js';
-        load_section('nav-header', '/src/pages/nav.html');
+        import { load_section } from "/src/scripts/loader.js";
+        load_section("nav-header", "/src/pages/nav.html");
     </script>
     <script type="module" src="/src/scripts/init.js"></script>
 </html>

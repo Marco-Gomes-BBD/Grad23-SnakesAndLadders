@@ -95,6 +95,6 @@ let summary = {};
 let state = {};
 
 function initState(new_summary) {
-    summary = new_summary
+    summary = new_summary;
     state = getState(summary);
 }

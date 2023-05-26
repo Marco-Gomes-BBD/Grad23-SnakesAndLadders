@@ -25,7 +25,7 @@
 }
 
 .square-container:after {
-    content: '';
+    content: "";
     padding-bottom: 100%;
 }
 
