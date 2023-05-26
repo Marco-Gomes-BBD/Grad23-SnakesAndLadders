@@ -94,8 +94,8 @@ app.get('/game/new', async (req, res) => {
     const game = req.query.game
     console.log(req)
 
-    // todo: add game to database
-    // todo: append game_id to game
+    // TODO: add game to database
+    // TODO: append game_id to game
 
     let game_id = 12345
 
@@ -105,7 +105,7 @@ app.get('/game/new', async (req, res) => {
 app.get('/game/playing', async (req, res) => {
     const token = req.query.token
 
-    //todo: return unfinished games
+    // TODO: return unfinished games
 
     res.json([
         {
@@ -149,7 +149,7 @@ app.get('/game/play', async (req, res) => {
     const game_id = req.query.game_id
     const rolls = req.query.rolls
 
-    //todo: insert progression logic
+    // TODO: insert progression logic
 
     res.status(200);
 })
