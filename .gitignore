@@ -8,5 +8,8 @@ node_modules/
 .env.local
 .env.*.local
 
+# Credentials
+*.pem
+
 # Persistence
 *.db
