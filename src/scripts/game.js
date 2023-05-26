@@ -3,20 +3,20 @@ import { GamePlayerCard } from './game_player_card.js';
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
 
-const gridWidth = 10;
-const gridHeight = 10;
-const gridSize = gridWidth * gridHeight;
+let gridWidth = 10;
+let gridHeight = 10;
+let gridSize = gridWidth * gridHeight;
 
-const squareSize = 60;
+let squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth);
 const colors = ['white', 'black'];
 
-const ladders = ladderPositions(state.board.board);
-const snakes = snakePositions(state.board.board);
+let ladders = [];
+let snakes = [];
 const snakeImages = [];
 
-const currentPlayer = document.getElementById('current-player');
-let players = JSON.parse(localStorage.getItem('players'));
-let playerIndex = state.roll.count % state.players.length;
+let players = [];
+const currentPlayer = {};
+let playerIndex = 0;
 
 function loadResources() {
     const paths = [];
@@ -204,8 +204,6 @@ function drawPlayer(position, index, icon) {
 }
 
 function initPlayers() {
-
-    const template = document.getElementById('player-card-template');
     if (players != null) {
         
         for (
@@ -214,6 +212,7 @@ function initPlayers() {
             player_index++
         ) {
             let player = players[player_index];
+            let template = document.getElementById('player-card-template');
             let player_card = new GamePlayerCard(template);
             let player_card_list = document.getElementById(
                 'player-list-container'
@@ -226,7 +225,6 @@ function initPlayers() {
         }
     }
 }
-
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
@@ -264,6 +262,21 @@ function ladderPositions(board) {
 }
 
 function initGame() {
+    let game_summary = JSON.parse(localStorage.getItem("game_summary"))
+    console.log(game_summary)
+    initState(game_summary);
+    gridWidth = game_summary.board.width
+    gridHeight = game_summary.board.height
+
+    squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth)
+
+    ladders = ladderPositions(state.board.board);
+    snakes = snakePositions(state.board.board);
+
+    players = game_summary.players;
+    playerIndex = state.roll.count % state.players.length;
+    //currentPlayer = players[playerIndex];
+
     setupPlayers();
     initPlayers();
     initBoard();

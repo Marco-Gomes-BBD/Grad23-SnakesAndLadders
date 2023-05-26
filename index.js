@@ -60,6 +60,10 @@ app.get('/auth', (_req, res) => {
     res.redirect(`${github_api_authorize}?client_id=${client_id}`);
 });
 
+app.get('/load-game', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'src/pages/load_game_page.html'))
+})
+
 app.get('/auth-callback', async (req, res) => {
     const code = req.query.code;
     const link = `${github_api_access_token}?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
@@ -75,8 +79,80 @@ app.get('/auth-callback', async (req, res) => {
     const details = await getDetails(data.access_token);
     console.log(details);
     res.cookie('token', data.access_token);
-    res.redirect('/');
+    res.redirect('/home');
 });
+
+app.get('/user-details', async (req, res) => {
+
+    const details = await getDetails(req.query.token);
+
+    res.json({login: details.login, avatar_url: details.avatar_url})
+})
+
+app.get('/game/new', async (req, res) => {
+    const token = req.query.token
+    const game = req.query.game
+    console.log(req)
+
+    // todo: add game to database
+    // todo: append game_id to game
+
+    let game_id = 12345
+
+    res.json({game_id: game_id})
+})
+
+app.get('/game/playing', async (req, res) => {
+    const token = req.query.token
+
+    //todo: return unfinished games
+
+    res.json([
+        {
+            game_id: 123,
+            board: {
+                seed: "please",
+                width: 10,
+                height: 10,
+            },
+            roll: {
+                seed: "work",
+                count: 0,
+            },
+            players: [
+                {player_name : "Player 1", player_color : "red", player_type : "human"},
+                {player_name : "Player 2", player_color : "pink", player_type : "human"},
+                {player_name : "Player 3", player_color : "purple", player_type : "human"}
+            ]
+        },
+
+        {
+            game_id: 321,
+            board: {
+                seed: "HEHE",
+                width: 10,
+                height: 10,
+            },
+            roll: {
+                seed: "HOHO",
+                count: 0,
+            },
+            players: [
+                {player_name : "Player 1", player_color : "blue", player_type : "human"},
+                {player_name : "Player 2", player_color : "green", player_type : "human"}
+            ]
+        }
+    ])
+})
+
+app.get('/game/play', async (req, res) => {
+    const game_id = req.query.game_id
+    const rolls = req.query.rolls
+
+    //todo: insert progression logic
+
+    res.status(200);
+})
 
 async function getDetails(token) {
     const link = github_api_user;
@@ -87,6 +163,7 @@ async function getDetails(token) {
 
     const response = await fetch(link, requestOptions);
     const details = await response.json();
+    console.log(details)
     return details;
 }
 

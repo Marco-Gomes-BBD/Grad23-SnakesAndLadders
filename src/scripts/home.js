@@ -1,6 +1,10 @@
-const newgame = () => {
-    window.location.assign('/player-select');
-};
+document.getElementById('new-game-btn').addEventListener('click', () => {
+    window.location.assign('/player-select')
+})
+
+document.getElementById('load-game-btn').addEventListener('click', () => {
+    window.location.assign('/load-game')
+})
 
 const modal = document.getElementById("how-to-play-modal");
 const closeBtn = modal.querySelector(".close");
@@ -12,10 +16,6 @@ function showInstructions() {
 function hideInstructions() {
 modal.style.display = "none";
 }
-
-document.getElementById('new-game-btn').addEventListener('click', () => {
-    newgame();
-});
 
 document.getElementById("how-to-play-btn").addEventListener("click", function() {
     fetch("/src/pages/how_to_play.html")
