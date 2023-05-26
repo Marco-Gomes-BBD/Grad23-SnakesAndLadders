@@ -212,6 +212,7 @@ function initPlayers() {
             player_index++
         ) {
             let player = players[player_index];
+            let template = document.getElementById('player-card-template');
             let player_card = new GamePlayerCard(template);
             let player_card_list = document.getElementById(
                 'player-list-container'
@@ -273,8 +274,8 @@ function initGame() {
     snakes = snakePositions(state.board.board);
 
     players = game_summary.players;
-    currentPlayer = document.getElementById('current-player');
     playerIndex = state.roll.count % state.players.length;
+    //currentPlayer = players[playerIndex];
 
     setupPlayers();
     initPlayers();

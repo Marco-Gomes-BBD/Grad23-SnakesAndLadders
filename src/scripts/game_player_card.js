@@ -9,7 +9,6 @@ class GamePlayerCard extends PlayerCard {
         this.setAttribute('player_icon', val);
         const icon_container = this.shadowRoot.getElementById('player-icon');
         icon_container.innerHTML = this.getAttribute('player_icon');
-    
     }
   }
 
