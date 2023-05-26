@@ -5,11 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="/index.css" />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="/src/styles/load_game.css"
-        />
+        <link rel="stylesheet" type="text/css" href="/styles/load_game.css" />
         <title>Document</title>
     </head>
     <body>
@@ -19,7 +15,7 @@
             <ol class="page-center" id="game-select"></ol>
         </main>
         <template id="history-element">
-            <link rel="stylesheet" href="src/styles/game_summary.css" />
+            <link rel="stylesheet" href="/styles/game_summary.css" />
             <link rel="stylesheet" href="/index.css" />
             <summary
                 class="main"
@@ -44,11 +40,11 @@
         </template>
     </body>
     <script type="module">
-        import { load_section } from "/src/scripts/loader.js";
-        load_section("nav-header", "/src/pages/nav.html");
+        import { load_section } from "/scripts/loader.js";
+        load_section("nav-header", "/pages/nav.html");
     </script>
-    <script type="module" src="/src/scripts/toast.js"></script>
-    <script type="module" src="/src/scripts/game-summary.js"></script>
-    <script type="module" src="/src/scripts/init.js"></script>
-    <script type="module" src="/src/scripts/load_game.js"></script>
+    <script type="module" src="/scripts/toast.js"></script>
+    <script type="module" src="/scripts/game-summary.js"></script>
+    <script type="module" src="/scripts/init.js"></script>
+    <script type="module" src="/scripts/load_game.js"></script>
 </html>

@@ -42,18 +42,18 @@ server_https.listen(port_https, () => {
     console.log(`Server started at https://localhost:${port_https}`);
 });
 
-app.use(express.static('.'));
+app.use(express.static('frontend'));
 
 app.get('/home', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/home_page.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/home_page.html'));
 });
 
 app.get('/game', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/game_page.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/game_page.html'));
 });
 
 app.get('/player-select', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/player_select.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/player_select.html'));
 });
 
 // NOTE: /game/load and /game/history can share the same game page.

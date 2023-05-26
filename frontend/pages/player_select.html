@@ -8,9 +8,9 @@
         <link
             rel="stylesheet"
             type="text/css"
-            href="/src/styles/player_select.css"
+            href="/styles/player_select.css"
         />
-        <link rel="stylesheet" type="text/css" href="/src/styles/toast.css" />
+        <link rel="stylesheet" type="text/css" href="/styles/toast.css" />
         <title>Document</title>
     </head>
     <body>
@@ -90,7 +90,7 @@
             </footer>
         </footer>
         <template id="player-card-template">
-            <link rel="stylesheet" href="src/styles/player_card.css" />
+            <link rel="stylesheet" href="/styles/player_card.css" />
             <section class="player_card">
                 <strong class="player-name" id="player-name">Rick</strong>
                 <color-block
@@ -102,12 +102,12 @@
             </section>
         </template>
     </body>
-    <script type="module" src="/src/scripts/toast.js"></script>
-    <script type="module" src="/src/scripts/player_card.js"></script>
-    <script type="module" src="/src/scripts/player_select.js"></script>
+    <script type="module" src="/scripts/toast.js"></script>
+    <script type="module" src="/scripts/player_card.js"></script>
+    <script type="module" src="/scripts/player_select.js"></script>
     <script type="module">
-        import { load_section } from "/src/scripts/loader.js";
-        load_section("nav-header", "/src/pages/nav.html");
+        import { load_section } from "/scripts/loader.js";
+        load_section("nav-header", "/pages/nav.html");
     </script>
-    <script type="module" src="/src/scripts/init.js"></script>
+    <script type="module" src="/scripts/init.js"></script>
 </html>

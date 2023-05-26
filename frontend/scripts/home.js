@@ -20,7 +20,7 @@ function hideInstructions() {
 document
     .getElementById('how-to-play-btn')
     .addEventListener('click', function () {
-        fetch('/src/pages/how_to_play.html')
+        fetch('/pages/how_to_play.html')
             .then((response) => response.text())
             .then((data) => {
                 document.getElementById('how-to-play-content').innerHTML = data;
