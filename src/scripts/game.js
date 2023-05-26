@@ -1,4 +1,4 @@
-import { PlayerCard } from './player_card.js';
+import { GamePlayerCard } from './temp.js';
 
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
@@ -13,6 +13,10 @@ const colors = ['white', 'black'];
 const ladders = ladderPositions(state.board.board);
 const snakes = snakePositions(state.board.board);
 const snakeImages = [];
+
+const currentPlayer = document.getElementById('current-player');
+let players = JSON.parse(localStorage.getItem('players'));
+let playerIndex = state.roll.count % state.players.length;
 
 function loadResources() {
     const paths = [];
@@ -29,12 +33,13 @@ function loadResources() {
 
 function movePlayer(moves) {
     gameStep(moves, state.players, state.board, state.roll);
-
     players.forEach((player, index) => {
         player.currentPosition = state.players[index];
     });
 
     initBoard();
+    playerIndex = state.roll.count % state.players.length;
+    currentPlayer.textContent = players[playerIndex].player_icon;
 }
 
 function initBoard() {
@@ -51,7 +56,7 @@ function initBoard() {
     });
 
     players.forEach((player, index) => {
-        drawPlayer(player.currentPosition, index, player.icon);
+        drawPlayer(player.currentPosition, index, player.player_icon);
     });
 }
 
@@ -189,7 +194,6 @@ function drawLadder(start, end) {
     }
     context.stroke();
     context.closePath();
-
     context.restore();
 }
 
@@ -200,42 +204,43 @@ function drawPlayer(position, index, icon) {
 }
 
 function initPlayers() {
-    let players = JSON.parse(localStorage.getItem('players'));
 
+    const template = document.getElementById('player-card-template');
     if (players != null) {
+        
         for (
             let player_index = 0;
             player_index < players.length;
             player_index++
         ) {
             let player = players[player_index];
+            let player_card = new GamePlayerCard(template);
             let player_card_list = document.getElementById(
                 'player-list-container'
             );
-            let player_card = new PlayerCard();
             player_card.player_name = player.player_name;
             player_card.player_color = player.player_color;
-            player_card_list.appendChild(player_card);
+            player_card.player_icon = player.player_icon;
             player_card_list.append(player_card);
+            player_card_list.appendChild(player_card);
         }
     }
 }
 
-let players = JSON.parse(localStorage.getItem('players'));
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
-
+    
     players = players.map((player, index) => {
         const icon = icons[index];
-
         return {
             player_color: player.player_color,
             player_name: player.player_name,
-            icon: icon,
+            player_icon: icon,
             currentPosition: 0,
         };
     });
+    currentPlayer.textContent = players[playerIndex].player_icon;
 }
 
 // Snake positions (start -> end)
@@ -259,8 +264,8 @@ function ladderPositions(board) {
 }
 
 function initGame() {
-    initPlayers();
     setupPlayers();
+    initPlayers();
     initBoard();
 }
 
@@ -271,7 +276,10 @@ document.body.onload = () => {
 
 rollBtn.addEventListener('click', () => {
     const roll = rollDie();
+    playerIndex = state.roll.count % state.players.length;
+    currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {
         movePlayer(roll);
     }, 4050);
+    
 });

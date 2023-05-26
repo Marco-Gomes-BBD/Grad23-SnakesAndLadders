@@ -23,6 +23,7 @@
                 </section>
                 <aside id="player-list-container">
                     <section id="controls-section">
+                        <p id="current-player"></p>
                         <article class="dice">
                             <section class="face front"></section>
                             <section class="face back"></section>
@@ -35,16 +36,18 @@
                             Roll Die
                         </button>
                     </section>
+                    
                 </aside>
             </section>
             <section id="player-card-template-section"></section>
         </main>
-        <template id="player-card-template">
+
+        <template id="player-card-template" class="game-player-card">
             <link rel="stylesheet" href="src/styles/player_card_style.css"/>
             <section class="player_card">
-                <strong class="player-name" id="player-name">Rick</strong>
+                <strong class="player-name" id="player-name"></strong>
                 <color-block class="rounded-container square-container" id="color-block">
-                    <strong class="player-number square-content">0</strong>
+                    <strong class="player-icon square-content" id="player-icon"></strong>
                 </color-block>
             </section>
         </template>
