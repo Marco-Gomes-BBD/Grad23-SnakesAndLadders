@@ -1,4 +1,5 @@
-if (document.cookie != null) {
+console.log(document.cookie)
+if (document.cookie != null && document.cookie != '') {
     fetch("/user-details?"+document.cookie)
     .then( response => response.json())
     .then( details => {
