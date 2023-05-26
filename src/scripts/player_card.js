@@ -1,7 +1,6 @@
 class PlayerCard extends HTMLElement {
-    constructor() {
+    constructor(template) {
         super();
-        const template = document.getElementById('player-card-template');
         const content = template.content;
         const shadowRoot = this.attachShadow({ mode: 'open' });
         shadowRoot.appendChild(content.cloneNode(true));

@@ -120,3 +120,21 @@ color-block[assigned='true'] {
     padding-bottom: 0.5rem;
     height: fit-content;
 }
+
+
+@media (max-width: 768px) {
+    main {
+        flex-direction: row;
+    }
+    .player-form{
+        width: 100%;
+        height: 60%;
+    }
+    #proceed-button{
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    .column{
+        padding: 0.4cm;
+    }
+}
