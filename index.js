@@ -77,7 +77,6 @@ app.get('/auth-callback', async (req, res) => {
     const response = await fetch(link, requestOptions);
     const data = await response.json();
     const details = await getDetails(data.access_token);
-    console.log(details);
     res.cookie('token', data.access_token);
     res.redirect('/home');
 });
@@ -91,7 +90,6 @@ app.get('/user-details', async (req, res) => {
 app.get('/game/new', async (req, res) => {
     const token = req.query.token;
     const game = req.query.game;
-    console.log(req);
 
     // TODO: add game to database
     // TODO: append game_id to game
@@ -182,7 +180,6 @@ async function getDetails(token) {
 
     const response = await fetch(link, requestOptions);
     const details = await response.json();
-    console.log(details);
     return details;
 }
 

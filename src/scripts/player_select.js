@@ -28,7 +28,6 @@ let add_player = () => {
 
     let player_card_list = document.getElementById('player-list');
     const template = document.getElementById('player-card-template');
-    console.log(template);
     let player_card = new PlayerCard(template);
     player_card.player_name = player_name;
     player_card.player_color = assign_color()

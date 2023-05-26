@@ -10,7 +10,6 @@ class GameSummary extends HTMLElement {
 
             const b = this.shadowRoot.getElementById('select-btn');
             b.addEventListener('click', () => {
-                console.log(summary.game_id);
                 localStorage.setItem('game_summary', JSON.stringify(summary));
                 window.location.assign('/game?game_id=' + summary.game_id);
             });
@@ -23,7 +22,6 @@ class GameSummary extends HTMLElement {
 
     set summary(summary) {
         this.setAttribute('summary', summary);
-        console.log(summary);
 
         const turn_p = this.shadowRoot.getElementById('player-turn');
         const board_detail_p = this.shadowRoot.getElementById('board-detail');
