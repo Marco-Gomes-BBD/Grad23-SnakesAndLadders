@@ -1,4 +1,4 @@
-import { GamePlayerCard } from './temp.js';
+import { GamePlayerCard } from './game_player_card.js';
 
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
