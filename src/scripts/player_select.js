@@ -10,8 +10,7 @@ let add_player = () => {
     }
 
     let form = document.getElementById("player-form")
-    let player_name = document.getElementById("player-name").value
-
+    let player_name = document.getElementById("player-name").value;
     let taken = false;
     for (let i = 0; i < players.length; i++){
         if(players[i].player_name.toUpperCase() === player_name.toUpperCase()){
@@ -21,22 +20,25 @@ let add_player = () => {
     }
 
     if (taken) {
-        show_toast('that name is taken')
-        return
+        show_toast('that name is taken');
+        return;
     }
     
-    let player_card_list = document.getElementById("player-list")
-    let player_card = new PlayerCard()
-    player_card.player_name = player_name
-    player_card.player_color = assign_color().getAttribute("style").split(':')[1]
+    let player_card_list = document.getElementById("player-list");
+    const template = document.getElementById('player-card-template');
+    let player_card = new PlayerCard(template);
+    player_card.player_name = player_name;
+    player_card.player_color = assign_color().getAttribute("style").split(':')[1];
+    player_card.player_icon = '';
     player_card_list.appendChild(player_card)
     player_card_list.append(player_card)
 
     players.push ({
         "player_name": player_card.player_name, 
         "player_color": player_card.player_color,
-        "player_type": "human"
-    })
+        "player_type": "human",
+        "player_icon": player_card.player_icon,
+    });
 
     if (players.length >= 2) {
         const proceed_button = document.getElementById("proceed-button")
@@ -45,7 +47,7 @@ let add_player = () => {
         proceed_button.removeAttribute("disabled")
     } 
 
-    form.reset()
+    form.reset();
 }
 
 const proceed = async () => {
@@ -72,7 +74,7 @@ let selected_color = null
 const toggle_color = (sender) => {
     
     if (sender.getAttribute("assigned")) {
-        sender.setAttribute('selected', false)
+        sender.setAttribute('selected', false);
         return
     }
 

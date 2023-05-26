@@ -1,4 +1,4 @@
-import { PlayerCard } from './player_card.js';
+import { GamePlayerCard } from './game_player_card.js';
 
 const canvas = document.getElementById('board');
 let context = canvas.getContext('2d');
@@ -15,6 +15,8 @@ let snakes = [];
 const snakeImages = [];
 
 let players = [];
+const currentPlayer = {};
+let playerIndex = 0;
 
 function loadResources() {
     const paths = [];
@@ -31,12 +33,13 @@ function loadResources() {
 
 function movePlayer(moves) {
     gameStep(moves, state.players, state.board, state.roll);
-
     players.forEach((player, index) => {
         player.currentPosition = state.players[index];
     });
 
     initBoard();
+    playerIndex = state.roll.count % state.players.length;
+    currentPlayer.textContent = players[playerIndex].player_icon;
 }
 
 function initBoard() {
@@ -53,7 +56,7 @@ function initBoard() {
     });
 
     players.forEach((player, index) => {
-        drawPlayer(player.currentPosition, index, player.icon);
+        drawPlayer(player.currentPosition, index, player.player_icon);
     });
 }
 
@@ -191,7 +194,6 @@ function drawLadder(start, end) {
     }
     context.stroke();
     context.closePath();
-
     context.restore();
 }
 
@@ -203,37 +205,39 @@ function drawPlayer(position, index, icon) {
 
 function initPlayers() {
     if (players != null) {
+        
         for (
             let player_index = 0;
             player_index < players.length;
             player_index++
         ) {
             let player = players[player_index];
+            let player_card = new GamePlayerCard(template);
             let player_card_list = document.getElementById(
                 'player-list-container'
             );
-            let player_card = new PlayerCard();
             player_card.player_name = player.player_name;
             player_card.player_color = player.player_color;
-            player_card_list.appendChild(player_card);
+            player_card.player_icon = player.player_icon;
             player_card_list.append(player_card);
+            player_card_list.appendChild(player_card);
         }
     }
 }
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
-
+    
     players = players.map((player, index) => {
         const icon = icons[index];
-
         return {
             player_color: player.player_color,
             player_name: player.player_name,
-            icon: icon,
+            player_icon: icon,
             currentPosition: 0,
         };
     });
+    currentPlayer.textContent = players[playerIndex].player_icon;
 }
 
 // Snake positions (start -> end)
@@ -269,9 +273,11 @@ function initGame() {
     snakes = snakePositions(state.board.board);
 
     players = game_summary.players;
+    currentPlayer = document.getElementById('current-player');
+    playerIndex = state.roll.count % state.players.length;
 
-    initPlayers();
     setupPlayers();
+    initPlayers();
     initBoard();
 }
 
@@ -282,7 +288,10 @@ document.body.onload = () => {
 
 rollBtn.addEventListener('click', () => {
     const roll = rollDie();
+    playerIndex = state.roll.count % state.players.length;
+    currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {
         movePlayer(roll);
     }, 4050);
+    
 });
