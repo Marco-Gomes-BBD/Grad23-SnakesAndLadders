@@ -1,7 +1,7 @@
 import { GameSummary } from './game-summary.js';
 
 if (document.cookie != null) {
-    fetch('/game/playing?' + document.cookie)
+    fetch('/api/ongoing?' + document.cookie)
         .then((response) => response.json())
         .then((details) => {
             const container = document.getElementById('game-select');
