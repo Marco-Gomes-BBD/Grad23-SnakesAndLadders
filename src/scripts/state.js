@@ -93,14 +93,8 @@ function printBoard(state) {
 
 let summary = {};
 let state = {};
-let pretty = {};
 
 function initState(new_summary) {
     summary = new_summary
     state = getState(summary);
-    pretty = { roll: state.roll, players: state.players };
 }
-
-
-// console.log(JSON.stringify(pretty, undefined, 1));
-// printBoard(state.board);
