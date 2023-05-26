@@ -15,7 +15,7 @@ let snakes = [];
 const snakeImages = [];
 
 let players = [];
-const currentPlayer = {};
+const currentPlayer = document.getElementById('current-player');
 let playerIndex = 0;
 
 function loadResources() {
@@ -263,7 +263,6 @@ function ladderPositions(board) {
 
 function initGame() {
     let game_summary = JSON.parse(localStorage.getItem("game_summary"))
-    console.log(game_summary)
     initState(game_summary);
     gridWidth = game_summary.board.width
     gridHeight = game_summary.board.height
@@ -275,7 +274,7 @@ function initGame() {
 
     players = game_summary.players;
     playerIndex = state.roll.count % state.players.length;
-    //currentPlayer = players[playerIndex];
+    // currentPlayer = players[playerIndex];
 
     setupPlayers();
     initPlayers();
