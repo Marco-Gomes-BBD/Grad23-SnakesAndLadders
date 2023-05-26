@@ -8,7 +8,7 @@ const path = require('path');
 const database = require('./database');
 
 const port_http = process.env.PORT_HTTP || 8080;
-const port_https = process.env.PORT_HTTPS || 8080;
+const port_https = process.env.PORT_HTTPS || 8081;
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
@@ -17,7 +17,7 @@ const ssl_path = process.env.SSL_PATH || '';
 const ssl_file_public_key = path.join(ssl_path, 'cert.pem');
 const ssl_file_private_key = path.join(ssl_path, 'privkey.pem');
 const ssl_file_chain = path.join(ssl_path, 'chain.pem');
-const ssl_file_chainfull = path.join(ssl_path, 'chainfull.pem');
+const ssl_file_chainfull = path.join(ssl_path, 'fullchain.pem');
 chain_files = [ssl_file_chain, ssl_file_chainfull];
 
 const github_api_authorize = 'https://github.com/login/oauth/authorize';
@@ -196,7 +196,7 @@ function readFileSyncSafe(file) {
 }
 
 function readFilesSyncSafe(files) {
-    return files.map(readFileSyncSafe).filter((cert) => cert !== null);
+    return files.map(readFileSyncSafe).filter((content) => content !== null);
 }
 
 // Cleanup
