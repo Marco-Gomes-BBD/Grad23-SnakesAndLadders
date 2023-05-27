@@ -80,7 +80,7 @@ function initBoard() {
         drawLadder(ladder[0], ladder[1]);
     });
 
-    const prng = new Math.seedrandom('snakes');
+    const prng = new Math.seedrandom(state.board.seed);
     snakes.forEach((snake) => {
         drawSnake(snake[0], snake[1], prng);
     });
@@ -141,46 +141,36 @@ Math.toDegree = function (radians) {
 
 function drawSnake(head, tail, prng) {
     // get random snake
-    const num = getRandomInt(prng, 1, 4);
+    const num = getRandomInt(prng, 0, resources.snakes.length);
     const image = resources.snakes[num];
     if (image === null) return;
 
-    const width = 65;
-    const halfWidth = Math.floor(width / 2);
-    const [[startx, starty], [endx, endy]] = getJump(head, tail);
-    const dx = endx - startx;
-    const dy = endy - starty;
+    const [[x1, y1], [x2, y2]] = getJump(head, tail);
+    const dx = x2 - x1;
+    const dy = y2 - y1;
     const angleRadian = Math.atan2(dy, dx);
     const length = Math.sqrt(dx * dx + dy * dy);
 
-    const xOffset = startx / 60 - endx / 60;
     context.save();
-    context.translate(startx, starty);
+    context.translate(x1, y1);
+    context.rotate(angleRadian);
 
-    if (Math.abs(xOffset) !== 1) {
-        if (startx / 60 < endx / 60) {
-            // left to right
-            context.save();
-            context.translate(0, halfWidth);
-            context.rotate(-Math.PI / 2 + angleRadian);
-            context.transform(1, 0, -0.05, 1.1, 0, 0);
-            context.drawImage(image, 0, 0, width, length);
-            context.restore();
-        } else {
-            // right to left
-            context.save();
-            context.translate(0, -halfWidth / 2);
-            context.rotate(-Math.PI / 2 + angleRadian);
-            context.transform(1, 0, 0, 1.1, 0, 0);
-            // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
-            context.drawImage(image, 0, 0, width, length);
-            context.restore();
-        }
-    } else {
-        // vertical snakes
-        context.transform(1, 0, 0.05, 1, 0, 0);
-        context.drawImage(image, 0, halfWidth / 2, width, length);
+    context.strokeStyle = 'red';
+    context.lineWidth = 5;
+
+    const width = image.width / 10;
+    const height = length;
+    context.beginPath();
+    /*
+    if (false) {
+        context.moveTo(0, 0);
+        context.lineTo(length, 0);
+        context.stroke();
+        context.closePath();
     }
+    */
+    context.rotate(-Math.PI * 0.5);
+    context.drawImage(image, -width / 2, 0, width, height);
 
     context.restore();
 }

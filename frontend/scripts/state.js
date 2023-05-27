@@ -34,7 +34,7 @@ function generateBoard(summary) {
         board[start] = delta;
     }
 
-    return { board, width, height };
+    return { board, width, height, seed: summary.seed };
 }
 
 function gameStep(die, players, board, roll) {
