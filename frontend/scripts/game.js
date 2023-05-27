@@ -322,7 +322,7 @@ document.body.onload = () => {
 };
 
 rollBtn.addEventListener('click', () => {
-    const roll = rollDie();
+    const roll = rollDie(state.roll.prng);
     playerIndex = state.roll.count % state.players.length;
     currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {

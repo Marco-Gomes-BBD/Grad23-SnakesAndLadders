@@ -53,16 +53,17 @@ function gameStep(die, players, board, roll) {
 }
 
 function getRollState(summary, players, board) {
+    const prng = new Math.seedrandom(summary.seed);
     const roll = {
         seed: summary.seed,
+        prng,
         count: 0,
     };
 
     const rollMin = 1;
     const rollMax = 6 + 1;
-    const prngRoll = new Math.seedrandom(roll.seed);
     const rolls = Array.from({ length: summary.count }, () =>
-        getRandomInt(prngRoll, rollMin, rollMax)
+        getRandomInt(roll.prng, rollMin, rollMax)
     );
 
     rolls.forEach((die) => gameStep(die, players, board, roll));

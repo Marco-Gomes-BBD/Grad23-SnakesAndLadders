@@ -1,10 +1,9 @@
 const dice = document.querySelector('.dice');
 const rollBtn = document.querySelector('#roll-btn');
 
-const prng = new Math.seedrandom('Hello');
 const rollDistribution = [0, 0, 0, 0, 0, 0];
 
-const randomRoll = () => {
+const randomRoll = (prng) => {
     const random = getRandomInt(prng, 1, 7);
     rollDistribution[random - 1] += 1;
 
@@ -28,8 +27,8 @@ const animateDie = (random) => {
     }, 3050);
 };
 
-const rollDie = () => {
-    const random = randomRoll();
+const rollDie = (prng) => {
+    const random = randomRoll(prng);
     animateDie(random);
     return random;
 };
