@@ -13,22 +13,51 @@ const colors = ['white', 'black'];
 
 let ladders = [];
 let snakes = [];
-const snakeImages = [];
 
 let players = [];
 const currentPlayer = document.getElementById('current-player');
 let playerIndex = 0;
 
-function loadResources() {
-    const paths = [];
-    paths[0] = '/res/snakes/snake1.png';
-    paths[1] = '/res/snakes/snake2.png';
-    paths[2] = '/res/snakes/snake3.png';
+const resources = {};
+function loadResources(paths, callback) {
+    const categories = Object.keys(paths);
+    const totalResources = categories.reduce(
+        (total, key) => total + paths[key].length,
+        0
+    );
+    let successResources = 0;
+    let errorResources = 0;
 
-    paths.forEach((src) => {
-        const image = new Image();
-        image.src = src;
-        snakeImages.push(image);
+    function onResourceLoad(category, index, image) {
+        if (!resources.hasOwnProperty(category)) resources[category] = [];
+        resources[category][index] = image;
+
+        if (image !== null) successResources++;
+        else errorResources++;
+
+        const total = successResources + errorResources;
+        if (total === totalResources) callback();
+    }
+
+    function loadListener(category, path, index) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => {
+                onResourceLoad(category, index, image);
+                resolve();
+            };
+            image.onerror = (error) => {
+                console.error(`Failed to load ${category} resource:`, error);
+                onResourceLoad(category, index, null);
+                reject();
+            };
+            image.src = path;
+        });
+    }
+
+    categories.forEach((category) => {
+        const categoryPaths = paths[category];
+        categoryPaths.map((path, index) => loadListener(category, path, index));
     });
 }
 
@@ -113,7 +142,8 @@ Math.toDegree = function (radians) {
 function drawSnake(head, tail, prng) {
     // get random snake
     const num = getRandomInt(prng, 1, 4);
-    const image = snakeImages[num];
+    const image = resources.snakes[num];
+    if (image === null) return;
 
     const width = 65;
     const halfWidth = Math.floor(width / 2);
@@ -124,39 +154,35 @@ function drawSnake(head, tail, prng) {
     const length = Math.sqrt(dx * dx + dy * dy);
 
     const xOffset = startx / 60 - endx / 60;
-    if (image.complete) {
-        context.save();
-        context.translate(startx, starty);
+    context.save();
+    context.translate(startx, starty);
 
-        if (Math.abs(xOffset) !== 1) {
-            if (startx / 60 < endx / 60) {
-                // left to right
-                context.save();
-                context.translate(0, halfWidth);
-                context.rotate(-Math.PI / 2 + angleRadian);
-                context.transform(1, 0, -0.05, 1.1, 0, 0);
-                context.drawImage(image, 0, 0, width, length);
-                context.restore();
-            } else {
-                // right to left
-                context.save();
-                context.translate(0, -halfWidth / 2);
-                context.rotate(-Math.PI / 2 + angleRadian);
-                context.transform(1, 0, 0, 1.1, 0, 0);
-                // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
-                context.drawImage(image, 0, 0, width, length);
-                context.restore();
-            }
+    if (Math.abs(xOffset) !== 1) {
+        if (startx / 60 < endx / 60) {
+            // left to right
+            context.save();
+            context.translate(0, halfWidth);
+            context.rotate(-Math.PI / 2 + angleRadian);
+            context.transform(1, 0, -0.05, 1.1, 0, 0);
+            context.drawImage(image, 0, 0, width, length);
+            context.restore();
         } else {
-            // vertical snakes
-            context.transform(1, 0, 0.05, 1, 0, 0);
-            context.drawImage(image, 0, halfWidth / 2, width, length);
+            // right to left
+            context.save();
+            context.translate(0, -halfWidth / 2);
+            context.rotate(-Math.PI / 2 + angleRadian);
+            context.transform(1, 0, 0, 1.1, 0, 0);
+            // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
+            context.drawImage(image, 0, 0, width, length);
+            context.restore();
         }
-
-        context.restore();
     } else {
-        console.log('Snake could not be drawn.');
+        // vertical snakes
+        context.transform(1, 0, 0.05, 1, 0, 0);
+        context.drawImage(image, 0, halfWidth / 2, width, length);
     }
+
+    context.restore();
 }
 
 function drawLadder(start, end) {
@@ -275,7 +301,6 @@ function initGame() {
 
     players = game_summary.players;
     playerIndex = state.roll.count % state.players.length;
-    // currentPlayer = players[playerIndex];
 
     setupPlayers();
     initPlayers();
@@ -283,8 +308,17 @@ function initGame() {
 }
 
 document.body.onload = () => {
-    loadResources();
-    setTimeout(initGame, 200);
+    const paths = {
+        snakes: [
+            '/res/snakes/snake1.png',
+            '/res/snakes/snake2.png',
+            '/res/snakes/snake3.png',
+        ],
+    };
+
+    loadResources(paths, () => {
+        initGame();
+    });
 };
 
 rollBtn.addEventListener('click', () => {
