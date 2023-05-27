@@ -80,17 +80,17 @@ color-block {
     margin-bottom: 0.5rem;
 }
 
-color-block[selected='true'] {
+color-block[selected="true"] {
     background-color: var(--bgcol);
     border-radius: 10mm;
     border-width: 1mm;
 }
 
-color-block[selected='false'] {
+color-block[selected="false"] {
     background-color: var(--bgcol);
 }
 
-color-block[assigned='true'] {
+color-block[assigned="true"] {
     background-color: grey;
 }
 
@@ -103,12 +103,12 @@ color-block[assigned='true'] {
     font-size: xx-large;
 }
 
-.square-container [selected|='true'] {
+.square-container [selected|="true"] {
     width: 25%;
 }
 
 .square-container:after {
-    content: '';
+    content: "";
     padding-bottom: 100%;
 }
 
@@ -121,20 +121,19 @@ color-block[assigned='true'] {
     height: fit-content;
 }
 
-
 @media (max-width: 768px) {
     main {
         flex-direction: row;
     }
-    .player-form{
+    .player-form {
         width: 100%;
         height: 60%;
     }
-    #proceed-button{
+    #proceed-button {
         width: 100%;
         margin-bottom: 2rem;
     }
-    .column{
+    .column {
         padding: 0.4cm;
     }
 }

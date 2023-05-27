@@ -1,5 +1,5 @@
 * {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-weight: 700 bold;
 }
 
@@ -163,9 +163,8 @@ nav {
     flex-grow: 4;
 }
 
-
 @media (max-width: 768px) {
-    .page-center{
+    .page-center {
         width: 70%;
     }
 }

@@ -5,12 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="/index.css" />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="/src/styles/game_page_style.css"
-        />
-        <link rel="stylesheet" type="text/css" href="/src/styles/dice.css" />
+        <link rel="stylesheet" type="text/css" href="/styles/game_page.css" />
+        <link rel="stylesheet" type="text/css" href="/styles/dice.css" />
         <title>Snakes And Ladders</title>
     </head>
     <body>
@@ -23,7 +19,7 @@
                 </section>
                 <aside id="player-list-container">
                     <section id="controls-section">
-                            <p id="current-player"></p>
+                        <p id="current-player"></p>
                         <article class="dice">
                             <section class="face front"></section>
                             <section class="face back"></section>
@@ -36,38 +32,34 @@
                             Roll Die
                         </button>
                     </section>
-                    
                 </aside>
             </section>
             <section id="player-card-template-section"></section>
         </main>
 
         <template id="player-card-template" class="game-player-card">
-            <link rel="stylesheet" href="src/styles/player_card_style.css"/>
+            <link rel="stylesheet" href="/styles/player_card.css" />
             <section class="player_card">
                 <strong class="player-name" id="player-name"></strong>
-                <color-block class="rounded-container square-container" id="color-block">
-                    <strong class="player-icon square-content" id="player-icon"></strong>
+                <color-block
+                    class="rounded-container square-container"
+                    id="color-block"
+                >
+                    <strong
+                        class="player-icon square-content"
+                        id="player-icon"
+                    ></strong>
                 </color-block>
             </section>
         </template>
     </body>
     <script type="module">
-        import { load_section } from '/src/scripts/loader.js';
-        load_section('nav-header', '/src/pages/nav.html');
+        import { load_section } from "/scripts/loader.js";
+        load_section("nav-header", "/pages/nav.html");
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
-    <script type="module" src="/src/scripts/game.js"></script>
-    <script type="text/javascript" src="/src/scripts/dice.js"></script>
-    <script type="text/javascript" src="/src/scripts/state.js"></script>
-    <script type="module" src="/src/scripts/init.js"></script>
-
+    <script type="module" src="/scripts/game.js"></script>
+    <script type="text/javascript" src="/scripts/dice.js"></script>
+    <script type="text/javascript" src="/scripts/state.js"></script>
+    <script type="module" src="/scripts/init.js"></script>
 </html>
-
-<!-- Snake Images Credits
-    <a href="https://www.clipartmax.com/middle/m2i8b1N4G6m2i8A0_long-clipart-snake-ladder-snakes-and-ladders-cartoon/" target="_blank">Long Clipart Snake Ladder - Snakes And Ladders Cartoon @clipartmax.com</a>
--->
-
-<!-- Illustration Designed By smashingstocks Fro
-    <a href="https://lovepik.com/image-450069396/flat-game-background-of-volcanoes-eruption.html">LovePik.com</a>
--->

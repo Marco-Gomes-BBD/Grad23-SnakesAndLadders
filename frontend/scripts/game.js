@@ -7,27 +7,57 @@ let gridWidth = 10;
 let gridHeight = 10;
 let gridSize = gridWidth * gridHeight;
 
-let squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth);
+let squareSize =
+    Math.min(canvas.width, canvas.height) / Math.max(gridHeight, gridWidth);
 const colors = ['white', 'black'];
 
 let ladders = [];
 let snakes = [];
-const snakeImages = [];
 
 let players = [];
 const currentPlayer = document.getElementById('current-player');
 let playerIndex = 0;
 
-function loadResources() {
-    const paths = [];
-    paths[0] = '/res/snakes/snake1.png';
-    paths[1] = '/res/snakes/snake2.png';
-    paths[2] = '/res/snakes/snake3.png';
+const resources = {};
+function loadResources(paths, callback) {
+    const categories = Object.keys(paths);
+    const totalResources = categories.reduce(
+        (total, key) => total + paths[key].length,
+        0
+    );
+    let successResources = 0;
+    let errorResources = 0;
 
-    paths.forEach((src) => {
-        const image = new Image();
-        image.src = src;
-        snakeImages.push(image);
+    function onResourceLoad(category, index, image) {
+        if (!resources.hasOwnProperty(category)) resources[category] = [];
+        resources[category][index] = image;
+
+        if (image !== null) successResources++;
+        else errorResources++;
+
+        const total = successResources + errorResources;
+        if (total === totalResources) callback();
+    }
+
+    function loadListener(category, path, index) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => {
+                onResourceLoad(category, index, image);
+                resolve();
+            };
+            image.onerror = (error) => {
+                console.error(`Failed to load ${category} resource:`, error);
+                onResourceLoad(category, index, null);
+                reject();
+            };
+            image.src = path;
+        });
+    }
+
+    categories.forEach((category) => {
+        const categoryPaths = paths[category];
+        categoryPaths.map((path, index) => loadListener(category, path, index));
     });
 }
 
@@ -50,7 +80,7 @@ function initBoard() {
         drawLadder(ladder[0], ladder[1]);
     });
 
-    const prng = new Math.seedrandom('snakes');
+    const prng = new Math.seedrandom(state.board.seed);
     snakes.forEach((snake) => {
         drawSnake(snake[0], snake[1], prng);
     });
@@ -111,51 +141,38 @@ Math.toDegree = function (radians) {
 
 function drawSnake(head, tail, prng) {
     // get random snake
-    const num = getRandomInt(prng, 1, 4);
-    const image = snakeImages[num];
+    const num = getRandomInt(prng, 0, resources.snakes.length);
+    const image = resources.snakes[num];
+    if (image === null) return;
 
-    const width = 65;
-    const halfWidth = Math.floor(width / 2);
-    const [[startx, starty], [endx, endy]] = getJump(head, tail);
-    const dx = endx - startx;
-    const dy = endy - starty;
+    const [[x1, y1], [x2, y2]] = getJump(head, tail);
+    const dx = x2 - x1;
+    const dy = y2 - y1;
     const angleRadian = Math.atan2(dy, dx);
     const length = Math.sqrt(dx * dx + dy * dy);
 
-    const xOffset = startx / 60 - endx / 60;
-    if (image.complete) {
-        context.save();
-        context.translate(startx, starty);
+    context.save();
+    context.translate(x1, y1);
+    context.rotate(angleRadian);
 
-        if (Math.abs(xOffset) !== 1) {
-            if (startx / 60 < endx / 60) {
-                // left to right
-                context.save();
-                context.translate(0, halfWidth);
-                context.rotate(-Math.PI / 2 + angleRadian);
-                context.transform(1, 0, -0.05, 1.1, 0, 0);
-                context.drawImage(image, 0, 0, width, length);
-                context.restore();
-            } else {
-                // right to left
-                context.save();
-                context.translate(0, -halfWidth / 2);
-                context.rotate(-Math.PI / 2 + angleRadian);
-                context.transform(1, 0, 0, 1.1, 0, 0);
-                // context.transform(1.1, 0.5, 0.22 ,1.01, 0, 0);
-                context.drawImage(image, 0, 0, width, length);
-                context.restore();
-            }
-        } else {
-            // vertical snakes
-            context.transform(1, 0, 0.05, 1, 0, 0);
-            context.drawImage(image, 0, halfWidth / 2, width, length);
-        }
+    context.strokeStyle = 'red';
+    context.lineWidth = 5;
 
-        context.restore();
-    } else {
-        console.log('Snake could not be drawn.');
+    const width = image.width / 10;
+    const height = length;
+    context.beginPath();
+    /*
+    if (false) {
+        context.moveTo(0, 0);
+        context.lineTo(length, 0);
+        context.stroke();
+        context.closePath();
     }
+    */
+    context.rotate(-Math.PI * 0.5);
+    context.drawImage(image, -width / 2, 0, width, height);
+
+    context.restore();
 }
 
 function drawLadder(start, end) {
@@ -205,7 +222,6 @@ function drawPlayer(position, index, icon) {
 
 function initPlayers() {
     if (players != null) {
-        
         for (
             let player_index = 0;
             player_index < players.length;
@@ -228,7 +244,7 @@ function initPlayers() {
 
 function setupPlayers() {
     const icons = ['🐤', '🥚', '🦚', '🐾'];
-    
+
     players = players.map((player, index) => {
         const icon = icons[index];
         return {
@@ -262,19 +278,19 @@ function ladderPositions(board) {
 }
 
 function initGame() {
-    let game_summary = JSON.parse(localStorage.getItem("game_summary"))
+    let game_summary = JSON.parse(localStorage.getItem('game_summary'));
     initState(game_summary);
-    gridWidth = game_summary.board.width
-    gridHeight = game_summary.board.height
+    gridWidth = game_summary.board.width;
+    gridHeight = game_summary.board.height;
 
-    squareSize = Math.min(canvas.width, canvas.height)/Math.max(gridHeight, gridWidth)
+    squareSize =
+        Math.min(canvas.width, canvas.height) / Math.max(gridHeight, gridWidth);
 
     ladders = ladderPositions(state.board.board);
     snakes = snakePositions(state.board.board);
 
     players = game_summary.players;
     playerIndex = state.roll.count % state.players.length;
-    // currentPlayer = players[playerIndex];
 
     setupPlayers();
     initPlayers();
@@ -282,16 +298,24 @@ function initGame() {
 }
 
 document.body.onload = () => {
-    loadResources();
-    setTimeout(initGame, 200);
+    const paths = {
+        snakes: [
+            '/res/snakes/snake1.png',
+            '/res/snakes/snake2.png',
+            '/res/snakes/snake3.png',
+        ],
+    };
+
+    loadResources(paths, () => {
+        initGame();
+    });
 };
 
 rollBtn.addEventListener('click', () => {
-    const roll = rollDie();
+    const roll = rollDie(state.roll.prng);
     playerIndex = state.roll.count % state.players.length;
     currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {
         movePlayer(roll);
     }, 4050);
-    
 });

@@ -8,7 +8,7 @@ const path = require('path');
 const database = require('./database');
 
 const port_http = process.env.PORT_HTTP || 8080;
-const port_https = process.env.PORT_HTTPS || 8080;
+const port_https = process.env.PORT_HTTPS || 8081;
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
@@ -17,7 +17,7 @@ const ssl_path = process.env.SSL_PATH || '';
 const ssl_file_public_key = path.join(ssl_path, 'cert.pem');
 const ssl_file_private_key = path.join(ssl_path, 'privkey.pem');
 const ssl_file_chain = path.join(ssl_path, 'chain.pem');
-const ssl_file_chainfull = path.join(ssl_path, 'chainfull.pem');
+const ssl_file_chainfull = path.join(ssl_path, 'fullchain.pem');
 chain_files = [ssl_file_chain, ssl_file_chainfull];
 
 const github_api_authorize = 'https://github.com/login/oauth/authorize';
@@ -42,27 +42,33 @@ server_https.listen(port_https, () => {
     console.log(`Server started at https://localhost:${port_https}`);
 });
 
-app.use(express.static('.'));
+app.use(express.static('frontend'));
 
 app.get('/home', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/home_page.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/home_page.html'));
 });
 
 app.get('/game', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/game_page.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/game_page.html'));
 });
 
 app.get('/player-select', function (_req, res) {
-    res.sendFile(path.join(__dirname, 'src/pages/player_select.html'));
+    res.sendFile(path.join(__dirname, 'frontend/pages/player_select.html'));
+});
+
+// NOTE: /game/load and /game/history can share the same game page.
+//       Only difference is _what_ data is retrieved.
+app.get('/game/load', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/pages/load_game_page.html'));
+});
+
+app.get('/game/history', (_req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/pages/load_game_page.html'));
 });
 
 app.get('/auth', (_req, res) => {
     res.redirect(`${github_api_authorize}?client_id=${client_id}`);
 });
-
-app.get('/load-game', (_req, res) => {
-    res.sendFile(path.join(__dirname, 'src/pages/load_game_page.html'))
-})
 
 app.get('/auth-callback', async (req, res) => {
     const code = req.query.code;
@@ -76,83 +82,56 @@ app.get('/auth-callback', async (req, res) => {
 
     const response = await fetch(link, requestOptions);
     const data = await response.json();
-    const details = await getDetails(data.access_token);
-    console.log(details);
     res.cookie('token', data.access_token);
     res.redirect('/home');
 });
 
 app.get('/user-details', async (req, res) => {
-
     const details = await getDetails(req.query.token);
 
-    res.json({login: details.login, avatar_url: details.avatar_url})
-})
+    res.json({ login: details.login, avatar_url: details.avatar_url });
+});
 
-app.get('/game/new', async (req, res) => {
-    const token = req.query.token
-    const game = req.query.game
-    console.log(req)
+app.get('/api/new', async (req, res) => {
+    const token = req.query.token;
+    const game = req.query.game;
 
-    // todo: add game to database
-    // todo: append game_id to game
+    // TODO: add game to database
+    // TODO: append game_id to game
+    // NOTE: Take a look at database.api.newGame
 
-    let game_id = 12345
+    let game_id = 12345;
+    res.json({ game_id: game_id });
+});
 
-    res.json({game_id: game_id})
-})
+app.get('/api/ongoing', async (req, res) => {
+    const token = req.query.token;
 
-app.get('/game/playing', async (req, res) => {
-    const token = req.query.token
+    // TODO: return unfinished games
+    // NOTE: Take a look at database.api.getLoadGames
 
-    //todo: return unfinished games
+    res.json([]);
+});
 
-    res.json([
-        {
-            game_id: 123,
-            board: {
-                seed: "please",
-                width: 10,
-                height: 10,
-            },
-            roll: {
-                seed: "work",
-                count: 0,
-            },
-            players: [
-                {player_name : "Player 1", player_color : "red", player_type : "human"},
-                {player_name : "Player 2", player_color : "pink", player_type : "human"},
-                {player_name : "Player 3", player_color : "purple", player_type : "human"}
-            ]
-        },
+app.get('/api/history', async (req, res) => {
+    const token = req.query.token;
 
-        {
-            game_id: 321,
-            board: {
-                seed: "HEHE",
-                width: 10,
-                height: 10,
-            },
-            roll: {
-                seed: "HOHO",
-                count: 0,
-            },
-            players: [
-                {player_name : "Player 1", player_color : "blue", player_type : "human"},
-                {player_name : "Player 2", player_color : "green", player_type : "human"}
-            ]
-        }
-    ])
-})
+    // TODO: return finished games
+    // NOTE: Take a look at database.api.getHistory
+
+    res.json([]);
+});
 
 app.get('/game/play', async (req, res) => {
-    const game_id = req.query.game_id
-    const rolls = req.query.rolls
+    const game_id = req.query.game_id;
+    const rolls = req.query.rolls;
+    // NOTE: database.api.getGame can be used to retrieve the game
 
-    //todo: insert progression logic
+    // TODO: insert progression logic
+    // NOTE: Check the getState function, it already does this logic.
 
     res.status(200);
-})
+});
 
 async function getDetails(token) {
     const link = github_api_user;
@@ -163,7 +142,6 @@ async function getDetails(token) {
 
     const response = await fetch(link, requestOptions);
     const details = await response.json();
-    console.log(details)
     return details;
 }
 
@@ -177,7 +155,7 @@ function readFileSyncSafe(file) {
 }
 
 function readFilesSyncSafe(files) {
-    return files.map(readFileSyncSafe).filter((cert) => cert !== null);
+    return files.map(readFileSyncSafe).filter((content) => content !== null);
 }
 
 // Cleanup

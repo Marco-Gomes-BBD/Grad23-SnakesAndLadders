@@ -33,6 +33,7 @@ function rowsToGames(rows) {
 function runFile(file, delimiter = ';') {
     const dataSql = fs.readFileSync(file).toString();
     const sqlStatements = dataSql.toString().split(delimiter);
+
     db.serialize(() => {
         sqlStatements.forEach((statement) => {
             statement = statement.trim();
@@ -86,7 +87,10 @@ function newGame(user, game) {
         const { board, roll, players } = game;
 
         db.run(
-            'INSERT INTO "Game" ("board_width", "board_height", "board_seed", "roll_seed", "roll_count", "winner") VALUES (?, ?, ?, ?, ?, NULL)',
+            `
+            INSERT INTO "Game" ("board_width", "board_height", "board_seed", "roll_seed", "roll_count", "winner")
+            VALUES (?, ?, ?, ?, ?, NULL)
+            `,
             [board.width, board.height, board.seed, roll.seed, roll.count],
             function (err) {
                 if (err) {
@@ -137,11 +141,14 @@ function newGame(user, game) {
 function getGame(user, id) {
     return new Promise((resolve, reject) => {
         db.all(
-            'SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex" ' +
-                'FROM "Game" AS g ' +
-                'INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex" ' +
-                'INNER JOIN "Player" AS p ON gp."playerIndex" = p."index" ' +
-                'WHERE g."index" = ? AND p."user" = ?',
+            `
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            FROM "Game" AS g
+            INNER JOIN "GamePlayer"
+            AS gp ON g."index" = gp."gameIndex"
+            INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
+            WHERE g."index" = ? AND p."user" = ?
+            `,
             [id, user],
             (err, rows) => {
                 if (err) {
@@ -162,11 +169,20 @@ function getGame(user, id) {
     });
 }
 
-function advanceGame(steps, winner) {
+function advanceGame(user, gameId, steps, winner) {
     return new Promise((resolve, reject) => {
         db.run(
-            'UPDATE "Game" SET "roll_count" = "roll_count" + ?, "winner" = ? WHERE "index" = ?',
-            [steps, winner, gameId],
+            `
+            UPDATE "Game"
+            SET "roll_count" = "roll_count" + ?, "winner" = ?
+            WHERE "index" = ?
+            AND "index" IN (
+                SELECT "gameIndex" FROM "GamePlayer"
+                INNER JOIN "Player" ON "GamePlayer"."playerIndex" = "Player"."index"
+                WHERE "Player"."user" = ?
+            )
+            `,
+            [steps, winner, gameId, user],
             (err) => {
                 if (err) reject(err);
                 else resolve();
@@ -178,11 +194,13 @@ function advanceGame(steps, winner) {
 function getLoadGames(user) {
     return new Promise((resolve, reject) => {
         db.all(
-            'SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex" ' +
-                'FROM "Game" AS g ' +
-                'INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex" ' +
-                'INNER JOIN "Player" AS p ON gp."playerIndex" = p."index" ' +
-                'WHERE g."winner" IS NULL AND p."user" = ?',
+            `
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            FROM "Game" AS g
+            INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
+            INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
+            WHERE g."winner" IS NULL AND p."user" = ?
+            `,
             [user],
             (err, rows) => {
                 if (err) {
@@ -198,11 +216,13 @@ function getLoadGames(user) {
 function getHistory(user) {
     return new Promise((resolve, reject) => {
         db.all(
-            'SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner" ' +
-                'FROM "Game" AS g ' +
-                'INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex" ' +
-                'INNER JOIN "Player" AS p ON gp."playerIndex" = p."index" ' +
-                'WHERE g."winner" IS NOT NULL AND p."user" = ?',
+            `
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner"
+            FROM "Game" AS g
+            INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
+            INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
+            WHERE g."winner" IS NOT NULL AND p."user" = ?
+            `,
             [user],
             (err, rows) => {
                 if (err) {
