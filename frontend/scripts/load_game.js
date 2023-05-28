@@ -1,8 +1,8 @@
 import { GameSummary } from './game-summary.js';
 
 if (document.cookie != null) {
-    let details = JSON.parse(localStorage.getItem('user-details'))
-    console.log(details.id)
+    let details = JSON.parse(localStorage.getItem('user-details'));
+    console.log(details.id);
     fetch('/api/ongoing?user=' + details.id)
         .then((response) => response.json())
         .then((details) => {

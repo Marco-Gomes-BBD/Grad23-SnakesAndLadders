@@ -69,22 +69,28 @@ const proceed = async () => {
         players: players,
     };
 
-    localStorage.removeItem('game_summary')
+    localStorage.removeItem('game_summary');
 
-    if (document.cookie == ''){
+    if (document.cookie == '') {
         localStorage.setItem('game_summary', JSON.stringify(game_summary));
         window.location.assign('/game');
     } else {
         let details = JSON.parse(localStorage.getItem('user-details'));
-        fetch('/api/new?user=' + details.id + '&game=' + JSON.stringify(game_summary)).then(
-            response => response.json().then(
-                val => {
-                    game_summary.game_id = val;
-                    localStorage.setItem('game_summary', JSON.stringify(game_summary));
-                    window.location.assign('/game');
-                }
-            )
-        )
+        fetch(
+            '/api/new?user=' +
+                details.id +
+                '&game=' +
+                JSON.stringify(game_summary)
+        ).then((response) =>
+            response.json().then((val) => {
+                game_summary.game_id = val;
+                localStorage.setItem(
+                    'game_summary',
+                    JSON.stringify(game_summary)
+                );
+                window.location.assign('/game');
+            })
+        );
         console.log(details);
     }
 };

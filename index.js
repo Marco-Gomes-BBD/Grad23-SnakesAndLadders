@@ -89,40 +89,38 @@ app.get('/auth-callback', async (req, res) => {
 app.get('/user-details', async (req, res) => {
     const details = await getDetails(req.query.token);
 
-    res.json({ id:details.id, login: details.login, avatar_url: details.avatar_url });
+    res.json({
+        id: details.id,
+        login: details.login,
+        avatar_url: details.avatar_url,
+    });
 });
 
 app.get('/api/new', async (req, res) => {
     const user = req.query.user;
     const game = req.query.game;
 
-    console.log(user)
+    console.log(user);
 
-    database.api.newGame(user, JSON.parse(game)).then(
-        result => {
-            res.json(result);
-        }
-    )
+    database.api.newGame(user, JSON.parse(game)).then((result) => {
+        res.json(result);
+    });
 });
 
 app.get('/api/ongoing', async (req, res) => {
     const user = req.query.user;
 
-    database.api.getLoadGames(user).then(
-        result => {
-            res.json(result)
-        }
-    )
+    database.api.getLoadGames(user).then((result) => {
+        res.json(result);
+    });
 });
 
 app.get('/api/history', async (req, res) => {
     const user = req.query.user;
 
-    database.api.getHistory(user).then(
-        result => {
-            res.json(result)
-        }
-    )
+    database.api.getHistory(user).then((result) => {
+        res.json(result);
+    });
 
     res.json([]);
 });
@@ -130,15 +128,12 @@ app.get('/api/history', async (req, res) => {
 app.get('/game/update', async (req, res) => {
     const user_id = req.query.user;
     const game_id = req.query.game_id;
-    const steps = req.query.rolls
-    const winner = req.query.winner
+    const steps = req.query.rolls;
+    const winner = req.query.winner;
 
-    database.api.advanceGame(user_id, game_id, steps, winner).then(
-        ()=> {
-            res.status(200);
-        }
-    );
-
+    database.api.advanceGame(user_id, game_id, steps, winner).then(() => {
+        res.status(200);
+    });
 });
 
 async function getDetails(token) {

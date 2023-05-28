@@ -97,52 +97,52 @@ function newGame(user, game) {
                     reject(err);
                 } else {
                     const gameId = this.lastID;
-                    const playerValues = []
+                    const playerValues = [];
                     players.forEach((player) => {
                         playerValues.push(player.player_name);
-                        playerValues.push(player.player_color)
-                        playerValues.push(user)
+                        playerValues.push(player.player_color);
+                        playerValues.push(user);
                     });
 
-                    let player_insert = 'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)';
-                    for (let i = 1; i < players.length; i++) { player_insert += ', (?,?,?)' }
+                    let player_insert =
+                        'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)';
+                    for (let i = 1; i < players.length; i++) {
+                        player_insert += ', (?,?,?)';
+                    }
 
-                    db.run(
-                        player_insert,
-                        playerValues,
-                        function (err) {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                const playerIds = Array.from(
-                                    { length: this.changes },
-                                    (_, index) => this.lastID - index
-                                );
-                                const gamePlayerValues = []
-                                playerIds.forEach(
-                                    (playerId) => {
-                                        gamePlayerValues.push(gameId)
-                                        gamePlayerValues.push(playerId)
-                                    }
-                                );
-                                
-                                let game_player_insert = 'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)'
-                                for (let i = 1; i < players.length; i++) { game_player_insert += ', (?,?)' }
+                    db.run(player_insert, playerValues, function (err) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            const playerIds = Array.from(
+                                { length: this.changes },
+                                (_, index) => this.lastID - index
+                            );
+                            const gamePlayerValues = [];
+                            playerIds.forEach((playerId) => {
+                                gamePlayerValues.push(gameId);
+                                gamePlayerValues.push(playerId);
+                            });
 
-                                db.run(
-                                    game_player_insert,
-                                    gamePlayerValues,
-                                    function (err) {
-                                        if (err) {
-                                            reject(err);
-                                        } else {
-                                            resolve(gameId);
-                                        }
-                                    }
-                                );
+                            let game_player_insert =
+                                'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)';
+                            for (let i = 1; i < players.length; i++) {
+                                game_player_insert += ', (?,?)';
                             }
+
+                            db.run(
+                                game_player_insert,
+                                gamePlayerValues,
+                                function (err) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        resolve(gameId);
+                                    }
+                                }
+                            );
                         }
-                    );
+                    });
                 }
             }
         );
@@ -166,7 +166,7 @@ function getGame(user, id) {
                     reject(err);
                 } else if (rows.length > 0) {
                     const game = rowToGame(rows[0]);
-                    game.game_id = game.index
+                    game.game_id = game.index;
                     game.players = rows.map((row) => ({
                         player_name: row.name,
                         player_color: row.colour,
@@ -183,13 +183,16 @@ function getGame(user, id) {
 
 function advanceGame(user, gameId, steps, winner) {
     return new Promise((resolve, reject) => {
+        console.log({ user, gameId, steps, winner });
 
-        console.log('update ' + gameId + ' -> roll ' + steps )
-        
+        if (winner === 'null') {
+            winner = null;
+        }
+
         db.run(
             `
             UPDATE "Game"
-            SET "roll_count" = "roll_count" + ?, "winner" = ?
+            SET "roll_count" = ?, "winner" = ?
             WHERE "index" = ?
             AND "index" IN (
                 SELECT "gameIndex" FROM "GamePlayer"
@@ -208,6 +211,7 @@ function advanceGame(user, gameId, steps, winner) {
 
 function getLoadGames(user) {
     return new Promise((resolve, reject) => {
+        console.log(user);
         db.all(
             `
             SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
@@ -221,23 +225,23 @@ function getLoadGames(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    let games = []
-                    let count = 1;
-                    
-                    rows.forEach( async row => {
-                        await getGame(user, row.index).then( res => { 
-                            if (res != null){
-                                console.log(res)
-                                games.push(res) 
-                            }
-                            count ++;
-                        })
+                    let games = [];
+                    let count = 0;
 
+                    rows.forEach(async (row) => {
+                        await getGame(user, row.index).then((res) => {
+                            if (res != null) {
+                                console.log(res);
+                                games.push(res);
+                            }
+                            count++;
+                        });
+                        console.log(count);
+                        console.log(rows.length);
                         if (count == rows.length) {
-                            resolve(games)
+                            resolve(games);
                         }
-                    })                 
-                    
+                    });
                 }
             }
         );

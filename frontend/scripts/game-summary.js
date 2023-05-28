@@ -35,11 +35,7 @@ class GameSummary extends HTMLElement {
             let id = 'p' + i;
             const player_detail = this.shadowRoot.getElementById(id);
 
-            player_detail.innerHTML =
-                summary.players[i].player_name +
-                '[' +
-                summary.players[i].player_type +
-                ']';
+            player_detail.innerHTML = summary.players[i].player_name;
             player_detail.setAttribute(
                 'style',
                 'background-color:' + summary.players[i].player_color
