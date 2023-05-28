@@ -26,8 +26,39 @@ function rowToGame(row) {
 }
 
 function rowsToGames(rows) {
-    if (rows) return rows.map(rowToGame);
-    else return [];
+    const games = [];
+    rows.forEach((row) => {
+        let gameIndex = games.findIndex((game) => game.game_id === row.game_id);
+        if (gameIndex === -1) {
+            // Create a new game object
+            const game = {
+                game_id: row.game_id,
+                board: {
+                    width: row.board_width,
+                    height: row.board_height,
+                    seed: parseFloat(row.board_seed),
+                },
+                roll: {
+                    seed: parseFloat(row.roll_seed),
+                    count: row.roll_count,
+                    win: row.winner,
+                },
+                players: [],
+            };
+            games.push(game);
+            gameIndex = games.length - 1;
+        }
+
+        // Add player to the respective game
+        const player = {
+            player_name: row.name,
+            player_color: row.colour.trim(),
+            player_index: row.player_index,
+        };
+        games[gameIndex].players.push(player);
+    });
+
+    return games;
 }
 
 function runFile(file, delimiter = ';') {
@@ -214,7 +245,7 @@ function getLoadGames(user) {
         console.log(user);
         db.all(
             `
-            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
+            SELECT g."index" AS game_id, g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index" AS player_index
             FROM "Game" AS g
             INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
             INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
@@ -225,23 +256,8 @@ function getLoadGames(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    let games = [];
-                    let count = 0;
-
-                    rows.forEach(async (row) => {
-                        await getGame(user, row.index).then((res) => {
-                            if (res != null) {
-                                console.log(res);
-                                games.push(res);
-                            }
-                            count++;
-                        });
-                        console.log(count);
-                        console.log(rows.length);
-                        if (count == rows.length) {
-                            resolve(games);
-                        }
-                    });
+                    const games = rowsToGames(rows);
+                    resolve(games);
                 }
             }
         );
@@ -263,7 +279,8 @@ function getHistory(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rowsToGames(rows));
+                    const games = rowsToGames(rows);
+                    resolve(games);
                 }
             }
         );
