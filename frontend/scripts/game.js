@@ -251,7 +251,7 @@ function setupPlayers() {
             player_color: player.player_color,
             player_name: player.player_name,
             player_icon: icon,
-            currentPosition: 0,
+            currentPosition: state.players[index],
         };
     });
     currentPlayer.textContent = players[playerIndex].player_icon;
