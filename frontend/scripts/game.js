@@ -315,7 +315,7 @@ function advanceGame(count) {
     let game = JSON.parse(localStorage.getItem('game_summary'));
     let details = JSON.parse(localStorage.getItem('user-details'));
     game.roll.count = count;
-    
+
     localStorage.setItem('game_summary', JSON.stringify(game));
     if (details != null) {
         fetch(
