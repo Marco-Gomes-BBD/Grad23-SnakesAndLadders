@@ -153,7 +153,7 @@ function getGame(user, id) {
     return new Promise((resolve, reject) => {
         db.all(
             `
-            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
             FROM "Game" AS g
             INNER JOIN "GamePlayer"
             AS gp ON g."index" = gp."gameIndex"
@@ -169,7 +169,7 @@ function getGame(user, id) {
                     game.players = rows.map((row) => ({
                         player_name: row.name,
                         player_color: row.colour,
-                        player_index: row.playerIndex,
+                        player_index: row.index,
                     }));
                     resolve(game);
                 } else {
@@ -206,7 +206,7 @@ function getLoadGames(user) {
     return new Promise((resolve, reject) => {
         db.all(
             `
-            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
             FROM "Game" AS g
             INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
             INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
@@ -217,7 +217,23 @@ function getLoadGames(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rowsToGames(rows));
+                    let games = []
+                    let count = 1;
+                    
+                    rows.forEach( async row => {
+                        await getGame(user, row.index).then( res => { 
+                            if (res != null){
+                                console.log(res)
+                                games.push(res) 
+                            }
+                            count ++;
+                        })
+
+                        if (count == rows.length) {
+                            resolve(games)
+                        }
+                    })                 
+                    
                 }
             }
         );

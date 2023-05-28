@@ -1,7 +1,9 @@
 import { GameSummary } from './game-summary.js';
 
 if (document.cookie != null) {
-    fetch('/api/ongoing?' + document.cookie)
+    let details = JSON.parse(localStorage.getItem('user-details'))
+    console.log(details.id)
+    fetch('/api/ongoing?user=' + details.id)
         .then((response) => response.json())
         .then((details) => {
             const container = document.getElementById('game-select');
