@@ -7,5 +7,7 @@ if (document.cookie != null && document.cookie != '') {
 
             name.innerHTML = details.login;
             img.src = details.avatar_url;
+
+            localStorage.setItem('user-details', JSON.stringify(details));
         });
 }

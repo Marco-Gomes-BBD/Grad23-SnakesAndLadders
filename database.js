@@ -26,8 +26,39 @@ function rowToGame(row) {
 }
 
 function rowsToGames(rows) {
-    if (rows) return rows.map(rowToGame);
-    else return [];
+    const games = [];
+    rows.forEach((row) => {
+        let gameIndex = games.findIndex((game) => game.game_id === row.game_id);
+        if (gameIndex === -1) {
+            // Create a new game object
+            const game = {
+                game_id: row.game_id,
+                board: {
+                    width: row.board_width,
+                    height: row.board_height,
+                    seed: parseFloat(row.board_seed),
+                },
+                roll: {
+                    seed: parseFloat(row.roll_seed),
+                    count: row.roll_count,
+                    win: row.winner,
+                },
+                players: [],
+            };
+            games.push(game);
+            gameIndex = games.length - 1;
+        }
+
+        // Add player to the respective game
+        const player = {
+            player_name: row.name,
+            player_color: row.colour.trim(),
+            player_index: row.player_index,
+        };
+        games[gameIndex].players.push(player);
+    });
+
+    return games;
 }
 
 function runFile(file, delimiter = ';') {
@@ -97,41 +128,52 @@ function newGame(user, game) {
                     reject(err);
                 } else {
                     const gameId = this.lastID;
-                    const playerValues = players.map((player) => [
-                        player.player_name,
-                        player.player_color,
-                        user,
-                    ]);
+                    const playerValues = [];
+                    players.forEach((player) => {
+                        playerValues.push(player.player_name);
+                        playerValues.push(player.player_color);
+                        playerValues.push(user);
+                    });
 
-                    db.run(
-                        'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)',
-                        playerValues,
-                        function (err) {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                const playerIds = Array.from(
-                                    { length: this.changes },
-                                    (_, index) => this.lastID - index
-                                );
-                                const gamePlayerValues = playerIds.map(
-                                    (playerId) => [gameId, playerId]
-                                );
+                    let player_insert =
+                        'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)';
+                    for (let i = 1; i < players.length; i++) {
+                        player_insert += ', (?,?,?)';
+                    }
 
-                                db.run(
-                                    'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)',
-                                    gamePlayerValues,
-                                    function (err) {
-                                        if (err) {
-                                            reject(err);
-                                        } else {
-                                            resolve(gameId);
-                                        }
-                                    }
-                                );
+                    db.run(player_insert, playerValues, function (err) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            const playerIds = Array.from(
+                                { length: this.changes },
+                                (_, index) => this.lastID - index
+                            );
+                            const gamePlayerValues = [];
+                            playerIds.forEach((playerId) => {
+                                gamePlayerValues.push(gameId);
+                                gamePlayerValues.push(playerId);
+                            });
+
+                            let game_player_insert =
+                                'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)';
+                            for (let i = 1; i < players.length; i++) {
+                                game_player_insert += ', (?,?)';
                             }
+
+                            db.run(
+                                game_player_insert,
+                                gamePlayerValues,
+                                function (err) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        resolve(gameId);
+                                    }
+                                }
+                            );
                         }
-                    );
+                    });
                 }
             }
         );
@@ -142,7 +184,7 @@ function getGame(user, id) {
     return new Promise((resolve, reject) => {
         db.all(
             `
-            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
             FROM "Game" AS g
             INNER JOIN "GamePlayer"
             AS gp ON g."index" = gp."gameIndex"
@@ -155,10 +197,11 @@ function getGame(user, id) {
                     reject(err);
                 } else if (rows.length > 0) {
                     const game = rowToGame(rows[0]);
+                    game.game_id = game.index;
                     game.players = rows.map((row) => ({
                         player_name: row.name,
                         player_color: row.colour,
-                        player_index: row.playerIndex,
+                        player_index: row.index,
                     }));
                     resolve(game);
                 } else {
@@ -171,10 +214,16 @@ function getGame(user, id) {
 
 function advanceGame(user, gameId, steps, winner) {
     return new Promise((resolve, reject) => {
+        console.log({ user, gameId, steps, winner });
+
+        if (winner === 'null') {
+            winner = null;
+        }
+
         db.run(
             `
             UPDATE "Game"
-            SET "roll_count" = "roll_count" + ?, "winner" = ?
+            SET "roll_count" = ?, "winner" = ?
             WHERE "index" = ?
             AND "index" IN (
                 SELECT "gameIndex" FROM "GamePlayer"
@@ -195,7 +244,7 @@ function getLoadGames(user) {
     return new Promise((resolve, reject) => {
         db.all(
             `
-            SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."playerIndex"
+            SELECT g."index" AS game_id, g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index" AS player_index
             FROM "Game" AS g
             INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
             INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
@@ -206,7 +255,8 @@ function getLoadGames(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rowsToGames(rows));
+                    const games = rowsToGames(rows);
+                    resolve(games);
                 }
             }
         );
@@ -228,7 +278,8 @@ function getHistory(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rowsToGames(rows));
+                    const games = rowsToGames(rows);
+                    resolve(games);
                 }
             }
         );

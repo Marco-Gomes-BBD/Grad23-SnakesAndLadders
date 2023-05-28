@@ -3,7 +3,7 @@ document.getElementById('new-game-btn').addEventListener('click', () => {
 });
 
 document.getElementById('load-game-btn').addEventListener('click', () => {
-    window.location.assign('/load-game');
+    window.location.assign('/game/load');
 });
 
 const modal = document.getElementById('how-to-play-modal');

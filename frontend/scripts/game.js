@@ -251,7 +251,7 @@ function setupPlayers() {
             player_color: player.player_color,
             player_name: player.player_name,
             player_icon: icon,
-            currentPosition: 0,
+            currentPosition: state.players[index],
         };
     });
     currentPlayer.textContent = players[playerIndex].player_icon;
@@ -311,11 +311,32 @@ document.body.onload = () => {
     });
 };
 
+function advanceGame(count) {
+    let game = JSON.parse(localStorage.getItem('game_summary'));
+    let details = JSON.parse(localStorage.getItem('user-details'));
+    game.roll.count = count;
+
+    localStorage.setItem('game_summary', JSON.stringify(game));
+    if (details != null) {
+        fetch(
+            '/game/update?user=' +
+                details.id +
+                '&game_id=' +
+                game.game_id +
+                '&rolls=' +
+                count +
+                '&winner=' +
+                null
+        );
+    }
+}
+
 rollBtn.addEventListener('click', () => {
     const roll = rollDie(state.roll.prng);
     playerIndex = state.roll.count % state.players.length;
     currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {
         movePlayer(roll);
+        advanceGame(state.roll.count);
     }, 4050);
 });

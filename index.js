@@ -89,48 +89,49 @@ app.get('/auth-callback', async (req, res) => {
 app.get('/user-details', async (req, res) => {
     const details = await getDetails(req.query.token);
 
-    res.json({ login: details.login, avatar_url: details.avatar_url });
+    res.json({
+        id: details.id,
+        login: details.login,
+        avatar_url: details.avatar_url,
+    });
 });
 
 app.get('/api/new', async (req, res) => {
-    const token = req.query.token;
+    const user = req.query.user;
     const game = req.query.game;
 
-    // TODO: add game to database
-    // TODO: append game_id to game
-    // NOTE: Take a look at database.api.newGame
-
-    let game_id = 12345;
-    res.json({ game_id: game_id });
+    database.api.newGame(user, JSON.parse(game)).then((result) => {
+        res.json(result);
+    });
 });
 
 app.get('/api/ongoing', async (req, res) => {
-    const token = req.query.token;
+    const user = req.query.user;
 
-    // TODO: return unfinished games
-    // NOTE: Take a look at database.api.getLoadGames
-
-    res.json([]);
+    database.api.getLoadGames(user).then((result) => {
+        res.json(result);
+    });
 });
 
 app.get('/api/history', async (req, res) => {
-    const token = req.query.token;
+    const user = req.query.user;
 
-    // TODO: return finished games
-    // NOTE: Take a look at database.api.getHistory
+    database.api.getHistory(user).then((result) => {
+        res.json(result);
+    });
 
     res.json([]);
 });
 
-app.get('/game/play', async (req, res) => {
+app.get('/game/update', async (req, res) => {
+    const user_id = req.query.user;
     const game_id = req.query.game_id;
-    const rolls = req.query.rolls;
-    // NOTE: database.api.getGame can be used to retrieve the game
+    const steps = req.query.rolls;
+    const winner = req.query.winner;
 
-    // TODO: insert progression logic
-    // NOTE: Check the getState function, it already does this logic.
-
-    res.status(200);
+    database.api.advanceGame(user_id, game_id, steps, winner).then(() => {
+        res.status(200);
+    });
 });
 
 async function getDetails(token) {

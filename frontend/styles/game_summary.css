@@ -3,6 +3,9 @@
     background-color: rgba(146, 106, 59, 0.226);
     border-radius: 1rem;
     padding: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 10rem;
 }
 
 button {
