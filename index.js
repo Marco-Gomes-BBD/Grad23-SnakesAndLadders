@@ -89,14 +89,16 @@ app.get('/auth-callback', async (req, res) => {
 app.get('/user-details', async (req, res) => {
     const details = await getDetails(req.query.token);
 
-    res.json({ login: details.login, avatar_url: details.avatar_url });
+    res.json({ id:details.id, login: details.login, avatar_url: details.avatar_url });
 });
 
 app.get('/api/new', async (req, res) => {
     const user = req.query.user;
     const game = req.query.game;
 
-    database.api.newGame(user, game).then(
+    console.log(user)
+
+    database.api.newGame(user, JSON.parse(game)).then(
         result => {
             res.json(result);
         }

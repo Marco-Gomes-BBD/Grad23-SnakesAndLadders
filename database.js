@@ -97,14 +97,18 @@ function newGame(user, game) {
                     reject(err);
                 } else {
                     const gameId = this.lastID;
-                    const playerValues = players.map((player) => [
-                        player.player_name,
-                        player.player_color,
-                        user,
-                    ]);
+                    const playerValues = []
+                    players.forEach((player) => {
+                        playerValues.push(player.player_name);
+                        playerValues.push(player.player_color)
+                        playerValues.push(user)
+                    });
+
+                    let player_insert = 'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)';
+                    for (let i = 1; i < players.length; i++) { player_insert += ', (?,?,?)' }
 
                     db.run(
-                        'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)',
+                        player_insert,
                         playerValues,
                         function (err) {
                             if (err) {
@@ -114,12 +118,19 @@ function newGame(user, game) {
                                     { length: this.changes },
                                     (_, index) => this.lastID - index
                                 );
-                                const gamePlayerValues = playerIds.map(
-                                    (playerId) => [gameId, playerId]
+                                const gamePlayerValues = []
+                                playerIds.forEach(
+                                    (playerId) => {
+                                        gamePlayerValues.push(gameId)
+                                        gamePlayerValues.push(playerId)
+                                    }
                                 );
+                                
+                                let game_player_insert = 'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)'
+                                for (let i = 1; i < players.length; i++) { game_player_insert += ', (?,?)' }
 
                                 db.run(
-                                    'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)',
+                                    game_player_insert,
                                     gamePlayerValues,
                                     function (err) {
                                         if (err) {
