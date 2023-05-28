@@ -242,7 +242,6 @@ function advanceGame(user, gameId, steps, winner) {
 
 function getLoadGames(user) {
     return new Promise((resolve, reject) => {
-        console.log(user);
         db.all(
             `
             SELECT g."index" AS game_id, g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index" AS player_index
