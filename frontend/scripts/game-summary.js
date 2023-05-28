@@ -42,7 +42,7 @@ class GameSummary extends HTMLElement {
                 ']';
             player_detail.setAttribute(
                 'style',
-                'background-color=' + summary.players[i].player_color
+                'background-color:' + summary.players[i].player_color
             );
         }
     }

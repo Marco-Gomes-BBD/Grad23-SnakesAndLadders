@@ -166,6 +166,7 @@ function getGame(user, id) {
                     reject(err);
                 } else if (rows.length > 0) {
                     const game = rowToGame(rows[0]);
+                    game.game_id = game.index
                     game.players = rows.map((row) => ({
                         player_name: row.name,
                         player_color: row.colour,
