@@ -183,6 +183,9 @@ function getGame(user, id) {
 
 function advanceGame(user, gameId, steps, winner) {
     return new Promise((resolve, reject) => {
+
+        console.log('update ' + gameId + ' -> roll ' + steps )
+        
         db.run(
             `
             UPDATE "Game"

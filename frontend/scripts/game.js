@@ -311,11 +311,23 @@ document.body.onload = () => {
     });
 };
 
+function advanceGame(count) {
+    let game = JSON.parse(localStorage.getItem('game_summary'))
+    let details = JSON.parse(localStorage.getItem('user-details'))
+    game.roll.count = count;
+    console.log(game)
+    localStorage.setItem('game_summary', JSON.stringify(game));
+    if (details != null) {
+        fetch('/game/update?user=' + details.id + '&game_id=' + game.game_id + "&rolls=" + count + "&winner=" + null);
+    }
+}
+
 rollBtn.addEventListener('click', () => {
     const roll = rollDie(state.roll.prng);
     playerIndex = state.roll.count % state.players.length;
     currentPlayer.textContent = players[playerIndex].player_icon;
     setTimeout(() => {
         movePlayer(roll);
+        advanceGame(state.roll.count)
     }, 4050);
 });

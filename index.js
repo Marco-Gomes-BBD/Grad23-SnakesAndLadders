@@ -128,12 +128,12 @@ app.get('/api/history', async (req, res) => {
 });
 
 app.get('/game/update', async (req, res) => {
-    const user = req.query.game_id;
+    const user_id = req.query.user;
     const game_id = req.query.game_id;
     const steps = req.query.rolls
     const winner = req.query.winner
 
-    database.api.advanceGame(user, game_id, steps, winner).then(
+    database.api.advanceGame(user_id, game_id, steps, winner).then(
         ()=> {
             res.status(200);
         }
