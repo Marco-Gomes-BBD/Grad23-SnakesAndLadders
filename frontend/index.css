@@ -1,6 +1,7 @@
 * {
     font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-weight: 700 bold;
+    font-size: large;
 }
 
 .rounded-container {
@@ -61,7 +62,7 @@
 
 .page-center {
     display: flex;
-    width: 30%;
+    width: 70%;
     height: fit-content;
     margin-left: auto;
     margin-right: auto;

@@ -4,7 +4,7 @@ import { show_toast } from './toast.js';
 let players = [];
 
 let add_player = () => {
-    if (players.length >= 4) {
+    if (players.length >= 2) {
         show_toast('thats enough!!!', 'error');
         return;
     }

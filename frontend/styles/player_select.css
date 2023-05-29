@@ -100,6 +100,7 @@ color-block[assigned="true"] {
     border-radius: 4mm;
     border-width: 5mm;
     width: 20%;
+    max-width: 3rem;
     font-size: xx-large;
 }
 
@@ -119,6 +120,10 @@ color-block[assigned="true"] {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     height: fit-content;
+}
+
+form>* {
+    font-size:x-large;
 }
 
 @media (max-width: 768px) {
