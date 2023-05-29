@@ -100,11 +100,6 @@ app.get('/api/new', async (req, res) => {
     const user = req.query.user;
     const game = req.query.game;
 
-<<<<<<< HEAD
-    console.log(user);
-
-=======
->>>>>>> develop
     database.api.newGame(user, JSON.parse(game)).then((result) => {
         res.json(result);
     });

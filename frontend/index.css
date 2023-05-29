@@ -64,7 +64,7 @@
     display: flex;
     width: 70%;
     height: fit-content;
-    margin-left: auto;
+    margin-left: auto;  
     margin-right: auto;
     margin-top: auto;
     margin-bottom: auto;
@@ -76,7 +76,7 @@ body {
     flex-direction: column;
     margin: 0;
     height: 100%;
-    background-image: url("../../res/black-ground/background.png");
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .fit-width {

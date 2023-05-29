@@ -91,10 +91,6 @@ const proceed = async () => {
                 window.location.assign('/game');
             })
         );
-<<<<<<< HEAD
-        console.log(details);
-=======
->>>>>>> develop
     }
 };
 
