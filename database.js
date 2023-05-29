@@ -26,8 +26,39 @@ function rowToGame(row) {
 }
 
 function rowsToGames(rows) {
-    if (rows) return rows.map(rowToGame);
-    else return [];
+    const games = [];
+    rows.forEach((row) => {
+        let gameIndex = games.findIndex((game) => game.game_id === row.game_id);
+        if (gameIndex === -1) {
+            // Create a new game object
+            const game = {
+                game_id: row.game_id,
+                board: {
+                    width: row.board_width,
+                    height: row.board_height,
+                    seed: parseFloat(row.board_seed),
+                },
+                roll: {
+                    seed: parseFloat(row.roll_seed),
+                    count: row.roll_count,
+                    win: row.winner,
+                },
+                players: [],
+            };
+            games.push(game);
+            gameIndex = games.length - 1;
+        }
+
+        // Add player to the respective game
+        const player = {
+            player_name: row.name,
+            player_color: row.colour.trim(),
+            player_index: row.player_index,
+        };
+        games[gameIndex].players.push(player);
+    });
+
+    return games;
 }
 
 function runFile(file, delimiter = ';') {
@@ -97,6 +128,7 @@ function newGame(user, game) {
                     reject(err);
                 } else {
                     const gameId = this.lastID;
+<<<<<<< HEAD
                     const playerValues = []
                     players.forEach((player) => {
                         playerValues.push(player.player_name);
@@ -140,9 +172,54 @@ function newGame(user, game) {
                                         }
                                     }
                                 );
+=======
+                    const playerValues = [];
+                    players.forEach((player) => {
+                        playerValues.push(player.player_name);
+                        playerValues.push(player.player_color);
+                        playerValues.push(user);
+                    });
+
+                    let player_insert =
+                        'INSERT INTO "Player" ("name", "colour", "user") VALUES (?, ?, ?)';
+                    for (let i = 1; i < players.length; i++) {
+                        player_insert += ', (?,?,?)';
+                    }
+
+                    db.run(player_insert, playerValues, function (err) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            const playerIds = Array.from(
+                                { length: this.changes },
+                                (_, index) => this.lastID - index
+                            );
+                            const gamePlayerValues = [];
+                            playerIds.forEach((playerId) => {
+                                gamePlayerValues.push(gameId);
+                                gamePlayerValues.push(playerId);
+                            });
+
+                            let game_player_insert =
+                                'INSERT INTO "GamePlayer" ("gameIndex", "playerIndex") VALUES (?, ?)';
+                            for (let i = 1; i < players.length; i++) {
+                                game_player_insert += ', (?,?)';
+>>>>>>> develop
                             }
+
+                            db.run(
+                                game_player_insert,
+                                gamePlayerValues,
+                                function (err) {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        resolve(gameId);
+                                    }
+                                }
+                            );
                         }
-                    );
+                    });
                 }
             }
         );
@@ -166,7 +243,11 @@ function getGame(user, id) {
                     reject(err);
                 } else if (rows.length > 0) {
                     const game = rowToGame(rows[0]);
+<<<<<<< HEAD
                     game.game_id = game.index
+=======
+                    game.game_id = game.index;
+>>>>>>> develop
                     game.players = rows.map((row) => ({
                         player_name: row.name,
                         player_color: row.colour,
@@ -183,11 +264,18 @@ function getGame(user, id) {
 
 function advanceGame(user, gameId, steps, winner) {
     return new Promise((resolve, reject) => {
+<<<<<<< HEAD
 
         console.log({user, gameId, steps, winner})
 
         if (winner === 'null') {
             winner = null
+=======
+        console.log({ user, gameId, steps, winner });
+
+        if (winner === 'null') {
+            winner = null;
+>>>>>>> develop
         }
 
         db.run(
@@ -214,7 +302,11 @@ function getLoadGames(user) {
     return new Promise((resolve, reject) => {
         db.all(
             `
+<<<<<<< HEAD
             SELECT g."index", g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index"
+=======
+            SELECT g."index" AS game_id, g."board_width", g."board_height", g."board_seed", g."roll_seed", g."roll_count", g."winner", p."name", p."colour", p."index" AS player_index
+>>>>>>> develop
             FROM "Game" AS g
             INNER JOIN "GamePlayer" AS gp ON g."index" = gp."gameIndex"
             INNER JOIN "Player" AS p ON gp."playerIndex" = p."index"
@@ -225,6 +317,7 @@ function getLoadGames(user) {
                 if (err) {
                     reject(err);
                 } else {
+<<<<<<< HEAD
                     let games = []
                     let count = 0;
                     
@@ -241,6 +334,10 @@ function getLoadGames(user) {
                         }
                     })                 
                     
+=======
+                    const games = rowsToGames(rows);
+                    resolve(games);
+>>>>>>> develop
                 }
             }
         );
@@ -262,7 +359,8 @@ function getHistory(user) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rowsToGames(rows));
+                    const games = rowsToGames(rows);
+                    resolve(games);
                 }
             }
         );

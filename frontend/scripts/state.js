@@ -88,7 +88,7 @@ function printBoard(state) {
             print += `|${String(jmp).padStart(3)}`;
         }
         print += '|';
-        console.log(print);
+        console.log(print); // For debugging
     }
 }
 

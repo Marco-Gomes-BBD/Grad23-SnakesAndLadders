@@ -11,7 +11,7 @@ main {
     flex-grow: 1;
     height: 100%;
     flex-direction: column;
-    background-color: rgba(255, 138, 138, 0.938);
+    background-image: url("../../res/black-ground/background.png");
 }
 
 .fill-height {

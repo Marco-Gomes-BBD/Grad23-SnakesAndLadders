@@ -62,14 +62,96 @@ function loadResources(paths, callback) {
 }
 
 function movePlayer(moves) {
+
+    playerIndex = state.roll.count % state.players.length;
+    animatePlayer(players[playerIndex], moves);
+    
     gameStep(moves, state.players, state.board, state.roll);
     players.forEach((player, index) => {
         player.currentPosition = state.players[index];
     });
-
-    initBoard();
     playerIndex = state.roll.count % state.players.length;
     currentPlayer.textContent = players[playerIndex].player_icon;
+
+    if(player.currentPosition == 100){
+        rollBtn.disable();
+    }
+
+}
+
+function animatePlayer(player, moves) {
+    const duration = 500;
+    const jumpHeight = 60; 
+    const jumpDistance = 60;
+    const [x, y] = getCellPosition(player.currentPosition);
+    let startY = y; 
+    let startX = x;
+
+    let remainingMoves = moves;
+
+    const startingRow = Math.floor(startY / jumpDistance);
+    const initialDirection = startingRow % 2 === 0 ? -1 : 1;
+
+    let direction =  initialDirection;
+  
+    function jump() {
+      const startTime = Date.now();
+  
+      function update() {
+        const elapsedTime = Date.now() - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const currentX = startX + direction * jumpDistance * progress;
+        const currentY = startY - jumpHeight * Math.abs(Math.sin(progress * Math.PI));
+  
+        (startX !=0 && startY !=0) && updateBoard(player, currentX, currentY);
+  
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          startX = currentX; 
+          startY = currentY; 
+          if(startX >= 540 && direction === 1){
+            startY -= jumpDistance;
+            direction = startY / jumpDistance % 2 === 0 ? -1 : 1;
+            remainingMoves--;
+          } else if(startX === 0 && direction === -1){
+            startY -= jumpDistance;
+            direction = startY / jumpDistance % 2 === 0 ? -1 : 1;
+            remainingMoves--;
+          }
+          
+          remainingMoves--;
+  
+          if (remainingMoves > 0) {
+            jump();
+          }
+        }
+      }
+  
+      update();
+    }
+  
+    jump();
+  }
+
+function updateBoard(player, currentX, currentY) {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawBoard();
+
+    ladders.forEach((ladder) => {
+        drawLadder(ladder[0], ladder[1]);
+    });
+
+    const prng = new Math.seedrandom(state.board.seed);
+    snakes.forEach((snake) => {
+        drawSnake(snake[0], snake[1], prng);
+    });
+
+    players.forEach((p, index) => {
+        p === player ? 
+        drawAnimPlayer(currentX, currentY, player.player_icon) :
+        drawPlayer(p.currentPosition, p.player_icon);
+    });
 }
 
 function initBoard() {
@@ -85,8 +167,8 @@ function initBoard() {
         drawSnake(snake[0], snake[1], prng);
     });
 
-    players.forEach((player, index) => {
-        drawPlayer(player.currentPosition, index, player.player_icon);
+    players.forEach((player) => {
+        drawPlayer(player.currentPosition, player.player_icon);
     });
 }
 
@@ -214,8 +296,13 @@ function drawLadder(start, end) {
     context.restore();
 }
 
-function drawPlayer(position, index, icon) {
+function drawPlayer(position, icon) {
     const [x, y] = getCellPosition(position);
+    context.font = '30px serif';
+    context.fillText(icon, x, y + squareSize / 2);
+}
+
+function drawAnimPlayer(x, y, icon) {
     context.font = '30px serif';
     context.fillText(icon, x, y + squareSize / 2);
 }
@@ -240,6 +327,7 @@ function initPlayers() {
             player_card_list.appendChild(player_card);
         }
     }
+
 }
 
 function setupPlayers() {
@@ -251,7 +339,7 @@ function setupPlayers() {
             player_color: player.player_color,
             player_name: player.player_name,
             player_icon: icon,
-            currentPosition: 0,
+            currentPosition: state.players[index],
         };
     });
     currentPlayer.textContent = players[playerIndex].player_icon;
@@ -315,7 +403,11 @@ function advanceGame(count) {
     let game = JSON.parse(localStorage.getItem('game_summary'));
     let details = JSON.parse(localStorage.getItem('user-details'));
     game.roll.count = count;
+<<<<<<< HEAD
     console.log(game);
+=======
+
+>>>>>>> develop
     localStorage.setItem('game_summary', JSON.stringify(game));
     if (details != null) {
         fetch(
