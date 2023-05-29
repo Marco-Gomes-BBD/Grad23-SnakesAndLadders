@@ -75,7 +75,7 @@ body {
     flex-direction: column;
     margin: 0;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-image: url("../../res/black-ground/background.png");
 }
 
 .fit-width {
