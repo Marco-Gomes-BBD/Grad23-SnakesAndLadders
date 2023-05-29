@@ -1,6 +1,7 @@
 * {
     font-family: "Comic Sans MS", "Comic Sans", cursive;
     font-weight: 700 bold;
+    font-size: large;
 }
 
 .rounded-container {
@@ -61,9 +62,9 @@
 
 .page-center {
     display: flex;
-    width: 30%;
+    width: 70%;
     height: fit-content;
-    margin-left: auto;
+    margin-left: auto;  
     margin-right: auto;
     margin-top: auto;
     margin-bottom: auto;
@@ -75,7 +76,7 @@ body {
     flex-direction: column;
     margin: 0;
     height: 100%;
-    background-image: url("../../res/black-ground/background.png");
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .fit-width {
